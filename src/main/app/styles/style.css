@@ -1,0 +1,162 @@
+html, body {
+  margin: 10px;
+  font-family: Tahoma, Helvetica, Verdana, sans-serif;
+}
+
+main {
+    height: calc(100vh - 140px);
+}
+
+.blured {
+    filter: blur(8px);
+    transition: 0.3s;
+}
+
+header {
+    padding-right: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    font-size: 50px;
+    margin: 0.2em;
+    color: aqua;
+}
+
+.login {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+a {
+  color: darkgrey;
+  text-decoration: none;
+}
+
+#name {
+  width: 200px;
+  height: 20px;
+  margin: 5px;
+}
+
+.contacts {
+    float: left;
+    display: flex;
+    overflow-x: hidden;
+    overflow-y: auto;
+    align-content: flex-start;
+    flex-flow: column;
+    width: 220px;
+    height: 100%;
+    border-style: solid;
+    border-width: 2px;
+    border-color: aqua;
+    border-radius: 5px;
+    margin-right: 4px;
+}
+
+.contact {
+    margin-bottom: 3px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 50px;
+    transition: 0.2s;
+}
+
+.contact:hover {
+    background-color: lightgray;
+}
+
+.contact:active {
+    background-color: darkgray;
+}
+
+.contact>img {
+    width: 2.8em;
+    height: 2.8em;
+    margin-left: 0.5em;
+    margin-right: 1em;
+    border-style: solid;
+    border-width: 2px;
+    border-color: aqua;
+    border-radius: 100%;
+}
+
+.contact>p {
+    margin: 0;
+}
+
+.chat {
+  margin: 10px 0px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-style: solid;
+  border-width: 2px;
+  border-color: aqua;
+  border-radius: 5px;
+}
+
+.chatbox {
+   height: inherit;
+   width: 100%;
+   overflow-x: hidden;
+   overflow-y: auto;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-end;
+}
+
+.message {
+    margin: 8px;
+    margin-left: 15px;
+}
+
+.message>div {
+    padding: 5px;
+    border-radius: 5px;
+    min-width: 150px;
+    background-color: #00aabb;
+    display: inline-block;
+    text-overflow: ellipsis;
+}
+
+.message>div>p {
+    margin: 0;
+    padding: 5px;
+}
+
+.input {
+    height: 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.4em;
+    padding: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: aqua;
+    border-radius: 5px;
+}
+
+.input>button {
+    height: 80%;
+}
+
+#text {
+  width: 92%;
+  height: 20px;
+  border: 0;
+}
+
+#send {
+  width: 5%;
+  height: 20px;
+}
+

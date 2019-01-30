@@ -21,31 +21,31 @@ the documentation running:
 mvn generate-resources
 ----
 
-== Compile and run
+== Installing dependencies
 
-The skeleton project is a simple
- https://spring.io/projects/spring-boot[Spring-boot] application which can be run as:
+ This project uses npm as the packet manager 
 
 ----
- mvn spring-boot:run
+ npm install
 ----
 
-Once executed, the application should be available at: http://localhost:8080
+== Running the app
+
+ Once executed, the application should be available at: http://localhost:8000
+
+----
+ npm start
+----
 
 == Testing
 
 There are some simple Unit tests at:
- https://github.com/Arquisoft/dechat_en1b/tree/master/src/test[src/test].
-
-There are also some
- https://cucumber.io/[Cucumber based tests]
- with a simple user story defined at:
- https://github.com/Arquisoft/dechat_en1b/tree/master/src/test/resources/features[src/test/resources/features].
+ https://github.com/Arquisoft/dechat_en1b/tree/master/src/main/e2e-tests[src/main/e2e-tests].
 
 To run tests execute:
 
 ----
-mvn test
+ npm test
 ----
 
 == Site documentation

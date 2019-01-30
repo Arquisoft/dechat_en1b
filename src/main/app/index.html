@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html lang="en" ng-app="chatApp">
+    <head>
+        <title>Chat</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="styles/style.css">
+        <link rel="stylesheet" href="styles/speechBubbles.css">
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/angular-route/angular-route.js"></script>
+        <script src="core/version/version.js"></script>
+        <script src="core/version/version-directive.js"></script>
+        <script src="core/version/interpolate-filter.js"></script>
+        <!-- Main app -->
+        <script src="app.js" defer></script>
+    </head>
+    <body ng-controller="chatController">
+        <header>
+            <h1>Chat Test V1 with AngularJS</h1>
+            <div class="login">
+                <button id="loginBtn" ng-click="login()" ng-show="!userIsLogged" >Log in</button>
+                <button id="logoutBtn" ng-click="logout()" ng-show="userIsLogged">Log out</button>
+            </div>
+        </header>
+        <main ng-class="{blured: !userIsLogged}">
+            <aside class="contacts">
+                <!-- Contacts -->
+                <div class="contact" ng-repeat="contact in contacts">
+                    <img ng-src="img/{{contact.pic}}">
+                    <p>{{contact.name}}</p>
+                </div>
+            </aside>
+            <div class="chat">
+                <div class="chatbox">
+                    <!-- Messages -->
+                    <div class="message" ng-repeat="message in messages">
+                        <div class="speech-bubble-left">
+                            <a>{{message.user}}</a>
+                            <p>{{message.text}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="input">
+                    <input id="text" ng-model="currentText" my-enter="send()" type="text" placeholder="Type a message"/>
+                    <button id="send" ng-click="send()">Send</button>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

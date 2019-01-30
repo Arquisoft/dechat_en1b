@@ -9,6 +9,7 @@
 .classpath
 .settings/*
 /target
+/src/main/node_modules
 
 .metadata
 bin/

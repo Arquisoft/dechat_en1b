@@ -12,11 +12,12 @@
         <script src="core/version/version-directive.js"></script>
         <script src="core/version/interpolate-filter.js"></script>
         <!-- Main app -->
+        <script src="chatServices.js" defer></script>
         <script src="app.js" defer></script>
     </head>
     <body ng-controller="chatController">
         <header>
-            <h1>Chat Test V1 with AngularJS</h1>
+            <h1>Chat Test V2 with AngularJS</h1>
             <div class="login">
                 <button id="loginBtn" ng-click="login()" ng-show="!userIsLogged" >Log in</button>
                 <button id="logoutBtn" ng-click="logout()" ng-show="userIsLogged">Log out</button>
@@ -25,15 +26,15 @@
         <main ng-class="{blured: !userIsLogged}">
             <aside class="contacts">
                 <!-- Contacts -->
-                <div class="contact" ng-repeat="contact in contacts">
-                    <img ng-src="img/{{contact.pic}}">
-                    <p>{{contact.name}}</p>
+                <div class="contact" ng-repeat="chat in chats" ng-click="changeChat($event)">
+                    <img ng-src="img/{{chat.contact.pic}}">
+                    <p>{{chat.contact.name}}</p>
                 </div>
             </aside>
             <div class="chat">
                 <div class="chatbox">
                     <!-- Messages -->
-                    <div class="message" ng-repeat="message in messages">
+                    <div class="message" ng-repeat="message in currentChat.messages">
                         <div class="speech-bubble-left">
                             <a>{{message.user}}</a>
                             <p>{{message.text}}</p>
@@ -41,8 +42,8 @@
                     </div>
                 </div>
                 <div class="input">
-                    <input id="text" ng-model="currentText" my-enter="send()" type="text" placeholder="Type a message"/>
-                    <button id="send" ng-click="send()">Send</button>
+                    <input id="text" ng-model="currentChat.currentText" ng-disabled="!userIsLogged" my-enter="send()" type="text" placeholder="Type a message"/>
+                    <button id="send" ng-click="send()" ng-disabled="!userIsLogged">Send</button>
                 </div>
             </div>
         </main>

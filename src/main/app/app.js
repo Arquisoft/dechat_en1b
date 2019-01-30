@@ -1,24 +1,19 @@
-angular.module("chatApp", [])
-	.controller("chatController", ["$scope", function($scope) {
-		$scope.messages = [
-			{user: "Paco", text: "Hey"},
-			{user: "Julio", text: "Que tal?"},
-			{user: "Paco", text: "Bien"}
-		];
-        $scope.contacts = [
-            {id: 1, name: "Paco", pic: "Paco.jpg"},
-			{id: 2, name: "Julio", pic: "Julio.jpg"}
-        ];
-        $scope.userIsLogged = false;
-        $scope.currentUser = null;
+angular.module("chatApp", ["chatServices"])
+	.controller("chatController", ["$scope", "chatService", function($scope, chatService) {
+		$scope.chats = chatService.loadChats("12345"); //Test
+        $scope.currentChat = $scope.chats[0];
+        $scope.userIsLogged = true;
+        $scope.currentUser = "Miguel";
         $scope.currentText = "";
         //User input functions
         $scope.send = function() {
-            $scope.messages.push({
+            if ($scope.currentChat.currentText.length <= 0)
+                return;
+            $scope.currentChat.messages.push({
                 user: $scope.currentUser,
-                text: $scope.currentText
+                text: $scope.currentChat.currentText
             });
-            $scope.currentText = "";
+            $scope.currentChat.currentText = "";
         };
         $scope.login = function() {
             $scope.currentUser = prompt("User name:");
@@ -28,6 +23,14 @@ angular.module("chatApp", [])
         };
         $scope.logout = function() {
             $scope.userIsLogged = false;
+        };
+        $scope.changeChat = function(event) {
+            let child = event.path[0];
+            //Get index inside of parent
+            var i = 0;
+            while( (child = child.previousElementSibling) != null ) 
+                i++;
+            $scope.currentChat = $scope.chats[i];
         };
 }]).directive('myEnter', function () {
     return function (scope, element, attrs) {

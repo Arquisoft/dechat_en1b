@@ -15,7 +15,7 @@ angular.module("chatApp", ["chatServices"])
             if ($scope.currentUser) {
                 $scope.userIsLogged = true;
                 $scope.chats = chatService.loadChats($scope.currentUser);
-                $scope.currentChat = $scope.chats[0];
+                $scope.currentChat = Object.values($scope.chats)[0];
             }
         };
         $scope.logout = function() {
@@ -25,12 +25,8 @@ angular.module("chatApp", ["chatServices"])
             $scope.currentUser = null;
         };
         $scope.changeChat = function(event) {
-            let child = event.path[0];
-            //Get index inside of parent
-            var i = 0;
-            while( (child = child.previousElementSibling) != null ) 
-                i++;
-            $scope.currentChat = $scope.chats[i];
+            let chatID = event.target.getAttribute("data-contact");
+            $scope.currentChat = $scope.chats[chatID];
         };
 }]).directive('myEnter', function () {
     return function (scope, element, attrs) {

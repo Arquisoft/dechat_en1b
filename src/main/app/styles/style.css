@@ -145,18 +145,9 @@ a {
     border-radius: 5px;
 }
 
-.input>button {
-    height: 80%;
-}
-
 #text {
   width: 92%;
   height: 20px;
   border: 0;
-}
-
-#send {
-  width: 5%;
-  height: 20px;
 }
 

@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="styles/style.css">
         <link rel="stylesheet" href="styles/speechBubbles.css">
+        <link rel="stylesheet" href="styles/buttons.css">
         <script src="lib/angular/angular.js"></script>
         <script src="lib/angular-route/angular-route.js"></script>
         <script src="core/version/version.js"></script>
@@ -19,14 +20,14 @@
         <header>
             <h1>Chat Test V2 with AngularJS</h1>
             <div class="login">
-                <button id="loginBtn" ng-click="login()" ng-show="!userIsLogged" >Log in</button>
-                <button id="logoutBtn" ng-click="logout()" ng-show="userIsLogged">Log out</button>
+                <div id="loginBtn" ng-click="login()" ng-show="!userIsLogged" class="myButton" >Log in</div>
+                <div id="logoutBtn" ng-click="logout()" ng-show="userIsLogged" class="myButton">Log out</div>
             </div>
         </header>
         <main ng-class="{blured: !userIsLogged}">
             <aside class="contacts">
                 <!-- Contacts -->
-                <div class="contact" ng-repeat="chat in chats" ng-click="changeChat($event)">
+                <div class="contact" ng-repeat="(contactID, chat) in chats" ng-click="changeChat($event)" data-contact="{{contactID}}">
                     <img ng-src="img/{{chat.contact.pic}}">
                     <p>{{chat.contact.name}}</p>
                 </div>
@@ -43,7 +44,7 @@
                 </div>
                 <div class="input">
                     <input id="text" ng-model="currentChat.currentText" ng-disabled="!userIsLogged" my-enter="send()" type="text" placeholder="Type a message"/>
-                    <button id="send" ng-click="send()" ng-disabled="!userIsLogged">Send</button>
+                    <div id="send" ng-click="send()" ng-disabled="!userIsLogged" class="myButton">Send</div>
                 </div>
             </div>
         </main>

@@ -4,8 +4,8 @@ angular.module("chatServices", [])
 function ChatService() {
     //In the future this will call the SOLID library
     this.loadChats = function (profileID) {
-        return [
-                {
+        return {
+                "chat1" : {
                     currentText: "",
                     contact: {
                         name: "Paco",
@@ -17,7 +17,7 @@ function ChatService() {
                         {user: "Paco", text: "Bien"}
                     ]
                 },
-                {
+                "chat2" : {
                     currentText: "",
                     contact: {
                         name: "Julio",
@@ -28,6 +28,6 @@ function ChatService() {
                         {user: "Julio", text: "Hola perro"}
                     ]
                 }
-            ];
+            };
         };
 }

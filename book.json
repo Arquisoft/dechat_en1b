@@ -1,5 +1,5 @@
 {
-    "root": "./md_docs",
+    "root": "./_docs",
     "plugins": ["theme-api"],
     "pluginsConfig": {
         "theme-api": {

@@ -1,11 +1,11 @@
 # dechat_en1b
 
 [![Build status](https://travis-ci.org/Arquisoft/dechat_en1b.svg?branch=master)](https://travis-ci.org/Arquisoft/dechat_en1b)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d06f43b8b8574398b9ea01c24473e5a9)](https://www.codacy.com/app/Nacho888/dechat_en1b?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Arquisoft/dechat_en1b&amp;utm_campaign=Badge_Grade)
 [![Code cov](https://codecov.io/gh/Arquisoft/dechat_en1b/branch/master/graph/badge.svg)](https://codecov.io/gh/Arquisoft/dechat_en1b)
 [![Coverage](https://coveralls.io/repos/github/Arquisoft/dechat_en1b/badge.svg)](https://coveralls.io/github/Arquisoft/dechat_en1b)
-[![Codacy code quality](https://api.codacy.com/project/badge/Grade/fc7dc1da60ee4e9fb67ccff782625794)](https://www.codacy.com/app/jelabra/dechat_en1b?utm_source=github.com&utm_medium=referral&utm_content=Arquisoft/dechat_en1b&utm_campaign=Badge_Grade)
 
-## Introduction 
+## Introduction
 
 Repository for development of a decentralized chat using SOLID. Our aim is to give users total control of its personal data while keeping all the functionalities expected.
 
@@ -18,7 +18,7 @@ This project is developed by:
 *   Pablo Fernández Martínez
 *   Stefano Daineilli
 
-## Documentation 
+## Documentation
 
 The web version of the documentation is available [here](https://arquisoft.github.io/dechat_en1b/).
 

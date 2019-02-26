@@ -8,6 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "docs:prepare": "npm install gitbook-cli -g && gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve ./_docs ./docs --open",
     "docs:build": "npm run docs:prepare && gitbook build ./_docs ./docs",

@@ -22,9 +22,8 @@ install:
 script:
   - npm run setup:install
   - npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
-  - ng e2e
   - npm run docs:build
-  - npm install codecov -g
+  - npm install coveralls nyc --save-dev
   
 after_success:
-  - codecov
+  - npm run coverage

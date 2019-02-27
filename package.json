@@ -7,7 +7,7 @@
     "build": "ng build",
     "test": "nyc ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
+    "e2e": "nyc ng e2e",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "docs:prepare": "npm install gitbook-cli -g && gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve ./_docs ./docs --open",

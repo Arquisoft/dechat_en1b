@@ -1,14 +1,17 @@
-import { AppPage } from './app.po';
+import { LoginPage } from './login.po';
 
-describe('Basic app test', () => {
-  let page: AppPage;
+describe('workspace-project App', () => {
+  let page: LoginPage;
 
   beforeEach(() => {
-    page = new AppPage();
+    page = new LoginPage();
   });
 
   it('should display welcome message', () => {
     page.navigateTo();
     expect(page.getParagraphText()).toEqual('PROFILE DEMO APP');
   });
+
+  //TODO: other tests
+
 });

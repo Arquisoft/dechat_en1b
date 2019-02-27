@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { ChatMessage } from '../models/chat-message.model';
 import { RdfService } from './rdf.service';
@@ -15,25 +15,28 @@ export class ChatService {
   }
 
   getUser() {
-    return this.getUsers().subscribe(users => {
-      return users[0];
-    });
+    return of(new User("Miguel"));
   }
 
   getUsers() : Observable<User[]> {
     var users = new Array<User>();
-    return new Observable();
+    users.push(new User("Fulanito"));
+    users.push(new User("Menganito"));
+    users.push(new User("Adolfito"));
+    return of(users);
   }
 
   sendMessage(msg: string) {
     const timestamp = this.getTimeStamp();
     this.chatMessages = this.getMessages();
-    this.chatMessages.toPromise();
   }
 
   getMessages(): Observable<ChatMessage[]> {
     var messages = new Array<ChatMessage>();
-    return new Observable();
+    messages.push(new ChatMessage("Miguel", "Hola"));
+    messages.push(new ChatMessage("Adolfito", "Que tal?"));
+    messages.push(new ChatMessage("Miguel", "Bien"));
+    return of(messages);
   }
 
   getTimeStamp() {

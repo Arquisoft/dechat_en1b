@@ -16,11 +16,11 @@ export class MessageComponent implements OnInit {
   isOwnMessage: boolean;
   ownEmail: string;
 
-  constructor() {
-    /* authService.authUser().subscribe(user => {
-      this.userName = user.userName;
-      this.isOwnMessage = true;
-    }); */
+  constructor(private chatService : ChatService) {
+    chatService.getUser().subscribe(user => {
+      this.userName = user.username;
+      this.isOwnMessage = user.username === "Miguel";
+    }); 
   }
 
   ngOnInit(chatMessage = this.chatMessage) {

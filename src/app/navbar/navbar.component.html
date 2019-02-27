@@ -1,3 +1,26 @@
-<p>
-  navbar works!
-</p>
+<div class="topnav">
+    <div class="topnav">
+      <div class="logo">Solid DeChat</div>
+      <a class="menu-item" [routerLink]="['/chat']">
+        <div>
+          <i class="far fa-comment"></i>
+        </div>
+        Chat
+      </a>
+      <a class="menu-item" [routerLink]="['/settings']">
+        <div>
+          <i class="fas fa-sliders-h"></i>
+        </div>
+        Settigns
+      </a>
+      <a class="menu-item" [routerLink]="['/card']">
+        <div>
+          <i class="fas fa-user"></i>
+        </div>
+        Solid Profile
+      </a>
+      <div class="profile-menu" (click)="logout()">
+        <img [src]="profileImage" />
+      </div>
+    </div>
+</div>

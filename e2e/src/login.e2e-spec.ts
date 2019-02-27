@@ -1,6 +1,6 @@
 import { LoginPage } from './login.po';
 
-describe('workspace-project App', () => {
+describe('Login page test', () => {
   let page: LoginPage;
 
   beforeEach(() => {

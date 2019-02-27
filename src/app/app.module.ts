@@ -23,8 +23,7 @@ import { MessageComponent } from './message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UserItemComponent } from './user-item/user-item.component';
 import { UserListComponent } from './user-list/user-list.component';
-
-
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   {
@@ -50,6 +49,16 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'chat',
+    component: ChatroomComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'register',
     component: RegisterComponent
   }
@@ -69,7 +78,8 @@ const routes: Routes = [
     MessageComponent,
     NavbarComponent,
     UserItemComponent,
-    UserListComponent
+    UserListComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

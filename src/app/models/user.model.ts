@@ -6,5 +6,6 @@ export class User {
 
     uid?: string;
     username?: string;
-    status?: string;
+    status?: string = "online";
+    profilePicture?: string = "../assets/images/profile.png";
 }

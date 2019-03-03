@@ -1,14 +1,11 @@
 .userItem{
     height: auto;
     padding: 10px;
-    width: 90%;
-    margin-top: 10px;
-    border-radius: 1px;
     align-items:flex-start;
     background-color: #201835;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     color: #A098A5;
-    border-radius: 8px;
+    align-items: center;
+    display: flex;
     transition: ease-in 0.2s;
 }
 
@@ -18,16 +15,24 @@
     transition: ease-in 0.1s;
 }
 
+.profilePic {
+    border-radius: 100%;
+    border-width: 1em;
+    width: 2em;
+    height: 2em;
+    margin-right: 1em;
+}
+
 .online{
-    background-color: #0FA;
+    border-color: #0FA;
 }
 
 .busy{
-    background-color: #FB0;
+    border-color: #FB0;
 }
 
 .offline{
-    background-color: #888;
+    border-color: #888;
 }
 
 .status{

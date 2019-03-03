@@ -1,6 +1,10 @@
 
+.chatFormWrapper {
+    display: flex;
+    background-color: #7C4DFF;
+}
+
 .chatInput{
-    width: calc(100vw - 195px);
     border-radius: 5px;
     margin: 5px;
     padding: 5px;
@@ -9,6 +13,7 @@
     background-color: #eee;
     color: #000;
     transition: 0.1s ease-out;
+    flex-grow: 1;
 }
 
 .chatInput:focus{

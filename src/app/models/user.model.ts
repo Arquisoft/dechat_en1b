@@ -1,7 +1,8 @@
 export class User {
 
-    constructor(username) {
+    constructor(username, profilePicture) {
         this.username = username;
+        this.profilePicture = profilePicture;
     }
 
     uid?: string;

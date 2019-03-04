@@ -8,7 +8,7 @@ import { User } from '../models/user.model';
 @Injectable()
 export class ChatService {
 
-  chatMessages: Observable<ChatMessage[]>;
+  chatMessages: ChatMessage[] = new Array<ChatMessage>();;
 
   constructor(private rdf : RdfService) {
         
@@ -28,15 +28,12 @@ export class ChatService {
 
   sendMessage(msg: string) {
     const timestamp = this.getTimeStamp();
-    this.chatMessages = this.getMessages();
+    const newMsg = new ChatMessage("Miguel", msg);
+    this.chatMessages.push(newMsg);
   }
 
   getMessages(): Observable<ChatMessage[]> {
-    var messages = new Array<ChatMessage>();
-    messages.push(new ChatMessage("Miguel", "Hola"));
-    messages.push(new ChatMessage("Adolfito", "Que tal?"));
-    messages.push(new ChatMessage("Miguel", "Bien"));
-    return of(messages);
+    return of(this.chatMessages);
   }
 
   getTimeStamp() {
@@ -47,7 +44,6 @@ export class ChatService {
     const time = now.getUTCHours() + ':' +
                  now.getUTCMinutes() + ':' +
                  now.getUTCSeconds();
-
     return (date + ' ' + time);
   }
 }

@@ -33,6 +33,7 @@
     display: flex;
     overflow-x: hidden;
     overflow-y: auto;
+    flex-grow: 1;
 }
 
 .chatFormWrapper {

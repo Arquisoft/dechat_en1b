@@ -1,6 +1,11 @@
+:host {
+    flex-grow: 1;
+}
+
 .feed{
     display: flex;
     flex-direction: column;
+    margin-left: 1em;
 }
 
 .message{

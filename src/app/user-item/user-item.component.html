@@ -1,6 +1,5 @@
-<div class="userItem">
-  <span class="status" [ngClass]=(user.status)>
-  </span>
+<div class="userItem" (click)="changeChat()">
+  <img [src]="user.profilePicture" class="profilePic" [ngClass]=(user.status)>
   <span class="userName">
     {{user.username}}
   </span>

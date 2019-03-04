@@ -16,4 +16,8 @@ export class UserItemComponent implements OnInit {
   ngOnInit() {
   }
 
+  changeChat() {
+    console.log(this.user);
+  }
+
 }

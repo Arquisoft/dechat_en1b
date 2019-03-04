@@ -17,10 +17,10 @@ export class MessageComponent implements OnInit {
   ownEmail: string;
 
   constructor(private chatService : ChatService) {
-    chatService.getUser().subscribe(user => {
+     chatService.getUser().subscribe(user => {
       this.userName = user.username;
-      this.isOwnMessage = user.username === "Miguel";
-    }); 
+      this.isOwnMessage = user.username === this.userName;
+    });
   }
 
   ngOnInit(chatMessage = this.chatMessage) {

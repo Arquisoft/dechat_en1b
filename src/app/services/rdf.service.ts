@@ -7,6 +7,7 @@ declare let $rdf: any;
 // TODO: Remove any UI interaction from this service
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { fetcher } from 'src/assets/types/rdflib';
 
 const VCARD = $rdf.Namespace('http://www.w3.org/2006/vcard/ns#');
 const FOAF = $rdf.Namespace('http://xmlns.com/foaf/0.1/');
@@ -78,7 +79,7 @@ export class RdfService {
   getValueFromFoaf = (node: string, webId?: string) => {
     return this.getValueFromNamespace(node, FOAF, webId);
   };
- 
+
   transformDataForm = (form: NgForm, me: any, doc: any) => {
     const insertions = [];
     const deletions = [];

@@ -7,7 +7,7 @@ import { ChatService } from '../services/chat.service';
   styleUrls: ['./chat-form.component.css']
 })
 export class ChatFormComponent implements OnInit {
-  message: string;
+  message: string = '';
 
   constructor(private chat: ChatService) { }
 

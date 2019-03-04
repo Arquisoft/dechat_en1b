@@ -4,18 +4,21 @@ import { Observable, of } from 'rxjs';
 import { ChatMessage } from '../models/chat-message.model';
 import { RdfService } from './rdf.service';
 import { User } from '../models/user.model';
+import { fn } from '@angular/compiler/src/output/output_ast';
 
 @Injectable()
 export class ChatService {
 
-  chatMessages: ChatMessage[] = new Array<ChatMessage>();;
+  chatMessages: ChatMessage[] = new Array<ChatMessage>();
+  userName: string;
 
   constructor(private rdf : RdfService) {
-        
+    this.rdf.getProfile().then(response => this.userName = response.fn);
+    console.log(this.rdf.getValueFromFoaf("knows"));
   }
 
   getUser() {
-    return of(new User("Miguel"));
+    return of(new User(this.userName));
   }
 
   getUsers() : Observable<User[]> {
@@ -27,9 +30,11 @@ export class ChatService {
   }
 
   sendMessage(msg: string) {
-    const timestamp = this.getTimeStamp();
-    const newMsg = new ChatMessage("Miguel", msg);
-    this.chatMessages.push(newMsg);
+    if(msg !== "") {
+      const timestamp = this.getTimeStamp();
+      const newMsg = new ChatMessage(this.userName, msg);
+      this.chatMessages.push(newMsg);
+    }
   }
 
   getMessages(): Observable<ChatMessage[]> {

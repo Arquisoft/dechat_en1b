@@ -334,6 +334,32 @@ export class RdfService {
   // EXTRA FUNCTIONS //
   ////////////////////
 
+  async getUserName() : Promise<string> {
+    if (!this.session) {
+      await this.getSession();
+    }
+    let webId = this.session.webId;
+    try {
+      await this.fetcher.load(this.store.sym(webId).doc());
+      return this.store.any(this.store.sym(webId), VCARD("fn"));
+    } catch (error) {
+      console.log(`Error fetching data: ${error}`);
+    }
+  }
+
+  async getUserPhoto() : Promise<string> {
+    if (!this.session) {
+      await this.getSession();
+    }
+    let webId = this.session.webId;
+    try {
+      await this.fetcher.load(this.store.sym(webId).doc());
+      return this.store.any(this.store.sym(webId), VCARD("hasPhoto"));
+    } catch (error) {
+      console.log(`Error fetching data: ${error}`);
+    }
+  }
+
   async getFriends() : Promise<Array<NamedNode>> {
     if (!this.session) {
       await this.getSession();

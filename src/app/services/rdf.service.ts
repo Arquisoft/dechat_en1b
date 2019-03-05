@@ -334,42 +334,37 @@ export class RdfService {
   // EXTRA FUNCTIONS //
   ////////////////////
 
-  async getUserName() : Promise<string> {
+  async getFieldAsStringFromProfile(field : string) : Promise<string> {
+      return this.getFieldAsString(field, VCARD);
+  }
+
+  private async getFieldAsString(field : string, namespace : any) : Promise<string> {
     if (!this.session) {
       await this.getSession();
     }
     let webId = this.session.webId;
     try {
       await this.fetcher.load(this.store.sym(webId).doc());
-      return this.store.any(this.store.sym(webId), VCARD("fn"));
+      return this.store.any(this.store.sym(webId), namespace(field));
     } catch (error) {
       console.log(`Error fetching data: ${error}`);
     }
   }
 
-  async getUserPhoto() : Promise<string> {
-    if (!this.session) {
-      await this.getSession();
-    }
-    let webId = this.session.webId;
-    try {
-      await this.fetcher.load(this.store.sym(webId).doc());
-      return this.store.any(this.store.sym(webId), VCARD("hasPhoto"));
-    } catch (error) {
-      console.log(`Error fetching data: ${error}`);
-    }
-  }
-
-  async getFriends() : Promise<Array<NamedNode>> {
+  private async getDataAsArray(field : string, namespace : any) : Promise<Array<NamedNode>> {
     if (!this.session) {
       await this.getSession();
     }
     let webId = this.session.webId;
     try {
         await this.fetcher.load(this.store.sym(webId).doc());
-        return this.store.each(this.store.sym(webId), FOAF("knows")); // .forEach(friend => console.log(friend.value)); // Just to test that it works
+        return this.store.each(this.store.sym(webId), namespace(field)); // .forEach(friend => console.log(friend.value)); // Just to test that it works
     } catch (error) {
       console.log(`Error fetching data: ${error}`);
     }
+  }
+
+  async getFriends() : Promise<Array<NamedNode>> {
+    return this.getDataAsArray("knows", FOAF);
   }
 }

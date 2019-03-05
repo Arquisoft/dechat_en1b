@@ -29,10 +29,10 @@ export class ChatService {
 
   private async loadUserData() {
     await this.rdf.getSession();
-    await this.rdf.getUserName().then(response => {
+    await this.rdf.getFieldAsStringFromProfile("fn").then(response => {
       this.userName = response;
     });
-    await this.rdf.getUserPhoto().then(response => {
+    await this.rdf.getFieldAsStringFromProfile("hasPhoto").then(response => {
       this.userPhoto = response;
     });
   }

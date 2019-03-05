@@ -41,10 +41,7 @@ export class ChatService {
     await this.rdf.getSession();
     (await this.rdf.getFriends()).forEach(async element => {
       await this.rdf.fetcher.load(element.value);
-      let photo: string = this.rdf.getValueFromVcard("hasPhoto", element.value);
-      if(photo === "") {
-        photo = "../assets/images/profile.png"
-      }
+      let photo: string = this.rdf.getValueFromVcard("hasPhoto", element.value) || "../assets/images/profile.png";
       this.friends.push(new User(this.rdf.getValueFromVcard("fn", element.value), photo));
     });
   }
@@ -61,7 +58,11 @@ export class ChatService {
     return of(this.chatMessages);
   }
 
-  getTimeStamp() {
+  changeChat(user : User) {
+    console.log("Change to: " + user.username);
+  }
+
+  private getTimeStamp() {
     const now = new Date();
     const date = now.getUTCFullYear() + '/' +
                  (now.getUTCMonth() + 1) + '/' +

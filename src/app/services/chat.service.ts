@@ -11,27 +11,41 @@ export class ChatService {
 
   chatMessages: ChatMessage[] = new Array<ChatMessage>();
   userName: string;
+  userPhoto: string;
   friends: Array<User> = new Array<User>();
 
   constructor(private rdf : RdfService) {
-    this.rdf.getProfile().then(response => this.userName = response.fn);
+    this.loadUserData();
     this.loadFriends();
   }
 
-  // TODO: at this time, profile pic for the main user is just an empty path, maybe we can fix this
   getUser() {
-    return of(new User(this.userName, ""));
+    return of(new User(this.userName, this.userPhoto));
   }
 
   getUsers() : Observable<User[]> {
     return of(this.friends);
   }
 
+  private async loadUserData() {
+    await this.rdf.getSession();
+    await this.rdf.getFieldAsStringFromProfile("fn").then(response => {
+      this.userName = response;
+    });
+    await this.rdf.getFieldAsStringFromProfile("hasPhoto").then(response => {
+      this.userPhoto = response;
+    });
+  }
+
   private async loadFriends() {
     await this.rdf.getSession();
     (await this.rdf.getFriends()).forEach(async element => {
       await this.rdf.fetcher.load(element.value);
-      this.friends.push(new User(this.rdf.getValueFromVcard('fn', element.value), this.rdf.getValueFromVcard('hasPhoto', element.value)));
+      let photo: string = this.rdf.getValueFromVcard("hasPhoto", element.value);
+      if(photo === "") {
+        photo = "../assets/images/profile.png"
+      }
+      this.friends.push(new User(this.rdf.getValueFromVcard("fn", element.value), photo));
     });
   }
 

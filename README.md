@@ -17,6 +17,10 @@ This project is developed by:
 *   Pablo Fernández Martínez
 *   Stefano Daineilli
 
+## Wiki
+
+The wiki of the project can be found [here](https://github.com/Arquisoft/dechat_en1b/wiki).
+
 ## Documentation
 
 The web version of the documentation is available [here](https://arquisoft.github.io/dechat_en1b/).

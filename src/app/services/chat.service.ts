@@ -5,6 +5,7 @@ import { ChatMessage } from '../models/chat-message.model';
 import { RdfService } from './rdf.service';
 import { User } from '../models/user.model';
 import { fn } from '@angular/compiler/src/output/output_ast';
+import { async } from 'q';
 
 @Injectable()
 export class ChatService {
@@ -17,6 +18,7 @@ export class ChatService {
   constructor(private rdf : RdfService) {
     this.loadUserData();
     this.loadFriends();
+    this.loadMessages();
   }
 
   getUser() {
@@ -43,6 +45,14 @@ export class ChatService {
       await this.rdf.fetcher.load(element.value);
       let photo: string = this.rdf.getValueFromVcard("hasPhoto", element.value) || "../assets/images/profile.png";
       this.friends.push(new User(this.rdf.getValueFromVcard("fn", element.value), photo));
+    });
+  }
+
+  private async loadMessages() {
+    const messageFolder = "https://migarve55.solid.community/private/dechat/chat/";
+    (await this.rdf.getElementsFromContainer(messageFolder)).forEach(async element => {
+      const text = this.rdf.getValueFromSchema("text", element.toString());
+      this.chatMessages.push(new ChatMessage(this.userName, text));
     });
   }
 

@@ -12,6 +12,8 @@ import { store } from '@angular/core/src/render3/instructions';
 
 const VCARD = $rdf.Namespace('http://www.w3.org/2006/vcard/ns#');
 const FOAF = $rdf.Namespace('http://xmlns.com/foaf/0.1/');
+const LDP = $rdf.Namespace('http://www.w3.org/ns/ldp#>');
+const SCHEMA = $rdf.Namespace('http://schema.org/');
 
 /**
  * A service layer for RDF data manipulation using rdflib.js
@@ -79,6 +81,16 @@ export class RdfService {
    */
   getValueFromFoaf = (node: string, webId?: string) => {
     return this.getValueFromNamespace(node, FOAF, webId);
+  };
+
+  /**
+   * Gets a node that matches the specified pattern using the FOAF onthology
+   * @param {string} node FOAF predicate to apply to the $rdf.any()
+   * @param {string?} webId The webId URL (e.g. https://yourpod.solid.community/profile/card#me)
+   * @return {string} The value of the fetched node or an emtpty string
+   */
+  getValueFromSchema = (node: string, webId?: string) => {
+    return this.getValueFromNamespace(node, SCHEMA, webId);
   };
 
   transformDataForm = (form: NgForm, me: any, doc: any) => {
@@ -367,4 +379,15 @@ export class RdfService {
   async getFriends() : Promise<Array<NamedNode>> {
     return this.getDataAsArray("knows", FOAF);
   }
+
+  async getElementsFromContainer(container) : Promise<Array<NamedNode>> {
+    if (!this.session) {
+      await this.getSession();
+    }
+    let folder = $rdf.sym(container);
+    return this.fetcher.load(folder).then(() => {
+      return this.store.each(folder, LDP("contains"));
+    });
+  }
+
 }

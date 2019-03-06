@@ -12,8 +12,10 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 export class ChatService {
 
   chatMessages: ChatMessage[] = new Array<ChatMessage>();
-  userName: string;
-  userPhoto: string;
+
+  thisUser: User;  //current user that is using the chat
+  otherUser: User; //current user its talking to
+
   friends: Array<User> = new Array<User>();
 
   constructor(private rdf : RdfService) {
@@ -25,7 +27,7 @@ export class ChatService {
   }
 
   getUser() {
-    return of(new User(this.userName, this.userPhoto));
+    return of(this.thisUser);
   }
 
   getUsers() : Observable<User[]> {
@@ -34,11 +36,12 @@ export class ChatService {
 
   private async loadUserData() {
     await this.rdf.getSession();
+    this.thisUser = new User("", "");
     await this.rdf.getFieldAsStringFromProfile("fn").then(response => {
-      this.userName = response;
+      this.thisUser.username = response;
     });
     await this.rdf.getFieldAsStringFromProfile("hasPhoto").then(response => {
-      this.userPhoto = response;
+      this.thisUser.profilePicture = response;
     });
   }
 
@@ -53,29 +56,39 @@ export class ChatService {
 
   private async loadMessages() {
     await this.rdf.getSession();
-    const messageFolder = "https://migarve55.solid.community/private/dechat/chat/";
-    (await this.rdf.getElementsFromContainer(messageFolder)).forEach(async element => {
+    this.chatMessages.length = 0;
+    (await this.rdf.getElementsFromContainer(await this.getChatUrl(this.thisUser, this.otherUser))).forEach(async element => {
       const url = element.value + "#message";
       await this.rdf.fetcher.load(url);
       const sender = this.rdf.getValueFromSchema("sender", url);
       const text = this.rdf.getValueFromSchema("text", url);
-      const dateSend = this.rdf.getValueFromSchema("dateSend", url);
-      const date = Date.parse(dateSend);
+      const date = Date.parse(this.rdf.getValueFromSchema("dateSent", url));
       const name = await this.rdf.getFriendData(sender, "fn");
       this.addMessage(new ChatMessage(name, text, date));
     });
   }
 
+  /**
+   * Gets the URL for the chat resource location
+   * @param user1 
+   * @param user2 
+   */
+  private async getChatUrl(user1 : User, user2 : User) : Promise<String> {
+    let webId : string = this.rdf.session.webId;
+    let root = webId.replace("/profile/card#me", "/private/dechat/chat/");
+    return root;
+  }
+
   private addMessage(message : ChatMessage) {
     this.chatMessages.push(message);
-    this.chatMessages = this.chatMessages.sort((m1, m2) => m1.timeSent.getMilliseconds() - m2.timeSent.getMilliseconds());
+    //this.chatMessages.sort((m1, m2) => m1.timeSent.getMilliseconds() - m2.timeSent.getMilliseconds());
+    this.chatMessages.sort();
   }
 
   sendMessage(msg: string) {
     if(msg !== "") {
-      const timestamp = this.getTimeStamp();
-      const newMsg = new ChatMessage(this.userName, msg);
-      this.chatMessages.push(newMsg);
+      const newMsg = new ChatMessage(this.thisUser.username, msg);
+      this.addMessage(newMsg);
     }
   }
 
@@ -85,6 +98,8 @@ export class ChatService {
 
   changeChat(user : User) {
     console.log("Change to: " + user.username);
+    this.otherUser = user;
+    this.loadMessages();
   }
 
   private getTimeStamp() {

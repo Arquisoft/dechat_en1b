@@ -6,7 +6,6 @@ export class ChatMessage {
         this.timeSent = date || new Date();
     }
 
-    $key?: string;
     userName?: string;
     message?: string;
     timeSent?: Date; 

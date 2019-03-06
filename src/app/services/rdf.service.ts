@@ -12,7 +12,7 @@ import { store } from '@angular/core/src/render3/instructions';
 
 const VCARD = $rdf.Namespace('http://www.w3.org/2006/vcard/ns#');
 const FOAF = $rdf.Namespace('http://xmlns.com/foaf/0.1/');
-const LDP = $rdf.Namespace('http://www.w3.org/ns/ldp#>');
+const LDP = $rdf.Namespace('http://www.w3.org/ns/ldp#');
 const SCHEMA = $rdf.Namespace('http://schema.org/');
 
 /**
@@ -347,14 +347,10 @@ export class RdfService {
   ////////////////////
 
   async getFieldAsStringFromProfile(field : string) : Promise<string> {
-      return this.getFieldAsString(field, VCARD);
+      return this.getFieldAsString(this.session.webId, field, VCARD);
   }
 
-  private async getFieldAsString(field : string, namespace : any) : Promise<string> {
-    if (!this.session) {
-      await this.getSession();
-    }
-    let webId = this.session.webId;
+  private async getFieldAsString(webId, field : string, namespace : any) : Promise<string> {
     try {
       await this.fetcher.load(this.store.sym(webId).doc());
       return this.store.any(this.store.sym(webId), namespace(field));
@@ -363,21 +359,22 @@ export class RdfService {
     }
   }
 
-  private async getDataAsArray(store, field : string, namespace : any) : Promise<Array<NamedNode>> {
+  private async getDataAsArray(webId, field : string, namespace : any) : Promise<Array<NamedNode>> {
     try {
-        await this.fetcher.load(this.store.sym(store).doc());
-        return this.store.each(this.store.sym(store), namespace(field)); // .forEach(friend => console.log(friend.value)); // Just to test that it works
+        await this.fetcher.load(this.store.sym(webId).doc());
+        return this.store.each(this.store.sym(webId), namespace(field)); // .forEach(friend => console.log(friend.value)); // Just to test that it works
     } catch (error) {
       console.log(`Error fetching data: ${error}`);
     }
   }
 
   async getFriends() : Promise<Array<NamedNode>> {
-    if (!this.session) {
-      await this.getSession();
-    }
     let webId = this.session.webId;
     return this.getDataAsArray(webId, "knows", FOAF);
+  }
+
+  async getFriendData(webId, field) : Promise<String> {
+    return this.getFieldAsString(webId, field, VCARD);
   }
 
   async getElementsFromContainer(container) : Promise<Array<NamedNode>> {

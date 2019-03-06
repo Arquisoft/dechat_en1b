@@ -17,9 +17,11 @@ export class ChatService {
   friends: Array<User> = new Array<User>();
 
   constructor(private rdf : RdfService) {
-    this.loadUserData();
-    this.loadFriends();
-    this.loadMessages();
+    this.rdf.getSession();
+    this.loadUserData().then(r => {
+      this.loadFriends();
+      this.loadMessages();
+    });
   }
 
   getUser() {
@@ -50,17 +52,18 @@ export class ChatService {
   }
 
   private async loadMessages() {
+    await this.rdf.getSession();
     const messageFolder = "https://migarve55.solid.community/private/dechat/chat/";
     (await this.rdf.getElementsFromContainer(messageFolder)).forEach(async element => {
-      console.log(element);
-      const text = this.rdf.getValueFromSchema("text", element.value);
-      this.addMessage(new ChatMessage(this.userName, text));
+      const url = element.value + "#message";
+      await this.rdf.fetcher.load(url);
+      const sender = this.rdf.getValueFromSchema("sender", url);
+      const text = this.rdf.getValueFromSchema("text", url);
+      const dateSend = this.rdf.getValueFromSchema("dateSend", url);
+      const date = Date.parse(dateSend);
+      const name = await this.rdf.getFriendData(sender, "fn");
+      this.addMessage(new ChatMessage(name, text, date));
     });
-    //Dummy data
-    this.addMessage(new ChatMessage("Test", "Test 3", 3000));
-    this.addMessage(new ChatMessage("Test", "Test 1", 1000));
-    this.addMessage(new ChatMessage("Test", "Test 4", 4000));
-    this.addMessage(new ChatMessage("Test", "Test 2", 2000));
   }
 
   private addMessage(message : ChatMessage) {

@@ -12,6 +12,8 @@ import { store } from '@angular/core/src/render3/instructions';
 
 const VCARD = $rdf.Namespace('http://www.w3.org/2006/vcard/ns#');
 const FOAF = $rdf.Namespace('http://xmlns.com/foaf/0.1/');
+const LDP = $rdf.Namespace('http://www.w3.org/ns/ldp#>');
+const SCHEMA = $rdf.Namespace('http://schema.org/');
 
 /**
  * A service layer for RDF data manipulation using rdflib.js
@@ -79,6 +81,16 @@ export class RdfService {
    */
   getValueFromFoaf = (node: string, webId?: string) => {
     return this.getValueFromNamespace(node, FOAF, webId);
+  };
+
+  /**
+   * Gets a node that matches the specified pattern using the FOAF onthology
+   * @param {string} node FOAF predicate to apply to the $rdf.any()
+   * @param {string?} webId The webId URL (e.g. https://yourpod.solid.community/profile/card#me)
+   * @return {string} The value of the fetched node or an emtpty string
+   */
+  getValueFromSchema = (node: string, webId?: string) => {
+    return this.getValueFromNamespace(node, SCHEMA, webId);
   };
 
   transformDataForm = (form: NgForm, me: any, doc: any) => {
@@ -351,20 +363,25 @@ export class RdfService {
     }
   }
 
-  private async getDataAsArray(field : string, namespace : any) : Promise<Array<NamedNode>> {
-    if (!this.session) {
-      await this.getSession();
-    }
-    let webId = this.session.webId;
+  private async getDataAsArray(store, field : string, namespace : any) : Promise<Array<NamedNode>> {
     try {
-        await this.fetcher.load(this.store.sym(webId).doc());
-        return this.store.each(this.store.sym(webId), namespace(field)); // .forEach(friend => console.log(friend.value)); // Just to test that it works
+        await this.fetcher.load(this.store.sym(store).doc());
+        return this.store.each(this.store.sym(store), namespace(field)); // .forEach(friend => console.log(friend.value)); // Just to test that it works
     } catch (error) {
       console.log(`Error fetching data: ${error}`);
     }
   }
 
   async getFriends() : Promise<Array<NamedNode>> {
-    return this.getDataAsArray("knows", FOAF);
+    if (!this.session) {
+      await this.getSession();
+    }
+    let webId = this.session.webId;
+    return this.getDataAsArray(webId, "knows", FOAF);
   }
+
+  async getElementsFromContainer(container) : Promise<Array<NamedNode>> {
+    return this.getDataAsArray(container, "contains", LDP);
+  }
+
 }

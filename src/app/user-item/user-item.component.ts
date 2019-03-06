@@ -11,13 +11,13 @@ export class UserItemComponent implements OnInit {
 
   @Input() user: User;
 
-  constructor() { }
+  constructor(private chatService : ChatService) { }
 
   ngOnInit() {
   }
 
   changeChat() {
-    console.log(this.user);
+    this.chatService.changeChat(this.user);
   }
 
 }

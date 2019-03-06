@@ -18,7 +18,7 @@ export class ChatService {
   constructor(private rdf : RdfService) {
     this.loadUserData();
     this.loadFriends();
-    this.loadMessages();
+    //this.loadMessages();
   }
 
   getUser() {
@@ -51,6 +51,7 @@ export class ChatService {
   private async loadMessages() {
     const messageFolder = "https://migarve55.solid.community/private/dechat/chat/";
     (await this.rdf.getElementsFromContainer(messageFolder)).forEach(async element => {
+      console.log(element);
       const text = this.rdf.getValueFromSchema("text", element.toString());
       this.chatMessages.push(new ChatMessage(this.userName, text));
     });

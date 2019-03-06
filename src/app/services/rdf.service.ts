@@ -363,31 +363,25 @@ export class RdfService {
     }
   }
 
-  private async getDataAsArray(field : string, namespace : any) : Promise<Array<NamedNode>> {
-    if (!this.session) {
-      await this.getSession();
-    }
-    let webId = this.session.webId;
+  private async getDataAsArray(store, field : string, namespace : any) : Promise<Array<NamedNode>> {
     try {
-        await this.fetcher.load(this.store.sym(webId).doc());
-        return this.store.each(this.store.sym(webId), namespace(field)); // .forEach(friend => console.log(friend.value)); // Just to test that it works
+        await this.fetcher.load(this.store.sym(store).doc());
+        return this.store.each(this.store.sym(store), namespace(field)); // .forEach(friend => console.log(friend.value)); // Just to test that it works
     } catch (error) {
       console.log(`Error fetching data: ${error}`);
     }
   }
 
   async getFriends() : Promise<Array<NamedNode>> {
-    return this.getDataAsArray("knows", FOAF);
-  }
-
-  async getElementsFromContainer(container) : Promise<Array<NamedNode>> {
     if (!this.session) {
       await this.getSession();
     }
-    let folder = $rdf.sym(container);
-    return this.fetcher.load(folder).then(() => {
-      return this.store.each(folder, LDP("contains"));
-    });
+    let webId = this.session.webId;
+    return this.getDataAsArray(webId, "knows", FOAF);
+  }
+
+  async getElementsFromContainer(container) : Promise<Array<NamedNode>> {
+    return this.getDataAsArray(container, "contains", LDP);
   }
 
 }

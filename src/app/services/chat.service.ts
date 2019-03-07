@@ -27,6 +27,8 @@ export class ChatService {
     this.isActive = new BehaviorSubject<boolean>(false);
   }
 
+  //Observables
+
   getUser() {
     return of(this.thisUser);
   }
@@ -42,6 +44,12 @@ export class ChatService {
   isChatActive() : Observable<boolean> {
     return this.isActive.asObservable();
   }
+
+  getMessages(): Observable<ChatMessage[]> {
+    return of(this.chatMessages);
+  }
+
+  //Loading methods
 
   private async loadUserData() {
     await this.rdf.getSession();
@@ -92,6 +100,8 @@ export class ChatService {
     });
   }
 
+  //Message methods
+
   /**
    * Gets the URL for the chat resource location
    * @param user1 user who sends
@@ -113,13 +123,30 @@ export class ChatService {
   async sendMessage(msg: string) {
     if(msg !== "" && this.otherUser) {
       const newMsg = new ChatMessage(this.thisUser.username, msg);
-      await this.rdf.postMessage(newMsg, await this.getChatUrl(this.thisUser, this.otherUser));
+      await this.postMessage(newMsg);
       this.loadMessages();
     }
   }
 
-  getMessages(): Observable<ChatMessage[]> {
-    return of(this.chatMessages);
+  private async postMessage(msg : ChatMessage) {
+    let message = `
+    @prefix : <#>.
+    @prefix schem: <http://schema.org/>.
+    @prefix s: <${this.thisUser.webId.replace("me","")}>.
+
+    :message
+      a schem:Message;
+      schem:sender s:me;
+      schem:text "${msg.message}";
+      schem:dateSent "${msg.timeSent.toISOString()}".
+    `;
+    let path = await this.getChatUrl(this.thisUser, this.otherUser) + "message.ttl";
+    fileClient.createFile(path).then(fileCreated => {
+      console.log(fileCreated);
+      fileClient.updateFile(fileCreated, message).then( success => {
+        console.log("Message has been sended succesfully")
+      }, err => console.log(err) );
+    });
   }
 
   async changeChat(user : User) {
@@ -131,16 +158,7 @@ export class ChatService {
     });
   }
 
-  private getTimeStamp() {
-    const now = new Date();
-    const date = now.getUTCFullYear() + '/' +
-                 (now.getUTCMonth() + 1) + '/' +
-                 now.getUTCDate();
-    const time = now.getUTCHours() + ':' +
-                 now.getUTCMinutes() + ':' +
-                 now.getUTCSeconds();
-    return (date + ' ' + time);
-  }
+  //Solid methods
 
   addFriend(webId : string) {
     this.rdf.addFriend(webId);

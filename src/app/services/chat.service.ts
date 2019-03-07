@@ -9,6 +9,8 @@ const fileClient = require('solid-file-client');
 @Injectable()
 export class ChatService {
 
+  isActive : boolean = false; //If the chat is Active (The client is chating with a contact)
+
   chatMessages: ChatMessage[] = new Array<ChatMessage>();
 
   thisUser: User;  //current user that is using the chat
@@ -20,7 +22,6 @@ export class ChatService {
     this.rdf.getSession();
     this.loadUserData().then(r => {
       this.loadFriends();
-      this.loadMessages();
     });
     this.checkFolderStructure();
   }
@@ -35,6 +36,10 @@ export class ChatService {
 
   getUsers() : Observable<User[]> {
     return of(this.friends);
+  }
+
+  isChatActive() : Observable<boolean> {
+    return of(this.isActive);
   }
 
   private async loadUserData() {
@@ -58,7 +63,7 @@ export class ChatService {
   }
 
   private async loadMessages() {
-    if (!this.otherUser) 
+    if (!this.isActive) 
       return;
     await this.rdf.getSession();
     this.chatMessages.length = 0;
@@ -88,7 +93,7 @@ export class ChatService {
     let root = user1.webId.replace("/profile/card#me", "/private/dechat/chat_");
     let name = user2.webId.replace(".solid.community/profile/card#me", "").replace("https://", "");
     let finalUrl = root + name + "/";
-    console.log(finalUrl);
+    //console.log(finalUrl);
     return finalUrl;
   }
 
@@ -112,6 +117,7 @@ export class ChatService {
 
   changeChat(user : User) {
     console.log("Change to: " + user.username);
+    this.isActive = true;
     this.otherUser = user;
     this.loadMessages();
   }

@@ -1,8 +1,9 @@
 <div class="chatFormWrapper">
     <input 
+        [disabled]="!active"
         class="chatInput" 
         [(ngModel)]="message" 
         (keydown)="handleSubmit($event)"/>
 
-    <button class="chatButton" (click)=send()>Send</button>
+    <button [disabled]="!active" class="chatButton" (click)=send()>Send</button>
 </div>

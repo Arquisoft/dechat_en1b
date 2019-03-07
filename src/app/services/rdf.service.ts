@@ -390,12 +390,13 @@ export class RdfService {
     let toBeInserted = $rdf.st(me, FOAF("knows"), friend, me.doc());
     this.updateManager.update([], toBeInserted, (response, success, message) => {
       if(success) {
-        this.toastr.success('Friend added', 'Success!');
-      } else {
-        this.toastr.error('Message: '+ message, 'An error has occurred');
-      }
-   }
-    /**
+          this.toastr.success('Friend added', 'Success!');
+        } else {
+          this.toastr.error('Message: '+ message, 'An error has occurred');
+        }
+    });
+  }
+  /**
    * Posts a message to a container
    * @param message 
    * @param webId 

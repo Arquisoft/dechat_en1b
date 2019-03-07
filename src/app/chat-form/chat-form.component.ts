@@ -9,10 +9,14 @@ import { ChatService } from '../services/chat.service';
 export class ChatFormComponent implements OnInit {
 
   message: string = '';
+  active: boolean = true;
 
   constructor(private chat: ChatService) { }
 
   ngOnInit() {
+    this.chat.isChatActive().subscribe(active => {
+      this.active = active;
+    });
   }
 
   send() {

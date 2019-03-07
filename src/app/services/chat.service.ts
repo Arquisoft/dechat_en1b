@@ -23,7 +23,6 @@ export class ChatService {
     this.loadUserData().then(r => {
       this.loadFriends();
     });
-    this.checkFolderStructure();
     this.isActive = new BehaviorSubject<boolean>(false);
   }
 
@@ -90,11 +89,11 @@ export class ChatService {
    * @param user2 user who recieves
    */
   private async getChatUrl(user1 : User, user2 : User) : Promise<String> {
-    let webId : string = this.rdf.session.webId;
-    let root = user1.webId.replace("/profile/card#me", "/private/dechat/chat_");
-    let name = user2.webId.replace(".solid.community/profile/card#me", "").replace("https://", "");
+    await this.rdf.getSession();
+    let root = await user1.webId.replace("/profile/card#me", "/private/dechat/chat_");
+    let name = await user2.webId.replace(".solid.community/profile/card#me", "").replace("https://", "");
     let finalUrl = root + name + "/";
-    //console.log(finalUrl);
+    // console.log(finalUrl);
     return finalUrl;
   }
 
@@ -116,10 +115,11 @@ export class ChatService {
     return of(this.chatMessages);
   }
 
-  changeChat(user : User) {
+  async changeChat(user : User) {
     console.log("Change to: " + user.username);
     this.isActive.next(true);
     this.otherUser = user;
+    await this.checkFolderStructure();
     this.loadMessages();
   }
 
@@ -140,16 +140,15 @@ export class ChatService {
 
   async checkFolderStructure() {
     await this.rdf.getSession();
-    let webId : string = this.rdf.session.webId;
-    let root = webId.replace("/profile/card#me", "/private/dechat/chat/");
-    fileClient.readFolder(root).then(folder => {
+    let path: string = this.thisUser.webId.replace("/profile/card#me", "/private/dechat/chat_") + this.otherUser.webId.replace(".solid.community/profile/card#me", "").replace("https://", "");
+    fileClient.readFolder(path).then(success => {
       console.log("Folder structure correct");
-    }, err => this.createFolderStructure(root));
+    }, err => this.createFolderStructure(path.toString()));
   }
 
-  createFolderStructure(root : string) {
-    fileClient.createFolder(root).then(success => {
-      console.log(`Created folder ${root}.`);
-    }, err => console.log(err));
+  createFolderStructure(path : string) {
+    fileClient.createFolder(path).then(success => {
+      console.log(`Created folder ${path}.`);
+    }, err => console.log("killme" + err));
   }
 }

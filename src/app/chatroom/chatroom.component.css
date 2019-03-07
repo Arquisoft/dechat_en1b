@@ -1,6 +1,7 @@
 .mainContent{
     display: flex;
     height: calc(100vh - 50px);
+    background-color: #7C4DFF;
 }
 
 .chat {
@@ -8,6 +9,13 @@
     flex: 5;
     order: 2;
     flex-direction: column;
+    transition: 0.3s ;
+}
+
+.blurred {
+    color: rgba(0, 0, 0, 0.25);
+    filter: blur(4px) brightness(50%);
+    transition: 0.3s;
 }
 
 .userListWrapper {

@@ -4,6 +4,7 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { ChatMessage } from '../models/chat-message.model';
 import { RdfService } from './rdf.service';
 import { User } from '../models/user.model';
+import { ToastrService } from 'ngx-toastr';
 
 const fileClient = require('solid-file-client');
 @Injectable()
@@ -18,7 +19,7 @@ export class ChatService {
 
   friends: Array<User> = new Array<User>();
 
-  constructor(private rdf : RdfService) {
+  constructor(private rdf : RdfService, private toastr : ToastrService) {
     this.rdf.getSession();
     this.loadUserData().then(response => {
       this.loadFriends();
@@ -74,7 +75,13 @@ export class ChatService {
   }
 
   private async loadMessagesFromTo(user1 : User, user2 : User) {
-    (await this.rdf.getElementsFromContainer(await this.getChatUrl(user1, user2))).forEach(async element => {
+    let messages = (await this.rdf.getElementsFromContainer(await this.getChatUrl(user1, user2)))
+    if (!messages) {
+      this.toastr.error("Please make sure the other user has clicked on your chat", "Could not load messages");
+      this.isActive.next(false);
+      return;
+    }
+    messages.forEach(async element => {
       const url = element.value + "#message";
       await this.rdf.fetcher.load(url);
       const sender = this.rdf.getValueFromSchema("sender", url);

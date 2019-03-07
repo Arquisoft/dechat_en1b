@@ -13,8 +13,8 @@ export class MessageComponent implements OnInit {
   userName: string;
   messageContent: string;
   timeStamp: Date = new Date();
+
   isOwnMessage: boolean;
-  ownEmail: string;
 
   constructor(private chatService : ChatService) {
      chatService.getUser().subscribe(user => {

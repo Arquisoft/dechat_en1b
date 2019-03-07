@@ -1,8 +1,11 @@
 <div class="settingsFormWrapper">
-  <input class="addFriendInput"
-        [(ngModel)]="webId"
-        (keydown)="handleSubmit($event)"
-        placeholder="Enter your friend's WebID"/>
-
-    <button class="addFriendButton" (click)=send()>Send</button>
+  <div class="setting">
+      <h2>Add a friend</h2>
+      <div class="group">
+          <input class="textInput"
+          [(ngModel)]="webId" (keydown)="handleSubmit($event)"
+          placeholder="Enter your friend's WebID"/>
+          <button class="button" (click)=addFriend()>Add friend</button>
+      </div>
+  </div>
 </div>

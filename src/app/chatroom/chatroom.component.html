@@ -2,7 +2,7 @@
   <div class="userListWrapper">
     <app-user-list></app-user-list>
   </div>
-  <div class="chat"> 
+  <div class="chat" [ngClass]="{'blurred':!active}"> 
     <div #scroller class="feedWrapper">
       <app-feed></app-feed>
     </div>

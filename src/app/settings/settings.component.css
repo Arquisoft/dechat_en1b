@@ -24,9 +24,14 @@ h2 {
     box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.67);
 }
 
+.setting > p {
+    margin: 0.25em;
+    color: rgb(23, 29, 29);
+}
+
 .group {
     display: flex;
-    margin: 0.6rm;
+    margin: 0.6em;
 }
 
 .textInput {

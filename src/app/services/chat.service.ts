@@ -79,7 +79,7 @@ export class ChatService {
     this.chatMessages.length = 0;
     this.loadMessagesFromTo(this.otherUser, this.thisUser);
     this.loadMessagesFromTo(this.thisUser, this.otherUser);
-    this.chatMessages.sort((m1, m2) => m1.timeSent.getTime() - m2.timeSent.getTime());
+    //this.chatMessages.sort((m1, m2) => m1.timeSent.getTime() - m2.timeSent.getTime());
   }
 
   private async loadMessagesFromTo(user1 : User, user2 : User) {
@@ -87,6 +87,7 @@ export class ChatService {
     if (!messages) {
       this.toastr.error("Please make sure the other user has clicked on your chat", "Could not load messages");
       this.isActive.next(false);
+      this.chatMessages.length = 0;
       return;
     }
     messages.forEach(async element => {
@@ -118,11 +119,13 @@ export class ChatService {
 
   private addMessage(message : ChatMessage) {
     this.chatMessages.push(message);
+    this.chatMessages.sort((m1, m2) => m1.timeSent.getTime() - m2.timeSent.getTime());
   }
 
   async sendMessage(msg: string) {
     if(msg !== "" && this.otherUser) {
       const newMsg = new ChatMessage(this.thisUser.username, msg);
+      this.addMessage(newMsg);
       this.postMessage(newMsg).then(res => this.loadMessages());
     }
   }

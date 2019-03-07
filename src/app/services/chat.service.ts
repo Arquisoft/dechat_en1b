@@ -167,7 +167,7 @@ export class ChatService {
   }
 
   private grantAccessToFolder(path, user : User) {
-    let webId = user.webId.replace("#me", "");
+    let webId = user.webId.replace("me", "");
     let acl = 
    `@prefix : <#>.
     @prefix n0: <http://www.w3.org/ns/auth/acl#>.

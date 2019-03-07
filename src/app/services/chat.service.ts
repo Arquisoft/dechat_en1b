@@ -8,6 +8,7 @@ import { fn } from '@angular/compiler/src/output/output_ast';
 import { async } from 'q';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
+const fileClient = require('solid-file-client');
 @Injectable()
 export class ChatService {
 
@@ -24,6 +25,7 @@ export class ChatService {
       this.loadFriends();
       this.loadMessages();
     });
+    this.setUpFolders();
   }
 
   getUser() {
@@ -115,5 +117,20 @@ export class ChatService {
 
   addFriend(webId : string) {
     this.rdf.addFriend(webId);
+  }
+
+  async checkFolderStructure() {
+    await this.rdf.getSession();
+    let webId : string = this.rdf.session.webId;
+    let root = webId.replace("/profile/card#me", "/private/dechat/chat/");
+    fileClient.readFolder(root).then(folder => {
+      console.log("Folder structure correct");
+    }, err => this.createFolderStructure(root));
+  }
+
+  createFolderStructure(root : string) {
+    fileClient.createFolder(root).then(success => {
+      console.log(`Created folder ${root}.`);
+    }, err => console.log(err));
   }
 }

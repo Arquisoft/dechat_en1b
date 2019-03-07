@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-settings',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor() { }
+  webId : string;
+
+  constructor(private chat : ChatService) { }
 
   ngOnInit() {
+  }
+
+  send() {
+    this.chat.addFriend(this.webId);
+    this.webId = '';
+  }
+
+  handleSubmit(event) {
+    if (event.keyCode === 13) {
+      this.send();
+    }
   }
 
 }

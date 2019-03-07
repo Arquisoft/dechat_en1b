@@ -381,4 +381,17 @@ export class RdfService {
     return this.getDataAsArray(container, "contains", LDP);
   }
 
+  addFriend(webId : string) {
+    let me = $rdf.sym(this.session.webId);
+    let friend = $rdf.sym(webId);
+    let toBeInserted = $rdf.st(me, FOAF("knows"), friend, me.doc());
+    this.updateManager.update([], toBeInserted, (response, success, message) => {
+      if(success) {
+        this.toastr.success('Friend added', 'Success!');
+      } else {
+        this.toastr.error('Message: '+ message, 'An error has occurred');
+      }
+    });
+  }
+
 }

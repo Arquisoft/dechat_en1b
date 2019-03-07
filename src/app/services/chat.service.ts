@@ -70,8 +70,8 @@ export class ChatService {
 
   /**
    * Gets the URL for the chat resource location
-   * @param user1 
-   * @param user2 
+   * @param user1
+   * @param user2
    */
   private async getChatUrl(user1 : User, user2 : User) : Promise<String> {
     let webId : string = this.rdf.session.webId;
@@ -111,5 +111,9 @@ export class ChatService {
                  now.getUTCMinutes() + ':' +
                  now.getUTCSeconds();
     return (date + ' ' + time);
+  }
+
+  addFriend(webId : string) {
+    this.rdf.addFriend(webId);
   }
 }

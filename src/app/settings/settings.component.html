@@ -1,3 +1,8 @@
-<p>
-  settings works!
-</p>
+<div class="settingsFormWrapper">
+  <input class="addFriendInput"
+        [(ngModel)]="webId"
+        (keydown)="handleSubmit($event)"
+        placeholder="Enter your friend's WebID"/>
+
+    <button class="addFriendButton" (click)=send()>Send</button>
+</div>

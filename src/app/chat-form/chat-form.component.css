@@ -16,6 +16,10 @@
     flex-grow: 1;
 }
 
+.chatInput:disabled {
+    background-color: gray;
+}
+
 .chatInput:focus{
     background-color: #E4F1FE;
     color: #222;

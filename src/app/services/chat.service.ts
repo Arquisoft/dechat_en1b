@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 
 import { ChatMessage } from '../models/chat-message.model';
 import { RdfService } from './rdf.service';
@@ -9,7 +9,7 @@ const fileClient = require('solid-file-client');
 @Injectable()
 export class ChatService {
 
-  isActive : boolean = false; //If the chat is Active (The client is chating with a contact)
+  isActive : BehaviorSubject<boolean>; //If the chat is Active (The client is chating with a contact)
 
   chatMessages: ChatMessage[] = new Array<ChatMessage>();
 
@@ -24,6 +24,7 @@ export class ChatService {
       this.loadFriends();
     });
     this.checkFolderStructure();
+    this.isActive = new BehaviorSubject<boolean>(false);
   }
 
   getUser() {
@@ -39,7 +40,7 @@ export class ChatService {
   }
 
   isChatActive() : Observable<boolean> {
-    return of(this.isActive);
+    return this.isActive.asObservable();
   }
 
   private async loadUserData() {
@@ -117,7 +118,7 @@ export class ChatService {
 
   changeChat(user : User) {
     console.log("Change to: " + user.username);
-    this.isActive = true;
+    this.isActive.next(true);
     this.otherUser = user;
     this.loadMessages();
   }

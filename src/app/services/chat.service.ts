@@ -123,8 +123,7 @@ export class ChatService {
   async sendMessage(msg: string) {
     if(msg !== "" && this.otherUser) {
       const newMsg = new ChatMessage(this.thisUser.username, msg);
-      await this.postMessage(newMsg);
-      this.loadMessages();
+      this.postMessage(newMsg).then(res => this.loadMessages());
     }
   }
 
@@ -142,7 +141,6 @@ export class ChatService {
     `;
     let path = await this.getChatUrl(this.thisUser, this.otherUser) + "message.ttl";
     fileClient.createFile(path).then(fileCreated => {
-      console.log(fileCreated);
       fileClient.updateFile(fileCreated, message).then( success => {
         console.log("Message has been sended succesfully")
       }, err => console.log(err) );
@@ -150,7 +148,6 @@ export class ChatService {
   }
 
   async changeChat(user : User) {
-    console.log("Change to: " + user.username);
     this.isActive.next(true);
     this.otherUser = user;
     this.checkFolderStructure().then(response => {
@@ -170,15 +167,18 @@ export class ChatService {
       this.getChatUrl(this.thisUser, this.otherUser).then(response => {
       fileClient.readFolder(response).then(success => {
         console.log("Folder structure correct");
-        this.grantAccessToFolder(response, this.otherUser);
-      }, err => this.createFolderStructure(response.toString()));
+      }, err => {
+          this.createFolderStructure(response.toString()).then(res => {
+            this.grantAccessToFolder(response, this.otherUser);
+          });
+      });
     });
     } catch (error) {
       console.log(`Error creating folder structure/with permissions: ${error}`);
     }
   }
 
-  private createFolderStructure(path : string) {
+  private async createFolderStructure(path : string) {
     fileClient.createFolder(path).then(success => {
       console.log(`Created folder ${path}.`);
     }, err => console.log(err));
@@ -207,8 +207,8 @@ export class ChatService {
         n0:mode n0:Read.`;
     path += ".acl";
     fileClient.updateFile( path, acl ).then( success => {
-      console.log("Access grants added");
-    }, err => console.log(err) );
+      console.log("Folder permisions added");
+    }, err => console.log("Could not set folder permisions" + err) );
   }
 
 }

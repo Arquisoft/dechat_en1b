@@ -5,10 +5,12 @@ declare let $rdf: any;
 //import * as $rdf from 'rdflib'
 
 // TODO: Remove any UI interaction from this service
+import { ChatMessage } from '../models/chat-message.model';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { fetcher, NamedNode } from 'src/assets/types/rdflib';
 import { store } from '@angular/core/src/render3/instructions';
+import { $ } from 'protractor';
 
 const VCARD = $rdf.Namespace('http://www.w3.org/2006/vcard/ns#');
 const FOAF = $rdf.Namespace('http://xmlns.com/foaf/0.1/');
@@ -381,6 +383,7 @@ export class RdfService {
     return this.getDataAsArray(container, "contains", LDP);
   }
 
+
   addFriend(webId : string) {
     let me = $rdf.sym(this.session.webId);
     let friend = $rdf.sym(webId);
@@ -391,6 +394,17 @@ export class RdfService {
       } else {
         this.toastr.error('Message: '+ message, 'An error has occurred');
       }
+   }
+    /**
+   * Posts a message to a container
+   * @param message 
+   * @param webId 
+   */
+  async postMessage(message : ChatMessage, webId) {
+    const acl = $rdf.graph();
+    acl.add();
+    $rdf.serialize(null, acl, webId, (err, body) => {
+      // use something like updateManager to PUT the body
     });
   }
 

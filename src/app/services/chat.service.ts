@@ -4,9 +4,6 @@ import { Observable, of } from 'rxjs';
 import { ChatMessage } from '../models/chat-message.model';
 import { RdfService } from './rdf.service';
 import { User } from '../models/user.model';
-import { fn } from '@angular/compiler/src/output/output_ast';
-import { async } from 'q';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Injectable()
 export class ChatService {
@@ -30,13 +27,17 @@ export class ChatService {
     return of(this.thisUser);
   }
 
+  getOtherUser() {
+    return of(this.otherUser);
+  }
+
   getUsers() : Observable<User[]> {
     return of(this.friends);
   }
 
   private async loadUserData() {
     await this.rdf.getSession();
-    this.thisUser = new User("", "");
+    this.thisUser = new User(this.rdf.session.webId, "", "");
     await this.rdf.getFieldAsStringFromProfile("fn").then(response => {
       this.thisUser.username = response;
     });
@@ -50,14 +51,21 @@ export class ChatService {
     (await this.rdf.getFriends()).forEach(async element => {
       await this.rdf.fetcher.load(element.value);
       let photo: string = this.rdf.getValueFromVcard("hasPhoto", element.value) || "../assets/images/profile.png";
-      this.friends.push(new User(this.rdf.getValueFromVcard("fn", element.value), photo));
+      this.friends.push(new User(element.value ,this.rdf.getValueFromVcard("fn", element.value), photo));
     });
   }
 
   private async loadMessages() {
+    if (!this.otherUser) 
+      return;
     await this.rdf.getSession();
     this.chatMessages.length = 0;
-    (await this.rdf.getElementsFromContainer(await this.getChatUrl(this.thisUser, this.otherUser))).forEach(async element => {
+    await this.loadMessagesFromTo(this.otherUser, this.thisUser);
+    await this.loadMessagesFromTo(this.thisUser, this.otherUser);
+  }
+
+  private async loadMessagesFromTo(user1 : User, user2 : User) {
+    (await this.rdf.getElementsFromContainer(await this.getChatUrl(user1, user2))).forEach(async element => {
       const url = element.value + "#message";
       await this.rdf.fetcher.load(url);
       const sender = this.rdf.getValueFromSchema("sender", url);
@@ -70,13 +78,16 @@ export class ChatService {
 
   /**
    * Gets the URL for the chat resource location
-   * @param user1 
-   * @param user2 
+   * @param user1 user who sends
+   * @param user2 user who recieves
    */
   private async getChatUrl(user1 : User, user2 : User) : Promise<String> {
     let webId : string = this.rdf.session.webId;
-    let root = webId.replace("/profile/card#me", "/private/dechat/chat/");
-    return root;
+    let root = user1.webId.replace("/profile/card#me", "/private/dechat/chat_");
+    let name = user2.webId.replace(".solid.community/profile/card#me", "").replace("https://", "");
+    let finalUrl = root + name + "/";
+    console.log(finalUrl);
+    return finalUrl;
   }
 
   private addMessage(message : ChatMessage) {
@@ -85,10 +96,11 @@ export class ChatService {
     this.chatMessages.sort();
   }
 
-  sendMessage(msg: string) {
-    if(msg !== "") {
+  async sendMessage(msg: string) {
+    if(msg !== "" && this.otherUser) {
       const newMsg = new ChatMessage(this.thisUser.username, msg);
-      this.addMessage(newMsg);
+      await this.rdf.postMessage(newMsg, await this.getChatUrl(this.thisUser, this.otherUser));
+      this.loadMessages();
     }
   }
 

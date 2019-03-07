@@ -1,11 +1,12 @@
 export class User {
 
-    constructor(username, profilePicture) {
+    constructor(webId, username, profilePicture) {
+        this.webId = webId;
         this.username = username;
         this.profilePicture = profilePicture;
     }
 
-    uid?: string;
+    webId?: string;
     username?: string;
     status?: string = "online";
     profilePicture?: string = "../assets/images/profile.png";

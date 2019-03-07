@@ -20,7 +20,7 @@ export class ChatService {
 
   constructor(private rdf : RdfService) {
     this.rdf.getSession();
-    this.loadUserData().then(r => {
+    this.loadUserData().then(response => {
       this.loadFriends();
     });
     this.isActive = new BehaviorSubject<boolean>(false);
@@ -63,8 +63,9 @@ export class ChatService {
   }
 
   private async loadMessages() {
-    if (!this.isActive) 
+    if (!this.isActive) {
       return;
+    }
     await this.rdf.getSession();
     this.chatMessages.length = 0;
     await this.loadMessagesFromTo(this.otherUser, this.thisUser);
@@ -119,8 +120,9 @@ export class ChatService {
     console.log("Change to: " + user.username);
     this.isActive.next(true);
     this.otherUser = user;
-    await this.checkFolderStructure();
-    this.loadMessages();
+    this.checkFolderStructure().then(response => {
+      this.loadMessages();
+    });
   }
 
   private getTimeStamp() {
@@ -140,15 +142,22 @@ export class ChatService {
 
   async checkFolderStructure() {
     await this.rdf.getSession();
-    let path: string = this.thisUser.webId.replace("/profile/card#me", "/private/dechat/chat_") + this.otherUser.webId.replace(".solid.community/profile/card#me", "").replace("https://", "");
-    fileClient.readFolder(path).then(success => {
-      console.log("Folder structure correct");
-    }, err => this.createFolderStructure(path.toString()));
+    try {
+      this.getChatUrl(this.thisUser, this.otherUser).then(response => {
+      fileClient.readFolder(response).then(success => {
+        console.log("Folder structure correct");
+      }, err => this.createFolderStructure(response.toString()));
+    });
+    } catch (error) {
+      console.log(`Error creating folder structure/with permissions: ${error}`);
+    }
   }
 
-  createFolderStructure(path : string) {
+  // TODO: assign read permissions to the receiver
+  // using the .acl over the directory - ex_url: https://nachomontes.solid.community/private/dechat/chat_migarve55/.acl
+  private createFolderStructure(path : string) {
     fileClient.createFolder(path).then(success => {
       console.log(`Created folder ${path}.`);
-    }, err => console.log("killme" + err));
+    }, err => console.log(err));
   }
 }

@@ -383,7 +383,6 @@ export class RdfService {
     return this.getDataAsArray(container, "contains", LDP);
   }
 
-
   addFriend(webId : string) {
     let me = $rdf.sym(this.session.webId);
     let friend = $rdf.sym(webId);
@@ -398,8 +397,8 @@ export class RdfService {
   }
   /**
    * Posts a message to a container
-   * @param message 
-   * @param webId 
+   * @param message
+   * @param webId
    */
   async postMessage(message : ChatMessage, webId) {
     const acl = $rdf.graph();

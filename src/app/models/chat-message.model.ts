@@ -8,5 +8,5 @@ export class ChatMessage {
 
     userName?: string;
     message?: string;
-    timeSent?: Date; 
+    timeSent?: Date;
 }

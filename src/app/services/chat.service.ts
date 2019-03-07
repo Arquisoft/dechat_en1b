@@ -68,8 +68,9 @@ export class ChatService {
     }
     await this.rdf.getSession();
     this.chatMessages.length = 0;
-    await this.loadMessagesFromTo(this.otherUser, this.thisUser);
-    await this.loadMessagesFromTo(this.thisUser, this.otherUser);
+    this.loadMessagesFromTo(this.otherUser, this.thisUser);
+    this.loadMessagesFromTo(this.thisUser, this.otherUser);
+    this.chatMessages.sort((m1, m2) => m1.timeSent.getTime() - m2.timeSent.getTime());
   }
 
   private async loadMessagesFromTo(user1 : User, user2 : User) {
@@ -100,8 +101,6 @@ export class ChatService {
 
   private addMessage(message : ChatMessage) {
     this.chatMessages.push(message);
-    //this.chatMessages.sort((m1, m2) => m1.timeSent.getMilliseconds() - m2.timeSent.getMilliseconds());
-    this.chatMessages.sort();
   }
 
   async sendMessage(msg: string) {

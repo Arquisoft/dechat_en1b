@@ -25,7 +25,7 @@ export class ChatService {
       this.loadFriends();
       this.loadMessages();
     });
-    this.setUpFolders();
+    this.checkFolderStructure();
   }
 
   getUser() {

@@ -152,6 +152,7 @@ export class ChatService {
       this.getChatUrl(this.thisUser, this.otherUser).then(response => {
       fileClient.readFolder(response).then(success => {
         console.log("Folder structure correct");
+        this.grantAccessToFolder(response, this.otherUser);
       }, err => this.createFolderStructure(response.toString()));
     });
     } catch (error) {
@@ -159,11 +160,37 @@ export class ChatService {
     }
   }
 
-  // TODO: assign read permissions to the receiver
-  // using the .acl over the directory - ex_url: https://nachomontes.solid.community/private/dechat/chat_migarve55/.acl
   private createFolderStructure(path : string) {
     fileClient.createFolder(path).then(success => {
       console.log(`Created folder ${path}.`);
     }, err => console.log(err));
   }
+
+  private grantAccessToFolder(path, user : User) {
+    let webId = user.webId.replace("#me", "");
+    let acl = 
+   `@prefix : <#>.
+    @prefix n0: <http://www.w3.org/ns/auth/acl#>.
+    @prefix ch: <./>.
+    @prefix c: </profile/card#>.
+    @prefix c0: <${webId}>.
+    
+    :ControlReadWrite
+        a n0:Authorization;
+        n0:accessTo ch:;
+        n0:agent c:me;
+        n0:defaultForNew ch:;
+        n0:mode n0:Control, n0:Read, n0:Write.
+    :Read
+        a n0:Authorization;
+        n0:accessTo ch:;
+        n0:agent c0:me;
+        n0:defaultForNew ch:;
+        n0:mode n0:Read.`;
+    path += ".acl";
+    fileClient.updateFile( path, acl ).then( success => {
+      console.log("Access grants added");
+    }, err => console.log(err) );
+  }
+
 }

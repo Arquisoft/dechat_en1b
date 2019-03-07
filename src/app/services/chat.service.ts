@@ -5,6 +5,7 @@ import { ChatMessage } from '../models/chat-message.model';
 import { RdfService } from './rdf.service';
 import { User } from '../models/user.model';
 
+const fileClient = require('solid-file-client');
 @Injectable()
 export class ChatService {
 
@@ -21,6 +22,7 @@ export class ChatService {
       this.loadFriends();
       this.loadMessages();
     });
+    this.checkFolderStructure();
   }
 
   getUser() {
@@ -123,5 +125,24 @@ export class ChatService {
                  now.getUTCMinutes() + ':' +
                  now.getUTCSeconds();
     return (date + ' ' + time);
+  }
+
+  addFriend(webId : string) {
+    this.rdf.addFriend(webId);
+  }
+
+  async checkFolderStructure() {
+    await this.rdf.getSession();
+    let webId : string = this.rdf.session.webId;
+    let root = webId.replace("/profile/card#me", "/private/dechat/chat/");
+    fileClient.readFolder(root).then(folder => {
+      console.log("Folder structure correct");
+    }, err => this.createFolderStructure(root));
+  }
+
+  createFolderStructure(root : string) {
+    fileClient.createFolder(root).then(success => {
+      console.log(`Created folder ${root}.`);
+    }, err => console.log(err));
   }
 }

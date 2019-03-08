@@ -52,6 +52,13 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
+            },
+            "en": {
+              "aot": true,
+              "outputPath": "dist/solid-app-en",
+              "i18nFile": "src/i18n/messages.en.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en"
             }
           }
         },
@@ -63,6 +70,9 @@
           "configurations": {
             "production": {
               "browserTarget": "solid-app:build:production"
+            },
+            "en": {
+              "browserTarget": "solid-app:build:en"
             }
           }
         },
@@ -101,6 +111,21 @@
             "exclude": [
               "**/node_modules/**"
             ]
+          }
+        },
+        "xliffmerge": {
+          "builder": "@ngx-i18nsupport/tooling:xliffmerge",
+          "options": {
+            "xliffmergeOptions": {
+              "i18nFormat": "xlf",
+              "srcDir": "src/locale",
+              "genDir": "src/locale",
+              "defaultLanguage": "en",
+              "languages": [
+                "en",
+                "es"
+              ]
+            }
           }
         }
       }

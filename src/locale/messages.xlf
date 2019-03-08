@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="chat" datatype="html">
+        <source>Chat</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/navbar/navbar.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings" datatype="html">
+        <source>Settings</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/navbar/navbar.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="solidProfile" datatype="html">
+        <source>Solid Profile</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/navbar/navbar.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="signOut" datatype="html">
+        <source>Sign out</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/navbar/navbar.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="addFriendTitle" datatype="html">
+        <source>Add a friend</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="addFriendNote" datatype="html">
+        <source>
+        Note: although this adds this user to your friends list, this does not mean that we you can chat with him/her. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>
+        The other user should add you to their list and then click on your profile in order to set everything up.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="addFriend" datatype="html">
+        <source>Add friend</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="removeFriendTitle" datatype="html">
+        <source>Remove a friend</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="removeFriendNote" datatype="html">
+        <source>
+        Note: this will delete a friend from your POD and (IMPORTANT!) all the messages that you have sent.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="removeFriend" datatype="html">
+        <source>Remove friend</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

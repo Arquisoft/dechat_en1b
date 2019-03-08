@@ -79,7 +79,6 @@ export class ChatService {
     this.chatMessages.length = 0;
     this.loadMessagesFromTo(this.otherUser, this.thisUser);
     this.loadMessagesFromTo(this.thisUser, this.otherUser);
-    //this.chatMessages.sort((m1, m2) => m1.timeSent.getTime() - m2.timeSent.getTime());
   }
 
   private async loadMessagesFromTo(user1 : User, user2 : User) {
@@ -117,9 +116,13 @@ export class ChatService {
     return finalUrl;
   }
 
+  private sortByDateDesc(m1, m2) {
+    return m1.timeSent > m2.timeSent ? 1 : m1.timeSent < m2.timeSent ? -1 : 0;
+  }
+
   private addMessage(message : ChatMessage) {
     this.chatMessages.push(message);
-    this.chatMessages.sort((m1, m2) => m1.timeSent.getTime() - m2.timeSent.getTime());
+    this.chatMessages.sort(this.sortByDateDesc);
   }
 
   async sendMessage(msg: string) {
@@ -189,13 +192,13 @@ export class ChatService {
 
   private grantAccessToFolder(path, user : User) {
     let webId = user.webId.replace("me", "");
-    let acl = 
+    let acl =
    `@prefix : <#>.
     @prefix n0: <http://www.w3.org/ns/auth/acl#>.
     @prefix ch: <./>.
     @prefix c: </profile/card#>.
     @prefix c0: <${webId}>.
-    
+
     :ControlReadWrite
         a n0:Authorization;
         n0:accessTo ch:;
@@ -213,5 +216,4 @@ export class ChatService {
       console.log("Folder permisions added");
     }, err => console.log("Could not set folder permisions" + err) );
   }
-
 }

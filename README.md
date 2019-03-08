@@ -35,7 +35,11 @@ Run `npm run setup:install` to install the packages required by this project bef
 
 ### Generate or watch documentation
 
-Run `npm docs:build` for building the documentation or run `npm docs:watch` to see the documentation in a localhost.
+Run `npm run docs:build` for building the documentation or run `npm docs:watch` to see the documentation in a localhost.
+
+### Generate internationalization files
+
+Run `npm run extract-i18n` to generate the internationalization files (currently only in Spanish) if you change/want to add something into the transalation files.
 
 ### Development server
 

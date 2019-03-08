@@ -167,6 +167,14 @@ export class ChatService {
     this.rdf.addFriend(webId);
   }
 
+  removeFriend(webId : string) {
+    if(this.thisUser.webId !== webId) {
+      this.rdf.removeFriend(webId);
+      let path =  this.thisUser.webId + "/private/dechat/chat_" + webId.replace(".solid.community/profile/card#me", "").replace("https://", "");
+      this.removeFolderStructure(path);
+    }
+  }
+
   async checkFolderStructure() {
     await this.rdf.getSession();
     try {
@@ -187,6 +195,12 @@ export class ChatService {
   private async createFolderStructure(path : string) {
     fileClient.createFolder(path).then(success => {
       console.log(`Created folder ${path}.`);
+    }, err => console.log(err));
+  }
+
+  private async removeFolderStructure(path : string) {
+    fileClient.deleteFolder(path).then(success => {
+      console.log(`Removed folder ${path}.`);
     }, err => console.log(err));
   }
 

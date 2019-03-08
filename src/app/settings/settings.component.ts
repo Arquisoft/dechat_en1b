@@ -27,6 +27,17 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+  removeFriend() {
+    if (!this.webId) {
+      this.toastr.error("Please add a webId", "Wrong input");
+    } else if (this.webId.trim() === "") {
+      this.toastr.error("Please add a webId", "Wrong input");
+    } else {
+      this.chat.removeFriend(this.webId.trim());
+      this.webId = "";
+    }
+  }
+
   handleSubmit(event) {
     if (event.keyCode === 13) {
       this.addFriend();

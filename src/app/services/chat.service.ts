@@ -137,7 +137,7 @@ export class ChatService {
     let message = `
     @prefix : <#>.
     @prefix schem: <http://schema.org/>.
-    @prefix s: <${this.thisUser.webId.replace("me","")}>.
+    @prefix s: <${this.thisUser.webId.replace("#me","#")}>.
 
     :message
       a schem:Message;
@@ -177,28 +177,19 @@ export class ChatService {
 
   async checkFolderStructure() {
     await this.rdf.getSession();
-    await this.basicFolderStructure();
     try {
       this.getChatUrl(this.thisUser, this.otherUser).then(response => {
-      fileClient.readFolder(response).then(success => {
-        console.log("Folder structure correct");
-      }, err => {
-          this.createFolderStructure(response.toString()).then(res => {
-            this.grantAccessToFolder(response, this.otherUser);
-          });
+        fileClient.readFolder(response).then(success => {
+          console.log("Folder structure correct");
+        }, err => {
+            this.createFolderStructure(response.toString()).then(res => {
+              console.log(response);
+              this.grantAccessToFolder(response, this.otherUser);
+            });
+        });
       });
-    });
     } catch (error) {
       console.log(`Error creating folder structure/with permissions: ${error}`);
-    }
-  }
-
-  private basicFolderStructure() {
-    let path = this.thisUser.webId.replace("/profile/card#me", "/private/dechat/");
-    fileClient.readFolder(path).then(response => {
-      console.log("Basic folder structure correct");
-    }), err => {
-      this.createFolderStructure(path);
     }
   }
 
@@ -216,7 +207,8 @@ export class ChatService {
   }
 
   private grantAccessToFolder(path, user : User) {
-    let webId = user.webId.replace("me", "");
+    let webId = user.webId.replace("#me", "#");
+    console.log(webId);
     let acl =
    `@prefix : <#>.
     @prefix n0: <http://www.w3.org/ns/auth/acl#>.

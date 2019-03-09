@@ -178,13 +178,14 @@ export class ChatService {
   async checkFolderStructure() {
     await this.rdf.getSession();
     try {
-      this.getChatUrl(this.thisUser, this.otherUser).then(response => {
-        fileClient.readFolder(response).then(success => {
+      this.getChatUrl(this.thisUser, this.otherUser).then(charUrl => {
+        fileClient.readFolder(charUrl).then(success => {
           console.log("Folder structure correct");
         }, err => {
-            this.createFolderStructure(response.toString()).then(res => {
-              console.log(response);
-              this.grantAccessToFolder(response, this.otherUser);
+            console.log("Attemting to create: " + charUrl);
+            this.createFolderStructure(charUrl).then(res => {
+              console.log("Creating ACL file...");
+              this.grantAccessToFolder(charUrl, this.otherUser);
             });
         });
       });
@@ -193,10 +194,10 @@ export class ChatService {
     }
   }
 
-  private async createFolderStructure(path : string) {
-    fileClient.createFolder(path).then(success => {
+  private async createFolderStructure(path) {
+    await fileClient.createFolder(path).then(success => {
       console.log(`Created folder ${path}.`);
-    }, err => console.log(err));
+    }, err => console.log("Could not create folder structure: " + err));
   }
 
   private async removeFolderStructure(path : string) {
@@ -208,7 +209,6 @@ export class ChatService {
 
   private grantAccessToFolder(path, user : User) {
     let webId = user.webId.replace("#me", "#");
-    console.log(webId);
     let acl =
    `@prefix : <#>.
     @prefix n0: <http://www.w3.org/ns/auth/acl#>.

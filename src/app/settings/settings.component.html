@@ -7,7 +7,7 @@
       </p>
       <div class="group">
           <input class="textInput"
-          [(ngModel)]="webId" (keydown)="handleSubmit($event)"
+          [(ngModel)]="webIdaddFriend" (keydown)="handleSubmit($event)"
           placeholder="Enter your friend's WebID"/>
           <button i18n="@@addFriend" class="button" (click)=addFriend()>Add friend</button>
       </div>
@@ -18,7 +18,7 @@
       </p>
       <div class="group">
           <input class="textInput"
-          [(ngModel)]="webId" (keydown)="handleSubmit($event)"
+          [(ngModel)]="webIdRemoveFriend" (keydown)="handleSubmit($event)"
           placeholder="Enter your friend's WebID"/>
           <button i18n="@@removeFriend" class="button" (click)=removeFriend()>Remove friend</button>
       </div>

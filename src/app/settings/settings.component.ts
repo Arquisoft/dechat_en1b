@@ -9,7 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SettingsComponent implements OnInit {
 
-  webId : string;
+  webIdAddFriend : string;
+  webIdRemoveFriend : string;
 
   constructor(private chat : ChatService, private toastr : ToastrService) { }
 
@@ -17,24 +18,24 @@ export class SettingsComponent implements OnInit {
   }
 
   addFriend() {
-    if (!this.webId) {
+    if (!this.webIdAddFriend) {
       this.toastr.error("Please add a webId", "Wrong input");
-    } else if (this.webId.trim() === "") {
+    } else if (this.webIdAddFriend.trim() === "") {
       this.toastr.error("Please add a webId", "Wrong input");
     } else {
-      this.chat.addFriend(this.webId.trim());
-      this.webId = "";
+      this.chat.addFriend(this.webIdAddFriend.trim());
+      this.webIdAddFriend = "";
     }
   }
 
   removeFriend() {
-    if (!this.webId) {
+    if (!this.webIdRemoveFriend) {
       this.toastr.error("Please add a webId", "Wrong input");
-    } else if (this.webId.trim() === "") {
+    } else if (this.webIdRemoveFriend.trim() === "") {
       this.toastr.error("Please add a webId", "Wrong input");
     } else {
-      this.chat.removeFriend(this.webId.trim());
-      this.webId = "";
+      this.chat.removeFriend(this.webIdRemoveFriend.trim());
+      this.webIdRemoveFriend = "";
     }
   }
 

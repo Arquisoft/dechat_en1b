@@ -177,6 +177,7 @@ export class ChatService {
 
   async checkFolderStructure() {
     await this.rdf.getSession();
+    await this.basicFolderStructure();
     try {
       this.getChatUrl(this.thisUser, this.otherUser).then(response => {
       fileClient.readFolder(response).then(success => {
@@ -192,6 +193,15 @@ export class ChatService {
     }
   }
 
+  private basicFolderStructure() {
+    let path = this.thisUser.webId.replace("/profile/card#me", "/private/dechat/");
+    fileClient.readFolder(path).then(response => {
+      console.log("Basic folder structure correct");
+    }), err => {
+      this.createFolderStructure(path);
+    }
+  }
+
   private async createFolderStructure(path : string) {
     fileClient.createFolder(path).then(success => {
       console.log(`Created folder ${path}.`);
@@ -199,9 +209,10 @@ export class ChatService {
   }
 
   private async removeFolderStructure(path : string) {
-    fileClient.deleteFolder(path).then(success => {
-      console.log(`Removed folder ${path}.`);
-    }, err => console.log(err));
+    console.log(path);
+    // fileClient.deleteFolder(path).then(success => {
+    //   console.log(`Removed folder ${path}.`);
+    // }, err => console.log(err));
   }
 
   private grantAccessToFolder(path, user : User) {

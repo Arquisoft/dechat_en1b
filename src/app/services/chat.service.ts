@@ -6,7 +6,7 @@ import { RdfService } from './rdf.service';
 import { User } from '../models/user.model';
 import { ToastrService } from 'ngx-toastr';
 
-const fileClient = require('solid-file-client');
+import * as fileClient from 'solid-file-client'
 @Injectable()
 export class ChatService {
 
@@ -15,6 +15,8 @@ export class ChatService {
   chatMessages: ChatMessage[] = new Array<ChatMessage>();
 
   thisUser: User;  //current user that is using the chat
+  currentUserWebId: string // current user's webID username
+
   otherUser: User; //current user its talking to
 
   friends: Array<User> = new Array<User>();
@@ -53,13 +55,15 @@ export class ChatService {
 
   private async loadUserData() {
     await this.rdf.getSession();
-    this.thisUser = new User(this.rdf.session.webId, "", "");
+    let webId = this.rdf.session.webId;
+    this.thisUser = new User(webId, "", "");
     await this.rdf.getFieldAsStringFromProfile("fn").then(response => {
       this.thisUser.username = response;
     });
     await this.rdf.getFieldAsStringFromProfile("hasPhoto").then(response => {
       this.thisUser.profilePicture = response;
     });
+    this.currentUserWebId = webId.split("/")[2].split(".")[0];
   }
 
   private async loadFriends() {
@@ -110,9 +114,9 @@ export class ChatService {
   private async getChatUrl(user1 : User, user2 : User) : Promise<String> {
     await this.rdf.getSession();
     let root = await user1.webId.replace("/profile/card#me", "/private/dechat/chat_");
-    let name = await user2.webId.replace(".solid.community/profile/card#me", "").replace("https://", "");
+    let name = await user2.webId.split("/")[2].split(".")[0];
     let finalUrl = root + name + "/";
-    // console.log(finalUrl);
+    console.log(finalUrl);
     return finalUrl;
   }
 
@@ -168,10 +172,13 @@ export class ChatService {
   }
 
   removeFriend(webId : string) {
+    let name = webId.split("/")[2].split(".")[0];
+    console.log(name);
     if(this.thisUser.webId !== webId) {
       this.rdf.removeFriend(webId);
-      let path =  this.thisUser.webId + "/private/dechat/chat_" + webId.replace(".solid.community/profile/card#me", "").replace("https://", "");
-      this.removeFolderStructure(path);
+      this.getChatUrl(this.thisUser, this.otherUser).then(response => {
+        this.removeFolderStructure(response.toString());
+      });
     }
   }
 
@@ -229,7 +236,7 @@ export class ChatService {
         n0:defaultForNew ch:;
         n0:mode n0:Read.`;
     path += ".acl";
-    fileClient.updateFile( path, acl ).then( success => {
+    fileClient.updateFile(path, acl).then( success => {
       console.log("Folder permisions added");
     }, err => console.log("Could not set folder permisions" + err) );
   }

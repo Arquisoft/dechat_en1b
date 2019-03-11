@@ -9,7 +9,7 @@ import { ChatMessage } from '../models/chat-message.model';
 })
 export class MessageComponent implements OnInit {
 
-  @Input() chatMessage: ChatMessage;
+  @Input() chatMessage: ChatMessage = new ChatMessage("Test","test");
   userName: string;
   messageContent: string;
   timeStamp: Date = new Date();
@@ -17,7 +17,7 @@ export class MessageComponent implements OnInit {
   isOwnMessage: boolean;
 
   constructor(private chatService : ChatService) {
-     chatService.getUser().subscribe(user => {
+    this.chatService.getUser().subscribe(user => {
       this.userName = user.username;
       this.isOwnMessage = user.username === this.userName;
     });

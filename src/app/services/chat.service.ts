@@ -6,7 +6,8 @@ import { RdfService } from './rdf.service';
 import { User } from '../models/user.model';
 import { ToastrService } from 'ngx-toastr';
 
-const fileClient = require('solid-file-client');
+import * as fileClient from 'solid-file-client';
+//const fileClient = require('solid-file-client');
 @Injectable()
 export class ChatService {
 

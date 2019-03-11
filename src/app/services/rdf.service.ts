@@ -394,15 +394,15 @@ export class RdfService {
     });
   }
 
-  removeFriend(webId : string) {
-    let me = $rdf.sym(this.session.webId);
-    let friend = $rdf.sym(webId);
-    let toBeInserted = $rdf.st(me, FOAF("knows"), friend, me.doc());
-    this.updateManager.update(toBeInserted, [], (response, success, message) => {
-      if(success) {
+  removeFriend(webId: string) {
+    const me = $rdf.sym(this.session.webId);
+    const friend = $rdf.sym(webId);
+    const toBeInserted = $rdf.st(me, FOAF('knows'), friend, me.doc());
+    this.updateManager.update(toBeInserted, [], (response: any, success: any, message: string) => {
+      if (success) {
           this.toastr.success('Friend removed', 'Success!');
         } else {
-          this.toastr.error('Message: '+ message, 'An error has occurred');
+          this.toastr.error('Message: ' + message, 'An error has occurred');
         }
     });
   }
@@ -413,10 +413,10 @@ export class RdfService {
    * @param message
    * @param webId
    */
-  async postMessage(message : ChatMessage, webId) {
+  async postMessage(message: ChatMessage, webId: any) {
     const acl = $rdf.graph();
     acl.add();
-    $rdf.serialize(null, acl, webId, (err, body) => {
+    $rdf.serialize(null, acl, webId, (err: any, body: any) => {
       // use something like updateManager to PUT the body
     });
   }

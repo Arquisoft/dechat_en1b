@@ -10,8 +10,6 @@ import { ToastrService } from 'ngx-toastr';
 import * as fileClient from 'solid-file-client';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
-const reloadInterval = 2000;
-
 @Injectable()
 export class ChatService {
 
@@ -32,12 +30,6 @@ export class ChatService {
       this.loadFriends();
     });
     this.isActive = new BehaviorSubject<boolean>(false);
-  }
-
-  loadLoop() {
-    timer(0, reloadInterval).pipe(
-      mergeMap(_ => this.loadMessages())
-    ).subscribe();
   }
 
   // Observables
@@ -82,7 +74,7 @@ export class ChatService {
     (await this.rdf.getFriends()).forEach(async element => {
       await this.rdf.fetcher.load(element.value);
       const photo: string = this.rdf.getValueFromVcard('hasPhoto', element.value) || '../assets/images/profile.png';
-      this.friends.push(new User(element.value ,this.rdf.getValueFromVcard('fn', element.value), photo));
+      this.friends.push(new User(element.value, this.rdf.getValueFromVcard('fn', element.value), photo));
     });
   }
 
@@ -126,8 +118,8 @@ export class ChatService {
    */
   private async getChatUrl(user1: User, user2: User): Promise<String> {
     await this.rdf.getSession();
-    const root = await user1.webId.replace('/profile/card#me', '/private/dechat/chat_');
-    const name = await user2.webId.split('/')[2].split('.')[0];
+    const root = user1.webId.replace('/profile/card#me', '/private/dechat/chat_');
+    const name = user2.webId.split('/')[2].split('.')[0];
     const finalUrl = root + name + '/';
     // console.log(finalUrl);
     return finalUrl;
@@ -163,7 +155,7 @@ export class ChatService {
       schem:dateSent '${msg.timeSent.toISOString()}'.
     `;
     const path = await this.getChatUrl(this.thisUser, this.otherUser) + 'message.ttl';
-    fileClient.createFile(path).then(fileCreated => {
+    fileClient.createFile(path).then((fileCreated: any) => {
       fileClient.updateFile(fileCreated, message).then( success => {
         console.log('Message has been sended succesfully');
       }, (err: any) => console.log(err) );
@@ -176,7 +168,6 @@ export class ChatService {
     this.checkFolderStructure().then(response => {
       this.loadMessages();
     });
-    this.loadLoop();
   }
 
   // Solid methods
@@ -187,13 +178,18 @@ export class ChatService {
 
   removeFriend(webId: string) {
     const name = webId.split('/')[2].split('.')[0];
-    console.log(name);
-    if(this.thisUser.webId !== webId) {
+    if (this.thisUser.webId !== webId) {
       this.rdf.removeFriend(webId);
-      this.getChatUrl(this.thisUser, this.otherUser).then(response => {
+      this.getChatUrl(this.thisUser, new User(webId, '', '')).then(response => {
         this.removeFolderStructure(response.toString());
       });
     }
+  }
+
+  private async removeFolderStructure(path: string) {
+    fileClient.deleteFolder(path).then((success: any) => {
+      console.log(`Removed folder ${path}.`);
+    }, (err: any) => console.log(err));
   }
 
   async checkFolderStructure() {
@@ -219,13 +215,6 @@ export class ChatService {
     await fileClient.createFolder(path).then((success: any) => {
       console.log(`Created folder ${path}.`);
     }, (err: string) => console.log('Could not create folder structure: ' + err));
-  }
-
-  private async removeFolderStructure(path: string) {
-    console.log(path);
-    // fileClient.deleteFolder(path).then(success => {
-    //   console.log(`Removed folder ${path}.`);
-    // }, err => console.log(err));
   }
 
   private grantAccessToFolder(path: string | String, user: User) {

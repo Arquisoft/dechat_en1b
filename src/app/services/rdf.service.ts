@@ -10,6 +10,7 @@ import { ChatMessage } from '../models/chat-message.model';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { fetcher, NamedNode } from 'src/assets/types/rdflib';
+import { of } from 'rxjs';
 
 const VCARD = $rdf.Namespace('http://www.w3.org/2006/vcard/ns#');
 const FOAF = $rdf.Namespace('http://xmlns.com/foaf/0.1/');

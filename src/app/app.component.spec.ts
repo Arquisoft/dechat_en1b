@@ -1,13 +1,17 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ToastrModule } from 'ngx-toastr';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent, NavbarComponent, RouterOutlet
+        AppComponent, NavbarComponent
+      ],
+      imports: [
+        RouterTestingModule , ToastrModule.forRoot()
       ]
     }).compileComponents();
   }));

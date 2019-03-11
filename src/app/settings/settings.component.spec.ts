@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SettingsComponent } from './settings.component';
+import { FormsModule } from '@angular/forms';
+import { ChatService } from '../services/chat.service';
+import { ToastrService, ToastrModule } from 'ngx-toastr';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -8,7 +11,9 @@ describe('SettingsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsComponent ]
+      declarations: [ SettingsComponent ],
+      imports: [ FormsModule , ToastrModule.forRoot() ],
+      providers: [ ChatService , ToastrService ]
     })
     .compileComponents();
   }));

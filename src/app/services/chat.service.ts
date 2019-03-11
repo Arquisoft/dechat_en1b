@@ -7,25 +7,26 @@ import { RdfService } from './rdf.service';
 import { User } from '../models/user.model';
 import { ToastrService } from 'ngx-toastr';
 
-import * as fileClient from 'solid-file-client'
+import * as fileClient from 'solid-file-client';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 const reloadInterval = 2000;
 
 @Injectable()
 export class ChatService {
 
-  isActive : BehaviorSubject<boolean>; //If the chat is Active (The client is chating with a contact)
+  isActive: BehaviorSubject<boolean>; // If the chat is Active (The client is chating with a contact)
 
   chatMessages: ChatMessage[] = new Array<ChatMessage>();
 
-  thisUser: User;  //current user that is using the chat
-  currentUserWebId: string // current user's webID username
+  thisUser: User;  // Current user that is using the chat
+  currentUserWebId: string; // Current user's webID username
 
-  otherUser: User; //current user its talking to
+  otherUser: User; // Current user it's talking to
 
   friends: Array<User> = new Array<User>();
 
-  constructor(private rdf : RdfService, private toastr : ToastrService) {
+  constructor(private rdf: RdfService, private toastr: ToastrService) {
     this.rdf.getSession();
     this.loadUserData().then(response => {
       this.loadFriends();
@@ -39,7 +40,7 @@ export class ChatService {
     ).subscribe();
   }
 
-  //Observables
+  // Observables
 
   getUser() {
     return of(this.thisUser);
@@ -49,11 +50,11 @@ export class ChatService {
     return of(this.otherUser);
   }
 
-  getUsers() : Observable<User[]> {
+  getUsers(): Observable<User[]> {
     return of(this.friends);
   }
 
-  isChatActive() : Observable<boolean> {
+  isChatActive(): Observable<boolean> {
     return this.isActive.asObservable();
   }
 
@@ -61,32 +62,32 @@ export class ChatService {
     return of(this.chatMessages);
   }
 
-  //Loading methods
+  // Loading methods
 
   private async loadUserData() {
     await this.rdf.getSession();
-    let webId = this.rdf.session.webId;
-    this.thisUser = new User(webId, "", "");
-    await this.rdf.getFieldAsStringFromProfile("fn").then(response => {
+    const webId = this.rdf.session.webId;
+    this.thisUser = new User(webId, '', '');
+    await this.rdf.getFieldAsStringFromProfile('fn').then(response => {
       this.thisUser.username = response;
     });
-    await this.rdf.getFieldAsStringFromProfile("hasPhoto").then(response => {
+    await this.rdf.getFieldAsStringFromProfile('hasPhoto').then(response => {
       this.thisUser.profilePicture = response;
     });
-    this.currentUserWebId = webId.split("/")[2].split(".")[0];
+    this.currentUserWebId = webId.split('/')[2].split('.')[0];
   }
 
   private async loadFriends() {
     await this.rdf.getSession();
     (await this.rdf.getFriends()).forEach(async element => {
       await this.rdf.fetcher.load(element.value);
-      let photo: string = this.rdf.getValueFromVcard("hasPhoto", element.value) || "../assets/images/profile.png";
-      this.friends.push(new User(element.value ,this.rdf.getValueFromVcard("fn", element.value), photo));
+      const photo: string = this.rdf.getValueFromVcard('hasPhoto', element.value) || '../assets/images/profile.png';
+      this.friends.push(new User(element.value ,this.rdf.getValueFromVcard('fn', element.value), photo));
     });
   }
 
   private async loadMessages() {
-    console.log("Loading messages...");
+    console.log('Loading messages...');
     if (!this.isActive) {
       return;
     }
@@ -96,80 +97,80 @@ export class ChatService {
     this.loadMessagesFromTo(this.thisUser, this.otherUser);
   }
 
-  private async loadMessagesFromTo(user1 : User, user2 : User) {
-    let messages = (await this.rdf.getElementsFromContainer(await this.getChatUrl(user1, user2)))
+  private async loadMessagesFromTo(user1: User, user2: User) {
+    const messages = (await this.rdf.getElementsFromContainer(await this.getChatUrl(user1, user2)))
     if (!messages) {
-      this.toastr.error("Please make sure the other user has clicked on your chat", "Could not load messages");
+      this.toastr.error('Please make sure the other user has clicked on your chat', 'Could not load messages');
       this.isActive.next(false);
       this.chatMessages.length = 0;
       return;
     }
     messages.forEach(async element => {
-      const url = element.value + "#message";
+      const url = element.value + '#message';
       await this.rdf.fetcher.load(url);
-      const sender = this.rdf.getValueFromSchema("sender", url);
-      const text = this.rdf.getValueFromSchema("text", url);
-      const date = Date.parse(this.rdf.getValueFromSchema("dateSent", url));
-      const name = await this.rdf.getFriendData(sender, "fn");
-      console.log("Messages loaded: " + messages);
+      const sender = this.rdf.getValueFromSchema('sender', url);
+      const text = this.rdf.getValueFromSchema('text', url);
+      const date = Date.parse(this.rdf.getValueFromSchema('dateSent', url));
+      const name = await this.rdf.getFriendData(sender, 'fn');
+      console.log('Messages loaded: ' + messages);
       this.addMessage(new ChatMessage(name, text, date));
     });
   }
 
-  //Message methods
+  // Message methods
 
   /**
    * Gets the URL for the chat resource location
    * @param user1 user who sends
    * @param user2 user who recieves
    */
-  private async getChatUrl(user1 : User, user2 : User) : Promise<String> {
+  private async getChatUrl(user1: User, user2: User): Promise<String> {
     await this.rdf.getSession();
-    let root = await user1.webId.replace("/profile/card#me", "/private/dechat/chat_");
-    let name = await user2.webId.split("/")[2].split(".")[0];
-    let finalUrl = root + name + "/";
+    const root = await user1.webId.replace('/profile/card#me', '/private/dechat/chat_');
+    const name = await user2.webId.split('/')[2].split('.')[0];
+    const finalUrl = root + name + '/';
     // console.log(finalUrl);
     return finalUrl;
   }
 
-  private sortByDateDesc(m1, m2) {
+  private sortByDateDesc(m1: ChatMessage, m2: ChatMessage) {
     return m1.timeSent > m2.timeSent ? 1 : m1.timeSent < m2.timeSent ? -1 : 0;
   }
 
-  private addMessage(message : ChatMessage) {
+  private addMessage(message: ChatMessage) {
     this.chatMessages.push(message);
     this.chatMessages.sort(this.sortByDateDesc);
   }
 
   async sendMessage(msg: string) {
-    if(msg !== "" && this.otherUser) {
+    if (msg !== '' && this.otherUser) {
       const newMsg = new ChatMessage(this.thisUser.username, msg);
       this.addMessage(newMsg);
       this.postMessage(newMsg).then(res => this.loadMessages());
     }
   }
 
-  private async postMessage(msg : ChatMessage) {
-    let message = `
+  private async postMessage(msg: ChatMessage) {
+    const message = `
     @prefix : <#>.
     @prefix schem: <http://schema.org/>.
-    @prefix s: <${this.thisUser.webId.replace("#me","#")}>.
+    @prefix s: <${this.thisUser.webId.replace('#me', '#')}>.
 
     :message
       a schem:Message;
       schem:sender s:me;
-      schem:text "${msg.message}";
-      schem:dateSent "${msg.timeSent.toISOString()}".
+      schem:text '${msg.message}';
+      schem:dateSent '${msg.timeSent.toISOString()}'.
     `;
-    let path = await this.getChatUrl(this.thisUser, this.otherUser) + "message.ttl";
+    const path = await this.getChatUrl(this.thisUser, this.otherUser) + 'message.ttl';
     fileClient.createFile(path).then(fileCreated => {
       fileClient.updateFile(fileCreated, message).then( success => {
-        console.log("Message has been sended succesfully")
-      }, err => console.log(err) );
+        console.log('Message has been sended succesfully');
+      }, (err: any) => console.log(err) );
     });
   }
 
-  async changeChat(user : User) {
+  async changeChat(user: User) {
     this.isActive.next(true);
     this.otherUser = user;
     this.checkFolderStructure().then(response => {
@@ -178,14 +179,14 @@ export class ChatService {
     this.loadLoop();
   }
 
-  //Solid methods
+  // Solid methods
 
-  addFriend(webId : string) {
+  addFriend(webId: string) {
     this.rdf.addFriend(webId);
   }
 
-  removeFriend(webId : string) {
-    let name = webId.split("/")[2].split(".")[0];
+  removeFriend(webId: string) {
+    const name = webId.split('/')[2].split('.')[0];
     console.log(name);
     if(this.thisUser.webId !== webId) {
       this.rdf.removeFriend(webId);
@@ -199,12 +200,12 @@ export class ChatService {
     await this.rdf.getSession();
     try {
       this.getChatUrl(this.thisUser, this.otherUser).then(charUrl => {
-        fileClient.readFolder(charUrl).then(success => {
-          console.log("Folder structure correct");
-        }, err => {
-            console.log("Attempting to create: " + charUrl);
+        fileClient.readFolder(charUrl).then((success: any) => {
+          console.log('Folder structure correct');
+        }, (err: any) => {
+            console.log('Attempting to create: ' + charUrl);
             this.createFolderStructure(charUrl).then(res => {
-              console.log("Creating ACL file...");
+              console.log('Creating ACL file...');
               this.grantAccessToFolder(charUrl, this.otherUser);
             });
         });
@@ -214,22 +215,22 @@ export class ChatService {
     }
   }
 
-  private async createFolderStructure(path) {
-    await fileClient.createFolder(path).then(success => {
+  private async createFolderStructure(path: String) {
+    await fileClient.createFolder(path).then((success: any) => {
       console.log(`Created folder ${path}.`);
-    }, err => console.log("Could not create folder structure: " + err));
+    }, (err: string) => console.log('Could not create folder structure: ' + err));
   }
 
-  private async removeFolderStructure(path : string) {
+  private async removeFolderStructure(path: string) {
     console.log(path);
     // fileClient.deleteFolder(path).then(success => {
     //   console.log(`Removed folder ${path}.`);
     // }, err => console.log(err));
   }
 
-  private grantAccessToFolder(path, user : User) {
-    let webId = user.webId.replace("#me", "#");
-    let acl =
+  private grantAccessToFolder(path: string | String, user: User) {
+    const webId = user.webId.replace('#me', '#');
+    const acl =
    `@prefix : <#>.
     @prefix n0: <http://www.w3.org/ns/auth/acl#>.
     @prefix ch: <./>.
@@ -248,9 +249,9 @@ export class ChatService {
         n0:agent c0:me;
         n0:defaultForNew ch:;
         n0:mode n0:Read.`;
-    path += ".acl";
-    fileClient.updateFile(path, acl).then( success => {
-      console.log("Folder permisions added");
-    }, err => console.log("Could not set folder permisions" + err) );
+    path += '.acl';
+    fileClient.updateFile(path, acl).then((success: any) => {
+      console.log('Folder permisions added');
+    }, (err: string) => console.log('Could not set folder permisions' + err));
   }
 }

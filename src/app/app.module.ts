@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import {LoginPopupComponent} from './login-popup/login-popup.component';
 import {LoginComponent} from './login/login.component';
 import { CardComponent } from './card/card.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 
 // Services
 import { AuthService } from './services/solid.auth.service';
@@ -40,11 +39,6 @@ const routes: Routes = [
     component: LoginPopupComponent
   },
   {
-    path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'card',
     component: CardComponent,
     canActivate: [AuthGuard],
@@ -70,7 +64,6 @@ const routes: Routes = [
     AppComponent,
     LoginComponent,
     LoginPopupComponent,
-    DashboardComponent,
     CardComponent,
     RegisterComponent,
     ChatFormComponent,

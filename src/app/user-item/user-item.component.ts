@@ -9,7 +9,7 @@ import { User } from '../models/user.model';
 })
 export class UserItemComponent implements OnInit {
 
-  @Input() user: User;
+  @Input() user: User = new User("","Test","");
 
   constructor(private chatService : ChatService) { }
 

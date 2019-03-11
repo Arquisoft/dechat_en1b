@@ -173,7 +173,9 @@ export class ChatService {
   // Solid methods
 
   addFriend(webId: string) {
-    this.rdf.addFriend(webId);
+    if (this.thisUser.webId !== webId) {
+      this.rdf.addFriend(webId);
+    }
   }
 
   removeFriend(webId: string) {

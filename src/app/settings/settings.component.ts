@@ -9,37 +9,37 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SettingsComponent implements OnInit {
 
-  webIdAddFriend : string;
-  webIdRemoveFriend : string;
+  webIdAddFriend: string;
+  webIdRemoveFriend: string;
 
-  constructor(private chat : ChatService, private toastr : ToastrService) { }
+  constructor(private chat: ChatService, private toastr: ToastrService) { }
 
   ngOnInit() {
   }
 
   addFriend() {
     if (!this.webIdAddFriend) {
-      this.toastr.error("Please add a webId", "Wrong input");
-    } else if (this.webIdAddFriend.trim() === "") {
-      this.toastr.error("Please add a webId", "Wrong input");
+      this.toastr.error('Please add a webId', 'Wrong input');
+    } else if (this.webIdAddFriend.trim() === '') {
+      this.toastr.error('Please add a webId', 'Wrong input');
     } else {
       this.chat.addFriend(this.webIdAddFriend.trim());
-      this.webIdAddFriend = "";
+      this.webIdAddFriend = '';
     }
   }
 
   removeFriend() {
     if (!this.webIdRemoveFriend) {
-      this.toastr.error("Please add a webId", "Wrong input");
-    } else if (this.webIdRemoveFriend.trim() === "") {
-      this.toastr.error("Please add a webId", "Wrong input");
+      this.toastr.error('Please add a webId', 'Wrong input');
+    } else if (this.webIdRemoveFriend.trim() === '') {
+      this.toastr.error('Please add a webId', 'Wrong input');
     } else {
       this.chat.removeFriend(this.webIdRemoveFriend.trim());
-      this.webIdRemoveFriend = "";
+      this.webIdRemoveFriend = '';
     }
   }
 
-  handleSubmit(event) {
+  handleSubmit(event: { keyCode: number; }) {
     if (event.keyCode === 13) {
       this.addFriend();
     }

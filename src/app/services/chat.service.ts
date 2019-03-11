@@ -53,6 +53,8 @@ export class ChatService {
 
   private async loadUserData() {
     await this.rdf.getSession();
+    if (!this.rdf.session)
+      return;
     this.thisUser = new User(this.rdf.session.webId, "", "");
     await this.rdf.getFieldAsStringFromProfile("fn").then(response => {
       this.thisUser.username = response;
@@ -64,6 +66,8 @@ export class ChatService {
 
   private async loadFriends() {
     await this.rdf.getSession();
+    if (!this.rdf.session)
+      return;
     (await this.rdf.getFriends()).forEach(async element => {
       await this.rdf.fetcher.load(element.value);
       let photo: string = this.rdf.getValueFromVcard("hasPhoto", element.value) || "../assets/images/profile.png";

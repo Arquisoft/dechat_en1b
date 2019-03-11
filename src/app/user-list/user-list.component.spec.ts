@@ -1,7 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserListComponent } from './user-list.component';
-import { User } from '../models/user.model';
+import { UserItemComponent } from '../user-item/user-item.component';
+import { ChatService } from '../services/chat.service';
+import { ToastrService, ToastrModule } from 'ngx-toastr';
 
 describe('UserListComponent', () => {
   let component: UserListComponent;
@@ -9,7 +11,9 @@ describe('UserListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserListComponent ]
+      declarations: [ UserListComponent , UserItemComponent ],
+      imports: [ ToastrModule.forRoot() ],
+      providers: [ ChatService ]
     })
     .compileComponents();
   }));

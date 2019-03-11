@@ -83,6 +83,7 @@ export class ChatService {
     this.chatMessages.length = 0;
     this.loadMessagesFromTo(this.otherUser, this.thisUser);
     this.loadMessagesFromTo(this.thisUser, this.otherUser);
+    setTimeout(this.loadMessages, 5000);
   }
 
   private async loadMessagesFromTo(user1 : User, user2 : User) {
@@ -189,7 +190,7 @@ export class ChatService {
         fileClient.readFolder(charUrl).then(success => {
           console.log("Folder structure correct");
         }, err => {
-            console.log("Attemting to create: " + charUrl);
+            console.log("Attempting to create: " + charUrl);
             this.createFolderStructure(charUrl).then(res => {
               console.log("Creating ACL file...");
               this.grantAccessToFolder(charUrl, this.otherUser);

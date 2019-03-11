@@ -9,6 +9,7 @@ import { ChatMessage } from '../models/chat-message.model';
   styleUrls: ['./feed.component.css']
 })
 export class FeedComponent implements OnInit, OnChanges {
+
   feed: Observable<ChatMessage[]>;
 
   constructor(private chat: ChatService) { }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { Observable, of, BehaviorSubject, timer } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 import { ChatMessage } from '../models/chat-message.model';
 import { RdfService } from './rdf.service';
@@ -7,6 +8,9 @@ import { User } from '../models/user.model';
 import { ToastrService } from 'ngx-toastr';
 
 import * as fileClient from 'solid-file-client'
+
+const reloadInterval = 2000;
+
 @Injectable()
 export class ChatService {
 
@@ -27,6 +31,12 @@ export class ChatService {
       this.loadFriends();
     });
     this.isActive = new BehaviorSubject<boolean>(false);
+  }
+
+  loadLoop() {
+    timer(0, reloadInterval).pipe(
+      mergeMap(_ => this.loadMessages())
+    ).subscribe();
   }
 
   //Observables
@@ -76,6 +86,7 @@ export class ChatService {
   }
 
   private async loadMessages() {
+    console.log("Loading messages...");
     if (!this.isActive) {
       return;
     }
@@ -83,7 +94,6 @@ export class ChatService {
     this.chatMessages.length = 0;
     this.loadMessagesFromTo(this.otherUser, this.thisUser);
     this.loadMessagesFromTo(this.thisUser, this.otherUser);
-    setTimeout(this.loadMessages, 5000);
   }
 
   private async loadMessagesFromTo(user1 : User, user2 : User) {
@@ -101,6 +111,7 @@ export class ChatService {
       const text = this.rdf.getValueFromSchema("text", url);
       const date = Date.parse(this.rdf.getValueFromSchema("dateSent", url));
       const name = await this.rdf.getFriendData(sender, "fn");
+      console.log("Messages loaded: " + messages);
       this.addMessage(new ChatMessage(name, text, date));
     });
   }
@@ -117,7 +128,7 @@ export class ChatService {
     let root = await user1.webId.replace("/profile/card#me", "/private/dechat/chat_");
     let name = await user2.webId.split("/")[2].split(".")[0];
     let finalUrl = root + name + "/";
-    console.log(finalUrl);
+    // console.log(finalUrl);
     return finalUrl;
   }
 
@@ -164,6 +175,7 @@ export class ChatService {
     this.checkFolderStructure().then(response => {
       this.loadMessages();
     });
+    this.loadLoop();
   }
 
   //Solid methods

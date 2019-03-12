@@ -14,7 +14,6 @@ This project is developed by:
 *   Miguel Garnacho Vélez
 *   Pablo Menéndez Fernández
 *   Ignacio Baruque Astruga
-*   Pablo Fernández Martínez
 *   Stefano Dainelli
 
 ## Wiki

@@ -15,7 +15,7 @@ This project is developed by:
 *   Pablo Menéndez Fernández
 *   Ignacio Baruque Astruga
 *   Pablo Fernández Martínez
-*   Stefano Daineilli
+*   Stefano Dainelli
 
 ## Wiki
 

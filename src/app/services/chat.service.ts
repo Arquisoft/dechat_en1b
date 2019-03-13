@@ -157,8 +157,8 @@ export class ChatService {
     :message
       a schem:Message;
       schem:sender s:me;
-      schem:text '${msg.message}';
-      schem:dateSent '${msg.timeSent.toISOString()}'.
+      schem:text "${msg.message}";
+      schem:dateSent "${msg.timeSent.toISOString()}".
     `;
     const path = await this.getChatUrl(this.thisUser, this.otherUser) + 'message.ttl';
     fileClient.createFile(path).then((fileCreated: any) => {

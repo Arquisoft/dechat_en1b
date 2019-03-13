@@ -29,7 +29,7 @@ export class MessageComponent implements OnInit {
     this.chatService.getUser().subscribe(user => {
       if (!user)
         return;
-      console.log(user.username + " " + this.userName);
+      //console.log(user.username + " " + this.userName);
       this.isOwnMessage = user.username === this.userName;
     });
   }

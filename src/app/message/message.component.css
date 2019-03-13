@@ -1,22 +1,49 @@
+
 .messageContainer{
+    position: relative;
     display: flex;
+    flex-direction: column;
     height: auto;
     width: 70%;
-    min-width: 400px;
+    min-width: 20vh;
+    max-width: 70vh;
     border-radius: 5px;
-    align-items:stretch;
+    align-items: stretch;
     background-color: #eee;
     box-shadow: 0 3px 6px rgba(0,0,0,0.26), 0 3px 6px rgba(0,0,0,0.23);
 }
 
+.messageContainer:after{
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 12px 15px 12px 0;
+    border-color: transparent #E3F2FD;
+    display: block;
+    width: 0;
+    z-index: 1;
+    left: -15px;
+    top: 10px;
+}
+
 .isOwnMessageContainer{
-    background-color: #01579B;
+    float: inline-end;
+}
+
+.isOwnMessageContainer:after{
+    border-width: 12px 0 12px 15px;
+    border-color: transparent #01579B;
+    right: -15px;
 }
 
 .messageData{
     flex: 1;
     padding: 10px;
     font-size: 0.7em;
+}
+
+.isOwnMessageData{
+    background-color: #01579B;
 }
 
 .sender{
@@ -39,16 +66,12 @@
 }
 
 .messageContent{
-    height: auto;
-    flex: 9;
     background-color: #fff;
     padding: 10px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    word-break: break-word;
+    margin-bottom: 5px;
+    overflow-wrap: break-word;
 }
 
 .isOwnMessageContent{
     background-color: #E3F2FD;
-    color: #01579B;
 }

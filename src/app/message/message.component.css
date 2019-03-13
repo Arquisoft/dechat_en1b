@@ -1,24 +1,44 @@
 
-.messageContainer{
+.msg {
     position: relative;
     display: flex;
     flex-direction: column;
     height: auto;
-    width: 70%;
-    min-width: 20vh;
-    max-width: 70vh;
+    width: auto;
+    max-width: 70%;
     border-radius: 5px;
-    align-items: stretch;
-    background-color: #eee;
     box-shadow: 0 3px 6px rgba(0,0,0,0.26), 0 3px 6px rgba(0,0,0,0.23);
 }
 
-.messageContainer:after{
+.ownMsg{
+    float: inline-end;
+    background-color: #01579B;
+}
+
+.ownMsg:after{
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 12px 0 12px 15px;
+    border-color: transparent #01579B;
+    display: block;
+    width: 0;
+    z-index: 1;
+    right: -15px;
+    top: 10px;
+}
+
+.otherMsg{
+    float: inline-start;
+    background-color: #eee;
+}
+
+.otherMsg:after{
     content: '';
     position: absolute;
     border-style: solid;
     border-width: 12px 15px 12px 0;
-    border-color: transparent #E3F2FD;
+    border-color: transparent #eee;
     display: block;
     width: 0;
     z-index: 1;
@@ -26,24 +46,9 @@
     top: 10px;
 }
 
-.isOwnMessageContainer{
-    float: inline-end;
-}
-
-.isOwnMessageContainer:after{
-    border-width: 12px 0 12px 15px;
-    border-color: transparent #01579B;
-    right: -15px;
-}
-
 .messageData{
-    flex: 1;
     padding: 10px;
     font-size: 0.7em;
-}
-
-.isOwnMessageData{
-    background-color: #01579B;
 }
 
 .sender{
@@ -68,7 +73,8 @@
 .messageContent{
     background-color: #fff;
     padding: 10px;
-    margin-bottom: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     overflow-wrap: break-word;
 }
 

@@ -1,5 +1,5 @@
-<div class="messageContainer"
-    [ngClass]="{'isOwnMessageContainer':isOwnMessage}">
+<div class="msg"
+    [ngClass]="{'ownMsg':isOwnMessage, 'otherMsg':!isOwnMessage}">
     <div class="messageData"
         [ngClass]="{'isOwnMessageData':isOwnMessage}">
         <span class="sender"

@@ -5,14 +5,13 @@
 .feed{
     display: flex;
     flex-direction: column;
-    margin-left: 1em;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
 .message{
     flex-direction: column;
-    margin: 10px 0;
+    margin: 0.6em 1em;
 }
 
 .feed:first-child {

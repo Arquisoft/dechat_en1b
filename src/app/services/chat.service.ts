@@ -17,7 +17,7 @@ export class ChatService {
 
   chatMessages: ChatMessage[] = new Array<ChatMessage>();
 
-  thisUser: User;  // Current user that is using the chat
+  thisUser: BehaviorSubject<User>;  // Current user that is using the chat
   currentUserWebId: string; // Current user's webID username
 
   otherUser: User; // Current user it's talking to
@@ -30,12 +30,13 @@ export class ChatService {
       this.loadFriends();
     });
     this.isActive = new BehaviorSubject<boolean>(false);
+    this.thisUser = new BehaviorSubject<User>(null);
   }
 
   // Observables
 
   getUser() {
-    return of(this.thisUser);
+    return this.thisUser.asObservable();
   }
 
   getOtherUser() {
@@ -62,14 +63,15 @@ export class ChatService {
       return;
     }
     const webId = this.rdf.session.webId;
-    this.thisUser = new User(webId, '', '');
+    let user : User = new User(webId, '', '');
     await this.rdf.getFieldAsStringFromProfile('fn').then(response => {
-      this.thisUser.username = response;
+      user.username = response;
     });
     await this.rdf.getFieldAsStringFromProfile('hasPhoto').then(response => {
-      this.thisUser.profilePicture = response;
+      user.profilePicture = response;
     });
     this.currentUserWebId = webId.split('/')[2].split('.')[0];
+    this.thisUser.next(user);
   }
 
   private async loadFriends() {
@@ -91,8 +93,8 @@ export class ChatService {
     }
     await this.rdf.getSession();
     this.chatMessages.length = 0;
-    this.loadMessagesFromTo(this.otherUser, this.thisUser);
-    this.loadMessagesFromTo(this.thisUser, this.otherUser);
+    this.loadMessagesFromTo(this.otherUser, this.thisUser.value);
+    this.loadMessagesFromTo(this.thisUser.value, this.otherUser);
   }
 
   private async loadMessagesFromTo(user1: User, user2: User) {
@@ -110,7 +112,7 @@ export class ChatService {
       const text = this.rdf.getValueFromSchema('text', url);
       const date = Date.parse(this.rdf.getValueFromSchema('dateSent', url));
       const name = await this.rdf.getFriendData(sender, 'fn');
-      console.log('Messages loaded: ' + messages);
+      //console.log('Messages loaded: ' + messages);
       this.addMessage(new ChatMessage(name, text, date));
     });
   }
@@ -142,7 +144,7 @@ export class ChatService {
 
   async sendMessage(msg: string) {
     if (msg !== '' && this.otherUser) {
-      const newMsg = new ChatMessage(this.thisUser.username, msg);
+      const newMsg = new ChatMessage(this.thisUser.value.username, msg);
       this.addMessage(newMsg);
       this.postMessage(newMsg).then(res => this.loadMessages());
     }
@@ -152,7 +154,7 @@ export class ChatService {
     const message = `
     @prefix : <#>.
     @prefix schem: <http://schema.org/>.
-    @prefix s: <${this.thisUser.webId.replace('#me', '#')}>.
+    @prefix s: <${this.thisUser.value.webId.replace('#me', '#')}>.
 
     :message
       a schem:Message;
@@ -160,7 +162,7 @@ export class ChatService {
       schem:text "${msg.message}";
       schem:dateSent "${msg.timeSent.toISOString()}".
     `;
-    const path = await this.getChatUrl(this.thisUser, this.otherUser) + 'message.ttl';
+    const path = await this.getChatUrl(this.thisUser.value, this.otherUser) + 'message.ttl';
     fileClient.createFile(path).then((fileCreated: any) => {
       fileClient.updateFile(fileCreated, message).then( success => {
         console.log('Message has been sended succesfully');
@@ -179,16 +181,16 @@ export class ChatService {
   // Solid methods
 
   addFriend(webId: string) {
-    if (this.thisUser.webId !== webId) {
+    if (this.thisUser.value.webId !== webId) {
       this.rdf.addFriend(webId);
     }
   }
 
   removeFriend(webId: string) {
     const name = webId.split('/')[2].split('.')[0];
-    if (this.thisUser.webId !== webId) {
+    if (this.thisUser.value.webId !== webId) {
       this.rdf.removeFriend(webId);
-      this.getChatUrl(this.thisUser, new User(webId, '', '')).then(response => {
+      this.getChatUrl(this.thisUser.value, new User(webId, '', '')).then(response => {
         this.removeFolderStructure(response.toString());
       });
     }
@@ -203,7 +205,7 @@ export class ChatService {
   async checkFolderStructure() {
     await this.rdf.getSession();
     try {
-      this.getChatUrl(this.thisUser, this.otherUser).then(charUrl => {
+      this.getChatUrl(this.thisUser.value, this.otherUser).then(charUrl => {
         fileClient.readFolder(charUrl).then((success: any) => {
           console.log('Folder structure correct');
         }, (err: any) => {

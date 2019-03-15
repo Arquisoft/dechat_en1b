@@ -83,6 +83,7 @@ export class ChatService {
       await this.rdf.fetcher.load(element.value);
       const photo: string = this.rdf.getValueFromVcard('hasPhoto', element.value) || '../assets/images/profile.png';
       this.friends.push(new User(element.value, this.rdf.getValueFromVcard('fn', element.value), photo));
+      this.friends.sort(this.sortUserByName);
     });
   }
 
@@ -135,6 +136,10 @@ export class ChatService {
 
   private sortByDateDesc(m1: ChatMessage, m2: ChatMessage) {
     return m1.timeSent > m2.timeSent ? 1 : m1.timeSent < m2.timeSent ? -1 : 0;
+  }
+
+  private sortUserByName(u1: User, u2: User) {
+    return u1.username.localeCompare(u2.username);
   }
 
   private addMessage(message: ChatMessage) {

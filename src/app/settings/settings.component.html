@@ -9,6 +9,34 @@
           <input class="textInput"
           [(ngModel)]="webIdAddFriend" (keydown)="handleSubmit($event)"
           placeholder="Enter your friend's WebID"/>
+          <div>
+            <ng-select class="login-select"
+                       bindLabel="name"
+                       bindValue="loginUrl"
+                       placeholder="Select ID Provider"
+                       dropdownPosition="bottom"
+                       [items]="identityProviders"
+                       [(ngModel)]="selectedProviderUrl"
+                       style="width: 360px; height: 45px; margin-left: auto; margin-right: auto;">
+        
+              <!-- DROPDOWN TEMPLATE -->
+              <ng-template ng-option-tmp let-item="item">
+                <div style="height:40px; padding-top:10px; position: relative;">
+                  <img [src]="item.image" style="float: left; height: 32px; width: 32px; margin-top:-5px;" />
+                  <span style="float: left; margin-left: 10px;">{{ item.name }}</span>
+                  <div style="clear: both;"></div>
+                  <div class="item-divider"></div>
+                </div>
+              </ng-template>
+        
+            </ng-select>
+            <input type="text"
+                   class="wide-text"
+                   *ngIf="selectedProviderUrl===null"
+                   placeholder="Enter WebID"
+                   style="margin-top:10px; padding: 12px 10px; width: 340px; height: 16px; display: block; margin-left: auto; margin-right: auto;"
+                   [(ngModel)]="customProviderUrl" />
+          </div>
           <button i18n="@@addFriend" class="button" (click)=addFriend()>Add friend</button>
       </div>
 

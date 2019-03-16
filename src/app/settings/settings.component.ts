@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/solid.auth.service';
+import { SolidProvider } from '../models/solid-provider.model';
 
 @Component({
   selector: 'app-settings',
@@ -11,10 +14,12 @@ export class SettingsComponent implements OnInit {
 
   webIdAddFriend: string;
   webIdRemoveFriend: string;
+  identityProviders: SolidProvider[];
 
-  constructor(private chat: ChatService, private toastr: ToastrService) { }
+  constructor(private chat: ChatService, private toastr: ToastrService, private auth: AuthService, private router: Router) { }
 
   ngOnInit() {
+    this.identityProviders = this.auth.getIdentityProviders();
   }
 
   addFriend() {

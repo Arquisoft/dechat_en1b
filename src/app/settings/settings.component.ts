@@ -31,14 +31,15 @@ export class SettingsComponent implements OnInit {
       this.urlAddedFriend = 'https://' + this.webIdAddFriend + '.solid.community/profile/card#me';
       console.log('Intentando añadir: ' + this.urlAddedFriend);
       this.chat.addFriend(this.urlAddedFriend.trim());
+    }
+    else if(this.selectedProviderUrl=== 'https://inrupt.net/auth'){
+      this.urlAddedFriend = 'https://' + this.webIdAddFriend + '.inrupt.net/profile/card#me';
+      console.log('Intentando añadir: ' + this.urlAddedFriend);
+      this.chat.addFriend(this.urlAddedFriend.trim());
     }else{
       this.toastr.error('You only can add a solid community friend', 'Not implemented yet');
     }
-    /*else if(this.selectedProviderUrl=== 'https://inrupt.net/auth'){
-      this.urlAddedFriend = 'https://' + this.webIdAddFriend + '.solid.community/profile/card#me';
-      console.log('Intentando añadir: ' + this.urlAddedFriend);
-      this.chat.addFriend(this.urlAddedFriend.trim());
-    }
+    /*
     if (!this.webIdAddFriend) {
       this.toastr.error('Please add a webId', 'Wrong input');
     } else if (this.webIdAddFriend.trim() === '') {

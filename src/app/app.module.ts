@@ -23,6 +23,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { UserItemComponent } from './user-item/user-item.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { SettingsComponent } from './settings/settings.component';
+import { HelpComponent } from './help-component/help-component.component';
 import { ChatService } from './services/chat.service';
 
 const routes: Routes = [
@@ -54,6 +55,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'help',
+    component: HelpComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'register',
     component: RegisterComponent
   }
@@ -72,8 +78,8 @@ const routes: Routes = [
     MessageComponent,
     NavbarComponent,
     UserItemComponent,
-    UserListComponent,
-    SettingsComponent
+    UserListComponent,  
+    HelpComponent
   ],
   imports: [
     BrowserModule,

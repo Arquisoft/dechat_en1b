@@ -1,0 +1,60 @@
+
+.settingsFormWrapper {
+    display: flex;
+    flex-direction: column;
+    font-family: "Open Sans", sans-serif;
+    width: 100%;
+    height: calc(100vh - 50px);
+    background-color: #fff;
+    background: 
+        linear-gradient(181deg, rgba(100,200,255,0.6), rgba(0, 0, 0, 0.9)),
+        url('../../assets/images/Solid_Pattern.png') center center no-repeat;
+}
+
+h2 {
+    margin-top: 0.2em;
+    margin-bottom: 0.4em;
+}
+
+.setting {
+    margin: 5em;
+    padding: 1em;
+    border-radius: 1em;
+    background-color: #7C4DFF;
+    box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.67);
+}
+
+.setting > p {
+    margin: 0.25em;
+    color: rgb(23, 29, 29);
+}
+
+.group {
+    display: flex;
+    margin: 0.6em;
+}
+
+.textInput {
+    border-radius: 5px;
+    margin: 0.3em;
+    padding: 0.2em;
+    font-size: 1.3em;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #eee;
+    color: #000;
+    flex-grow: 1;
+}
+
+.button {
+    width: 150px;
+    border-radius: 5px;
+    margin: 0px;
+    padding: 0.3em;
+    padding: 0.3em 0.4em;
+    font-size: 1.3em;
+    font-family: 'Droid Sans', sans-serif;
+    background-color: #2A2845;
+    color: white;
+    transition: 0.2s ease-out;
+    min-width: 50px;
+}

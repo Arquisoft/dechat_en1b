@@ -79,7 +79,8 @@ const routes: Routes = [
     NavbarComponent,
     UserItemComponent,
     UserListComponent,  
-    HelpComponent
+    HelpComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

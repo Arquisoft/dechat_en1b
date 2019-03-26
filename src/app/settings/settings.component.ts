@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/solid.auth.service';
 import { SolidProvider } from '../models/solid-provider.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-settings',

@@ -330,154 +330,47 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="building-block-view">Building Block View</h1>
-<p><strong>Content.</strong></p>
-<p>The building block view shows the static decomposition of the system
-into building blocks (modules, components, subsystems, classes,
-interfaces, packages, libraries, frameworks, layers, partitions, tiers,
-functions, macros, operations, datas structures, &#x2026;) as well as their
-dependencies (relationships, associations, &#x2026;)</p>
-<p>This view is mandatory for every architecture documentation. In analogy
-to a house this is the <em>floor plan</em>.</p>
-<p><strong>Motivation.</strong></p>
-<p>Maintain an overview of your source code by making its structure
-understandable through abstraction.</p>
-<p>This allows you to communicate with your stakeholder on an abstract
-level without disclosing implementation details.</p>
-<p><strong>Form.</strong></p>
-<p>The building block view is a hierarchical collection of black boxes and
-white boxes (see figure below) and their descriptions.</p>
-<p><img src="images/05_building_blocks-EN.png" alt="Hierarchy of building blocks"></p>
-<p><strong>Level 1</strong> is the white box description of the overall system together
-with black box descriptions of all contained building blocks.</p>
-<p><strong>Level 2</strong> zooms into some building blocks of level 1. Thus it contains
-the white box description of selected building blocks of level 1,
-together with black box descriptions of their internal building blocks.</p>
-<p><strong>Level 3</strong> zooms into selected building blocks of level 2, and so on.</p>
+<p>The main structure of this project consist on dividing the chat in a lot of small parts that will be inside a bigger one. </p>
+<p>Some of this parts will be the different components of the application that will contain the files refered to the user interface and some logic related to that component. There is also a folder intended for the logic that manages the whole interaction between components.</p>
+<p>Another important part of the structure is the folder containing the domain model of the application.</p>
+<p><img src="_docs/images/DiagramPrototype(Doc05" alt="Hierarchy of building blocks">.png)</p>
+<p><strong>Level 1</strong> </p>
+<p>In the first level we can divide our application in three blocks:</p>
+<pre><code>- Components
+- Service
+- Model
+</code></pre><p><strong>Level 2</strong> </p>
+<p>In the second level we focus on the components block to differenciate between the four big parts of the web.</p>
+<pre><code>- Chat
+- Profile
+- Login
+- Settings
+</code></pre><p>Each of these parts is divided into many little components. </p>
 <h2 id="whitebox-overall-system">Whitebox Overall System</h2>
-<p>Here you describe the decomposition of the overall system using the
-following white box template. It contains</p>
-<ul>
-<li><p>an overview diagram</p>
-</li>
-<li><p>a motivation for the decomposition</p>
-</li>
-<li><p>black box descriptions of the contained building blocks. For these
-we offer you alternatives:</p>
-<ul>
-<li><p>use <em>one</em> table for a short and pragmatic overview of all
-contained building blocks and their interfaces</p>
-</li>
-<li><p>use a list of black box descriptions of the building blocks
-according to the black box template (see below). Depending on
-your choice of tool this list could be sub-chapters (in text
-files), sub-pages (in a Wiki) or nested elements (in a modeling
-tool).</p>
-</li>
-</ul>
-</li>
-<li><p>(optional:) important interfaces, that are not explained in the
-black box templates of a building block, but are very important for
-understanding the white box. Since there are so many ways to specify
-interfaces why do not provide a specific template for them. In the
-worst case you have to specify and describe syntax, semantics,
-protocols, error handling, restrictions, versions, qualities,
-necessary compatibilities and many things more. In the best case you
-will get away with examples or simple signatures.</p>
-</li>
-</ul>
-<p><strong><em>&lt;Overview Diagram&gt;</em></strong></p>
-<p>Motivation</p>
-<p>:   <em>&lt;text explanation&gt;</em></p>
-<p>Contained Building Blocks</p>
-<p>:   <em>&lt;Description of contained building block (black boxes)&gt;</em></p>
-<p>Important Interfaces</p>
-<p>:   <em>&lt;Description of important interfaces&gt;</em></p>
-<p>Insert your explanations of black boxes from level 1:</p>
-<p>If you use tabular form you will only describe your black boxes with
-name and responsibility according to the following schema:</p>
+<p>We divided the code in three big blocks to separate the presentation from the logic and the domain.</p>
+<p> <img src="_docs/images/DiagramDoc05_2.png" alt="Overview Diagram"></p>
 <table>
 <thead>
 <tr>
-<th><strong>Name</strong></th>
-<th><strong>Responsibility</strong></th>
+<th>Block</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Black Box 1</td>
-<td><em>&lt;Text&gt;</em></td>
+<td>Components</td>
+<td>In this block we find the presentation of the web. It is also divided into four blocks that covers the whole application: Profile, Chat, Login and Settings. All the elements that form these blocks have a css, ts and html files</td>
 </tr>
 <tr>
-<td>Black Box 2</td>
-<td><em>&lt;Text&gt;</em></td>
+<td>Services</td>
+<td>This block manages the logic of the application and the comunication between the presentation and the model</td>
+</tr>
+<tr>
+<td>Model</td>
+<td>The model covers all the entities that are managed by the application</td>
 </tr>
 </tbody>
 </table>
-<p>If you use a list of black box descriptions then you fill in a separate
-black box template for every important building block . Its headline is
-the name of the black box.</p>
-<h3 id="name-black-box-1">&lt;Name black box 1&gt;</h3>
-<p>Here you describe &lt;black box 1&gt; according the the following black
-box template:</p>
-<ul>
-<li><p>Purpose/Responsibility</p>
-</li>
-<li><p>Interface(s), when they are not extracted as separate paragraphs.
-This interfaces may include qualities and performance
-characteristics.</p>
-</li>
-<li><p>(Optional) Quality-/Performance characteristics of the black box,
-e.g.availability, run time behavior, &#x2026;.</p>
-</li>
-<li><p>(Optional) directory/file location</p>
-</li>
-<li><p>(Optional) Fulfilled requirements (if you need traceability to
-requirements).</p>
-</li>
-<li><p>(Optional) Open issues/problems/risks</p>
-</li>
-</ul>
-<p><em>&lt;Purpose/Responsibility&gt;</em></p>
-<p><em>&lt;Interface(s)&gt;</em></p>
-<p><em>&lt;(Optional) Quality/Performance Characteristics&gt;</em></p>
-<p><em>&lt;(Optional) Directory/File Location&gt;</em></p>
-<p><em>&lt;(Optional) Fulfilled Requirements&gt;</em></p>
-<p><em>&lt;(optional) Open Issues/Problems/Risks&gt;</em></p>
-<h3 id="name-black-box-2">&lt;Name black box 2&gt;</h3>
-<p><em>&lt;black box template&gt;</em></p>
-<h3 id="name-black-box-n">&lt;Name black box n&gt;</h3>
-<p><em>&lt;black box template&gt;</em></p>
-<h3 id="name-interface-1">&lt;Name interface 1&gt;</h3>
-<p>&#x2026;</p>
-<h3 id="name-interface-m">&lt;Name interface m&gt;</h3>
-<h2 id="level-2">Level 2</h2>
-<p>Here you can specify the inner structure of (some) building blocks from
-level 1 as white boxes.</p>
-<p>You have to decide which building blocks of your system are important
-enough to justify such a detailed description. Please prefer relevance
-over completeness. Specify important, surprising, risky, complex or
-volatile building blocks. Leave out normal, simple, boring or
-standardized parts of your system</p>
-<h3 id="white-box-building-block-1">White Box <em>&lt;building block 1&gt;</em></h3>
-<p>&#x2026;describes the internal structure of <em>building block 1</em>.</p>
-<p><em>&lt;white box template&gt;</em></p>
-<h3 id="white-box-building-block-2">White Box <em>&lt;building block 2&gt;</em></h3>
-<p><em>&lt;white box template&gt;</em></p>
-<p>&#x2026;</p>
-<h3 id="white-box-building-block-m">White Box <em>&lt;building block m&gt;</em></h3>
-<p><em>&lt;white box template&gt;</em></p>
-<h2 id="level-3">Level 3</h2>
-<p>Here you can specify the inner structure of (some) building blocks from
-level 2 as white boxes.</p>
-<p>When you need more detailed levels of your architecture please copy this
-part of arc42 for additional levels.</p>
-<h3 id="white-box-building-block-x1">White Box &lt;_building block x.1_&gt;</h3>
-<p>Specifies the internal structure of <em>building block x.1</em>.</p>
-<p><em>&lt;white box template&gt;</em></p>
-<h3 id="white-box-building-block-x2">White Box &lt;_building block x.2_&gt;</h3>
-<p><em>&lt;white box template&gt;</em></p>
-<h3 id="white-box-building-block-y1">White Box &lt;_building block y.1_&gt;</h3>
-<p><em>&lt;white box template&gt;</em></p>
 
                                 
                                 </section>
@@ -521,7 +414,7 @@ part of arc42 for additional levels.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Building Block View","level":"1.6","depth":1,"next":{"title":"Runtime View","level":"1.7","depth":1,"path":"06. Runtime View.md","ref":"06. Runtime View.md","articles":[]},"previous":{"title":"Solution Strategy","level":"1.5","depth":1,"path":"04. Solution Strategy.md","ref":"04. Solution Strategy.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"05. Building Block View.md","mtime":"2019-02-12T15:53:19.564Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-03T11:56:13.539Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Building Block View","level":"1.6","depth":1,"next":{"title":"Runtime View","level":"1.7","depth":1,"path":"06. Runtime View.md","ref":"06. Runtime View.md","articles":[]},"previous":{"title":"Solution Strategy","level":"1.5","depth":1,"path":"04. Solution Strategy.md","ref":"04. Solution Strategy.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"05. Building Block View.md","mtime":"2019-03-28T17:38:31.360Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-28T17:42:36.078Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

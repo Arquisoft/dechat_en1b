@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ChatMessage } from '../models/chat-message.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-message',
@@ -16,21 +17,31 @@ export class MessageComponent implements OnInit {
 
   isOwnMessage: boolean;
 
-  constructor(private chatService : ChatService) {
-    
-  }
+  constructor(private chatService: ChatService, private toastr: ToastrService) {}
 
   ngOnInit(chatMessage = this.chatMessage) {
-    if (!chatMessage)
-      chatMessage = new ChatMessage("","Failed to load");
+    if (!chatMessage) {
+      chatMessage = new ChatMessage('', 'Failed to load');
+    }
     this.messageContent = chatMessage.message;
     this.timeStamp = chatMessage.timeSent;
     this.userName = chatMessage.userName;
     this.chatService.getUser().subscribe(user => {
-      if (!user)
+      if (!user) {
         return;
-      //console.log(user.username + " " + this.userName);
+      }
+      // console.log(user.username + " " + this.userName);
       this.isOwnMessage = user.username === this.userName;
     });
+  }
+
+  removeMessage() {
+    if (!this.messageContent) {
+      this.toastr.error('Cannot remove this message');
+    } else if (this.isOwnMessage === true) {
+      this.toastr.error('Are you sure?');
+      // TODO pop-up 'are you sure'
+      this.messageContent = '';
+    }
   }
 }

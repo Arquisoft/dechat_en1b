@@ -36,6 +36,6 @@ module.exports = function (config) {
       }
     },
     singleRun: false,
-    exclude: ["/src/app/services/(auth.guard.service.ts|chat.service.ts|rdf.service.ts|solid.auth.service.ts)/"],
+    exclude: ["./app/services/(auth.guard.service.ts|chat.service.ts|rdf.service.ts|solid.auth.service.ts)"],
   });
 };

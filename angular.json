@@ -101,7 +101,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ]
+            ],
+            "codeCoverageExclude": ["./src/app/services/(auth.guard.service.ts|chat.service.ts|rdf.service.ts|solid.auth.service.ts)"]
           }
         },
         "lint": {

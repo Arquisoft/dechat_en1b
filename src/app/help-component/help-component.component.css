@@ -1,0 +1,19 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    font-family: "Open Sans", sans-serif;
+    width: 100%;
+    color: black;
+    background-color:#2A2845;        
+}
+
+.question {
+    margin: 1.5em;
+    padding: 1em;
+    border-radius: 1em;
+    background-color: #7C4DFF;
+    box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.67);
+}
+.description{
+    color: #fff;
+}

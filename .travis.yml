@@ -16,7 +16,6 @@ install:
   - npm install
 
 script:
-  - npm run setup:install
   - npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
   - npm run e2e
   - npm run docs:build

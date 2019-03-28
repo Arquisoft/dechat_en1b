@@ -35,6 +35,7 @@ module.exports = function (config) {
         flags: ["--no-sandbox"]
       }
     },
-    singleRun: false
+    singleRun: false,
+    exclude: ["./app/services/(auth.guard.service.ts|chat.service.ts|rdf.service.ts|solid.auth.service.ts)"],
   });
 };

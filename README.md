@@ -30,7 +30,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Install packages
 
-Run `npm run setup:install` to install the packages required by this project before proceeding.
+Run `npm install` to install the packages required by this project before proceeding.
 
 ### Generate or watch documentation
 

@@ -12,7 +12,7 @@ export class SettingsComponent implements OnInit {
   webIdAddFriend: string;
   webIdRemoveFriend: string;
 
-  constructor(private chat: ChatService, private toastr: ToastrService) { }
+  constructor(public chat: ChatService, private toastr: ToastrService) { }
 
   ngOnInit() {
   }

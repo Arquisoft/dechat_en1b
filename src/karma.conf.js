@@ -21,7 +21,7 @@ module.exports = function (config) {
       fixWebpackSourcePaths: true,
       combineBrowserReports: true,
       skipFilesWithNoCoverage: true,
-      verbose: true
+      verbose: false
     },
     reporters: ["progress", "kjhtml" , "coverage-istanbul"],
     port: 9876,

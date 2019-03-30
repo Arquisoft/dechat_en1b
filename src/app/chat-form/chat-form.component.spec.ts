@@ -27,4 +27,17 @@ describe('ChatFormComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should send a message', () => {
+    component.message = "Test";
+    component.send();
+    expect(component.message === "");
+  });
+
+  it('should send a message on enter', () => {
+    component.message = "Test";
+    component.handleSubmit({ keyCode : 13 });
+    expect(component.message === "");
+  });
+
 });

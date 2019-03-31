@@ -24,6 +24,8 @@ import { UserItemComponent } from './user-item/user-item.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ChatService } from './services/chat.service';
+import { CommonModule } from '@angular/common';
+
 
 const routes: Routes = [
   {
@@ -77,11 +79,12 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     RouterModule.forRoot(routes),
-    NgSelectModule,
     ToastrModule.forRoot(),
-    BrowserAnimationsModule //required for toastr
+    BrowserAnimationsModule, //required for toastr
+    FormsModule,
+    CommonModule,
+    NgSelectModule
   ],
   providers: [AuthService , ChatService],
   bootstrap: [AppComponent]

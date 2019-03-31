@@ -4,7 +4,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SettingsComponent } from './settings.component';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../services/chat.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
+import { RouterTestingModule } from '@angular/router/testing';
 import {By} from '@angular/platform-browser';
 
 describe('SettingsComponent', () => {
@@ -15,7 +17,7 @@ describe('SettingsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SettingsComponent ],
-      imports: [ FormsModule , ToastrModule.forRoot() ],
+      imports: [ FormsModule , ToastrModule.forRoot(), NgSelectModule, RouterTestingModule ],
       providers: [ ChatService , ToastrService ]
     })
     .compileComponents();
@@ -33,9 +35,9 @@ describe('SettingsComponent', () => {
 
   it('should display input error (add)', () => {
 
-    /*spy = spyOn(component.chat, 'addFriend').and.callFake(function(friend) {
+    spy = spyOn(component, 'addFriend').and.callFake(function(friend) {
       return null;
-    });*/
+    });
 
     component.webIdAddFriend = 'test';
     component.addFriend();
@@ -52,9 +54,9 @@ describe('SettingsComponent', () => {
 
   it('should display input error (remove)', () => {
 
-    /*spy = spyOn(component.chat, 'removeFriend').and.callFake(function(friend) {
+    spy = spyOn(component, 'removeFriend').and.callFake(function(friend) {
       return null;
-    });*/
+    });
 
     component.webIdRemoveFriend = 'test';
     component.removeFriend();

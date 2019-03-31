@@ -61,11 +61,11 @@ describe('SettingsComponent', () => {
     expect(!By.css('#toastr-container'));
 
     component.webIdRemoveFriend = null;
-    component.addFriend();
+    component.removeFriend();
     expect(By.css('#toastr-container'));
 
     component.webIdRemoveFriend = '';
-    component.addFriend();
+    component.removeFriend();
     expect(By.css('#toastr-container'));
 
   });

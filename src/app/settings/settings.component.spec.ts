@@ -33,4 +33,50 @@ describe('SettingsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+  it('should display input error (add)', () => {
+
+    spy = spyOn(component.chat, 'addFriend').and.callFake(function(friend) {
+      return null;
+    });
+
+    component.webIdAddFriend = 'test';
+    component.addFriend();
+    expect(!By.css('#toastr-container'));
+
+    component.webIdAddFriend = null;
+    component.addFriend();
+    expect(By.css('#toastr-container'));
+
+    component.webIdAddFriend = '';
+    component.addFriend();
+    expect(By.css('#toastr-container'));
+  });
+
+  it('should display input error (remove)', () => {
+
+    spy = spyOn(component.chat, 'removeFriend').and.callFake(function(friend) {
+      return null;
+    });
+
+    component.webIdRemoveFriend = 'test';
+    component.removeFriend();
+    expect(!By.css('#toastr-container'));
+
+    component.webIdRemoveFriend = null;
+    component.removeFriend();
+    expect(By.css('#toastr-container'));
+
+    component.webIdRemoveFriend = '';
+    component.removeFriend();
+    expect(By.css('#toastr-container'));
+
+  });
+
+  it('should click intro', () => {
+    component.webIdAddFriend = null;
+    component.handleSubmit({keyCode: 13});
+    expect(By.css('#toastr-container'));
+  });
+
 });

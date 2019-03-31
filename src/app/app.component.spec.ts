@@ -3,6 +3,8 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ToastrModule } from 'ngx-toastr';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -11,7 +13,7 @@ describe('AppComponent', () => {
         AppComponent, NavbarComponent
       ],
       imports: [
-        RouterTestingModule , ToastrModule.forRoot()
+        RouterTestingModule , ToastrModule.forRoot(), FormsModule, NgSelectModule
       ]
     }).compileComponents();
   }));

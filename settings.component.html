@@ -1,0 +1,26 @@
+<div class="settingsFormWrapper">
+  <div class="setting">
+      <h2 i18n="@@addFriendTitle">Add a friend</h2>
+      <p i18n="@@addFriendNote">
+        Note: although this adds this user to your friends list, this does not mean that we you can chat with him/her. <br>
+        The other user should add you to their list and then click on your profile in order to set everything up.
+      </p>
+      <div class="group">
+          <input class="textInput"
+          [(ngModel)]="webIdAddFriend" (keydown)="handleSubmit($event)"
+          placeholder="Enter your friend's WebID"/>
+          <button i18n="@@addFriend" class="button" (click)=addFriend()>Add friend</button>
+      </div>
+
+      <h2 i18n="@@removeFriendTitle">Remove a friend</h2>
+      <p i18n="@@removeFriendNote">
+        Note: this will delete a friend from your POD and (IMPORTANT!) all the messages that you have sent.
+      </p>
+      <div class="group">
+          <input class="textInput"
+          [(ngModel)]="webIdRemoveFriend" (keydown)="handleSubmit($event)"
+          placeholder="Enter your friend's WebID"/>
+          <button i18n="@@removeFriend" class="button" (click)=removeFriend()>Remove friend</button>
+      </div>
+  </div>
+</div>

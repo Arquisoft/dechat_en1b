@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
-import { SolidSession } from '../models/solid-session.model';
+import {Injectable} from '@angular/core';
+import {SolidSession} from '../models/solid-session.model';
+// TODO: Remove any UI interaction from this service
+import {ChatMessage} from '../models/chat-message.model';
+import {NgForm} from '@angular/forms';
+import {ToastrService} from 'ngx-toastr';
+import {NamedNode} from 'src/assets/types/rdflib';
+
 declare let solid: any;
 declare let $rdf: any;
 
 // import * as $rdf from 'rdflib'
-
-// TODO: Remove any UI interaction from this service
-import { ChatMessage } from '../models/chat-message.model';
-import { NgForm } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { fetcher, NamedNode } from 'src/assets/types/rdflib';
-import { of } from 'rxjs';
 
 const VCARD = $rdf.Namespace('http://www.w3.org/2006/vcard/ns#');
 const FOAF = $rdf.Namespace('http://xmlns.com/foaf/0.1/');
@@ -73,7 +72,7 @@ export class RdfService {
    */
   getValueFromVcard = (node: string, webId?: string): string | any => {
     return this.getValueFromNamespace(node, VCARD, webId);
-  };
+  }
 
   /**
    * Gets a node that matches the specified pattern using the FOAF onthology
@@ -83,7 +82,7 @@ export class RdfService {
    */
   getValueFromFoaf = (node: string, webId?: string) => {
     return this.getValueFromNamespace(node, FOAF, webId);
-  };
+  }
 
   /**
    * Gets a node that matches the specified pattern using the FOAF onthology
@@ -93,8 +92,14 @@ export class RdfService {
    */
   getValueFromSchema = (node: string, webId?: string) => {
     return this.getValueFromNamespace(node, SCHEMA, webId);
-  };
+  }
 
+  /**
+   * Method that transforms the data from a form to update the profile.
+   * @param form With the new values.
+   * @param me Current user in session.
+   * @param doc
+   */
   transformDataForm = (form: NgForm, me: any, doc: any) => {
     const insertions = [];
     const deletions = [];
@@ -135,13 +140,21 @@ export class RdfService {
         }
       }
     });
-
     return {
       insertions: insertions,
       deletions: deletions
     };
   }
 
+  // TODO: improve this JSDoc
+  /**
+   * Method that adds a new linked field.
+   * @param insertions
+   * @param predicate
+   * @param fieldValue
+   * @param why
+   * @param me
+   */
   private addNewLinkedField(field: string, insertions: any[], predicate: any, fieldValue: any, why: any, me: any) {
     // Generate a new ID. This id can be anything but needs to be unique.
     const newId = field + ':' + Date.now();
@@ -164,20 +177,25 @@ export class RdfService {
     insertions.push($rdf.st(me, newPredicate, newSubject, why));
   }
 
+  /**
+   * Returns an URI for a given resource.
+   * @param field To be transformed.
+   * @param me Default URI.
+   */
   private getUriForField(field, me): string {
     let uriString: string;
     let uri: any;
 
-    switch(field) {
+    switch (field) {
       case 'phone':
         uriString = this.getValueFromVcard('hasTelephone');
-        if(uriString) {
+        if (uriString) {
           uri = $rdf.sym(uriString);
         }
         break;
       case 'email':
         uriString = this.getValueFromVcard('hasEmail');
-        if(uriString) {
+        if (uriString) {
           uri = $rdf.sym(uriString);
         }
         break;
@@ -217,6 +235,11 @@ export class RdfService {
     return fieldValue;
   }
 
+  /**
+   * Returns the value of a field of the old profile (before update).
+   * @param field To be accessed.
+   * @param oldProfile To be accessed.
+   */
   private getOldFieldValue(field: string, oldProfile: { [x: string]: any; }): any {
     let oldValue: any;
 
@@ -235,10 +258,13 @@ export class RdfService {
         oldValue = oldProfile[field];
         break;
     }
-
     return oldValue;
   }
 
+  /**
+   * Auxiliary method to return the name of field.
+   * @param field To get the name from.
+   */
   private getFieldName(field: string): string {
     switch (field) {
       case 'company':
@@ -251,6 +277,10 @@ export class RdfService {
     }
   }
 
+  /**
+   *  Method that uses the update manager to, given the data of a form, update the info in your profile.
+   * @param form Form with the new profile data.
+   */
   updateProfile = async (form: NgForm) => {
     const me = $rdf.sym(this.session.webId);
     const doc = $rdf.NamedNode.fromValue(this.session.webId.split('#')[0]);
@@ -270,6 +300,9 @@ export class RdfService {
     }
   }
 
+  /**
+   * Function to get address.
+   */
   getAddress = () => {
     const linkedUri = this.getValueFromVcard('hasAddress');
 
@@ -281,32 +314,36 @@ export class RdfService {
         street: this.getValueFromVcard('street-address', linkedUri),
       };
     }
-
     return {};
   }
 
-  // Function to get email. This returns only the first email, which is temporary
+  /**
+   * Function to get email. This returns only the first email, which is temporary
+   */
   getEmail = () => {
     const linkedUri = this.getValueFromVcard('hasEmail');
 
     if (linkedUri) {
       return this.getValueFromVcard('value', linkedUri).split('mailto:')[1];
     }
-
     return '';
   }
 
-  // Function to get phone number. This returns only the first phone number, which is temporary. It also ignores the type.
+  /**
+   * Function to get phone number. This returns only the first phone number, which is temporary. It also ignores the type.
+   */
   getPhone = () => {
     const linkedUri = this.getValueFromVcard('hasTelephone');
 
-    if(linkedUri) {
+    if (linkedUri) {
       return this.getValueFromVcard('value', linkedUri).split('tel:+')[1];
     }
-  };
+  }
 
+  /**
+   * Returns the whole profile of the current user in session.
+   */
   getProfile = async () => {
-
     if (!this.session) {
       await this.getSession();
     }
@@ -326,13 +363,13 @@ export class RdfService {
     } catch (error) {
       console.log(`Error fetching data: ${error}`);
     }
-  };
+  }
 
   /**
    * Gets any resource that matches the node, using the provided Namespace
-   * @param {string} node The name of the predicate to be applied using the provided Namespace 
+   * @param {string} node The name of the predicate to be applied using the provided Namespace
    * @param {$rdf.namespace} namespace The RDF Namespace
-   * @param {string?} webId The webId URL (e.g. https://yourpod.solid.community/profile/card#me) 
+   * @param {string?} webId The webId URL (e.g. https://yourpod.solid.community/profile/card#me)
    */
   private getValueFromNamespace(node: string, namespace: any, webId?: string): string | any {
     const store = this.store.any($rdf.sym(webId || this.session.webId), namespace(node));
@@ -346,10 +383,21 @@ export class RdfService {
   // EXTRA FUNCTIONS //
   ////////////////////
 
+  /**
+   * Method to extract a value from the profile and return it as string.
+   * @param field To be accessed.
+   */
   async getFieldAsStringFromProfile(field: string): Promise<string> {
       return this.getFieldAsString(this.session.webId, field, VCARD);
   }
 
+  /**
+   * Generic method to extract a value as a string given a field to be accessed and the namespace where we
+   * are working.
+   * @param webId Where the resource is located.
+   * @param field To be accessed.
+   * @param namespace To work with.
+   */
   private async getFieldAsString(webId: string, field: string, namespace: any): Promise<string> {
     try {
       await this.fetcher.load(this.store.sym(webId).doc());
@@ -359,6 +407,13 @@ export class RdfService {
     }
   }
 
+  /**
+   * Generic method to extract a value as and array given a field to be accessed and the namespace where we
+   * are working.
+   * @param webId Where the resource is located.
+   * @param field To be accessed.
+   * @param namespace To work with.
+   */
   private async getDataAsArray(webId: string | String, field: string, namespace: any): Promise<Array<NamedNode>> {
     try {
         await this.fetcher.load(this.store.sym(webId).doc());
@@ -369,25 +424,41 @@ export class RdfService {
     }
   }
 
+  /**
+   * Returns and array containing the nodes representing the friends of the current user.
+   */
   async getFriends(): Promise<Array<NamedNode>> {
     const webId = this.session.webId;
     return this.getDataAsArray(webId, 'knows', FOAF);
   }
 
+  /**
+   * Returns a value from a given field provided a webId.
+   * @param webId In this case we are going to use the webId of our contacts.
+   * @param field To be accessed.
+   */
   async getFriendData(webId: any, field: string): Promise<String> {
     return this.getFieldAsString(webId, field, VCARD);
   }
 
+  /**
+   * Returns an array of nodes from the container specified.
+   * @param container To be accessed.
+   */
   async getElementsFromContainer(container: String): Promise<Array<NamedNode>> {
     return this.getDataAsArray(container, 'contains', LDP);
   }
 
+  /**
+   * Method to add a friend to the current user's friend list given its webId.
+   * @param webId Of the friend to be added.
+   */
   addFriend(webId: string) {
     const me = $rdf.sym(this.session.webId);
     const friend = $rdf.sym(webId);
     const toBeInserted = $rdf.st(me, FOAF('knows'), friend, me.doc());
     this.updateManager.update([], toBeInserted, (response, success, message) => {
-      if(success) {
+      if (success) {
           this.toastr.success('Friend added', 'Success!');
         } else {
           this.toastr.error('Message: ' + message, 'An error has occurred');
@@ -395,6 +466,10 @@ export class RdfService {
     });
   }
 
+  /**
+   * Method to remove a friend from the current user's friend list given its webId.
+   * @param webId Of the friend to be removed.
+   */
   removeFriend(webId: string) {
     const me = $rdf.sym(this.session.webId);
     const friend = $rdf.sym(webId);
@@ -410,16 +485,15 @@ export class RdfService {
 
   // TODO: when creating a message, use an autogenerated UID based on the timestamp for the name
   /**
-   * Posts a message to a container
-   * @param message
-   * @param webId
+   * Posts a message to a container.
+   * @param message To be posted.
+   * @param webId Where the message is going to be placed.
    */
-  async postMessage(message: ChatMessage, webId: any) {
+  postMessage = async (message: ChatMessage, webId: any) => {
     const acl = $rdf.graph();
     acl.add();
     $rdf.serialize(null, acl, webId, (err: any, body: any) => {
       // use something like updateManager to PUT the body
     });
   }
-
 }

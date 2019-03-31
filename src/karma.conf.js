@@ -21,7 +21,7 @@ module.exports = function (config) {
       fixWebpackSourcePaths: true,
       combineBrowserReports: true,
       skipFilesWithNoCoverage: true,
-      verbose: true
+      verbose: false
     },
     reporters: ["progress", "kjhtml" , "coverage-istanbul"],
     port: 9876,
@@ -31,10 +31,10 @@ module.exports = function (config) {
     browsers: ["Chrome"],
     customLaunchers: {
       ChromeHeadlessCI: {
-        base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
+        base: "ChromeHeadless",
+        flags: ["--no-sandbox"]
       }
     },
-    singleRun: false
+    singleRun: false,
   });
 };

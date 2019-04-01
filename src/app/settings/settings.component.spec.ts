@@ -8,6 +8,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { RouterTestingModule } from '@angular/router/testing';
 import {By} from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SettingsComponent', () => {
 
@@ -18,7 +19,7 @@ describe('SettingsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SettingsComponent ],
-      imports: [ FormsModule , ToastrModule.forRoot(), NgSelectModule, RouterTestingModule ],
+      imports: [BrowserAnimationsModule, FormsModule , ToastrModule.forRoot(), NgSelectModule, RouterTestingModule ],
       providers: [ ChatService , ToastrService ]
     })
     .compileComponents();

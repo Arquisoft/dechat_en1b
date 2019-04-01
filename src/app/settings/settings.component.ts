@@ -18,7 +18,7 @@ export class SettingsComponent implements OnInit {
   urlAddedFriend: string;
   customProviderUrl: string;
 
-  constructor(private chat: ChatService, private toastr: ToastrService, private auth: AuthService, private sdv: Router) { }
+  constructor(public chat: ChatService, private toastr: ToastrService, private auth: AuthService, private sdv: Router) { }
 
   ngOnInit() {
     this.identityProviders = this.auth.getIdentityProviders();

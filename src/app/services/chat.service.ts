@@ -323,24 +323,24 @@ export class ChatService {
   private grantAccessToFolder(path: string | String, user: User) {
     const webId = user.webId.replace('#me', '#');
     const acl =
-      `@prefix : <#>.
-    @prefix n0: <http://www.w3.org/ns/auth/acl#>.
-    @prefix ch: <./>.
-    @prefix c: </profile/card#>.
-    @prefix c0: <${webId}>.
+       `@prefix : <#>.
+        @prefix n0: <http://www.w3.org/ns/auth/acl#>.
+        @prefix ch: <./>.
+        @prefix c: </profile/card#>.
+        @prefix c0: <${webId}>.
 
-    :ControlReadWrite
-        a n0:Authorization;
-        n0:accessTo ch:;
-        n0:agent c:me;
-        n0:defaultForNew ch:;
-        n0:mode n0:Control, n0:Read, n0:Write.
-    :Read
-        a n0:Authorization;
-        n0:accessTo ch:;
-        n0:agent c0:me;
-        n0:defaultForNew ch:;
-        n0:mode n0:Read.`;
+        :ControlReadWrite
+            a n0:Authorization;
+            n0:accessTo ch:;
+            n0:agent c:me;
+            n0:defaultForNew ch:;
+            n0:mode n0:Control, n0:Read, n0:Write.
+        :Read
+            a n0:Authorization;
+            n0:accessTo ch:;
+            n0:agent c0:me;
+            n0:defaultForNew ch:;
+            n0:mode n0:Read.`;
     path += '.acl';
     fileClient.updateFile(path, acl).then((success: any) => {
       console.log('Folder permisions added');

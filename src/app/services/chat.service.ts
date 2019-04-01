@@ -301,11 +301,17 @@ export class ChatService {
 
   /**
    * Auxiliary method to create a folder structure given its path.
+   * It should create the folders one by one.
    * @param path To the folder to be created.
    */
   private async createFolderStructure(path: String) {
-    await fileClient.createFolder(path).then((success: any) => {
-      console.log(`Created folder ${path}.`);
+    const root = this.thisUser.value.webId.replace('/profile/card#me', '/');
+    await fileClient.createFolder(root + 'private/').then((success: any) => {
+      fileClient.createFolder(root + 'private/dechat/').then((success: any) => {
+        fileClient.createFolder(path).then((success: any) => {
+          console.log("Folder structure created");
+        }, (err: string) => console.log('Could not create folder structure: ' + err));
+      }, (err: string) => console.log('Could not create folder structure: ' + err));
     }, (err: string) => console.log('Could not create folder structure: ' + err));
   }
 

@@ -23,4 +23,10 @@ describe('ChatService', () => {
     expect(By.css('#toastr-container'));
   });
 
+  it('should send a message', () => {
+    const service: ChatService = TestBed.get(ChatService);
+    service.sendMessage("Test");
+    expect(By.css('#toastr-container'));
+  });
+
 });

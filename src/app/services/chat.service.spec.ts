@@ -4,6 +4,8 @@ import { ChatService } from './chat.service';
 import { RdfService } from './rdf.service';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 
+import {By} from '@angular/platform-browser';
+
 describe('ChatService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [ ToastrModule.forRoot() ],
@@ -15,9 +17,10 @@ describe('ChatService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should be created', () => {
+  it('should check null when done correctly', () => {
     const service: ChatService = TestBed.get(ChatService);
-
+    service.changeChat(null);
+    expect(By.css('#toastr-container'));
   });
 
 });

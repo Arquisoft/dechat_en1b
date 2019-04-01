@@ -4,6 +4,7 @@ import { MessageComponent } from './message.component';
 import { ChatService } from '../services/chat.service';
 import { ToastrModule } from 'ngx-toastr';
 import {By} from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('MessageComponent', () => {
   let component: MessageComponent;
@@ -12,7 +13,7 @@ describe('MessageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MessageComponent ],
-      imports: [ ToastrModule.forRoot() ],
+      imports: [ BrowserAnimationsModule, ToastrModule.forRoot() ],
       providers: [ ChatService ]
     })
     .compileComponents();

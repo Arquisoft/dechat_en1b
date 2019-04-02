@@ -19,6 +19,7 @@ script:
   - npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
   - npm run e2e
   - npm run docs:build
+  - npm run buildGHPages
   
 after_success:
   - npm run coverage

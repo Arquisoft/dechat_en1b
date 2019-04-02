@@ -331,59 +331,58 @@
                                 
                                 <h1 id="runtime-view-">Runtime View </h1>
 <p><strong>Contents.</strong></p>
-<p>The runtime view describes concrete behavior and interactions of the
-system&#x2019;s building blocks in form of scenarios from the following areas:</p>
+<p>The view of the application can be divided into four different parts:</p>
 <ul>
-<li><p>important use cases or features: how do building blocks execute
-them?</p>
-</li>
-<li><p>interactions at critical external interfaces: how do building blocks
-cooperate with users and neighboring systems?</p>
-</li>
-<li><p>operation and administration: launch, start-up, stop</p>
-</li>
-<li><p>error and exception scenarios</p>
-</li>
+<li>Chat</li>
+<li>Settings</li>
+<li>Help</li>
+<li>Profile</li>
 </ul>
-<p>Remark: The main criterion for the choice of possible scenarios
-(sequences, workflows) is their <strong>architectural relevance</strong>. It is
-<strong>not</strong> important to describe a large number of scenarios. You should
-rather document a representative selection.</p>
-<p><strong>Motivation.</strong></p>
-<p>You should understand how (instances of) building blocks of your system
-perform their job and communicate at runtime. You will mainly capture
-scenarios in your documentation to communicate your architecture to
-stakeholders that are less willing or able to read and understand the
-static models (building block view, deployment view).</p>
-<p><strong>Form.</strong></p>
-<p>There are many notations for describing scenarios, e.g.</p>
+<p><img src="images/navBar.png" alt="Navigation Bar of the application"></p>
+<p><strong>Chat View</strong></p>
+<p>In the chat view we can find our friends list where we can select the one we want to talk to. To exchange messages with the selected user we have to click on his contact but he also have to add us as a friend and click on ours. If the user tries to send a message to a contact that hasn&apos;t added him or hasn&apos;t clicked on his contact he will get a message notifying him.</p>
+<p>The steps to be able to send messages to a friend are the following: </p>
+<ol>
+<li>The user clicks on a friend on his friends list.</li>
+<li>This creates a folder in the user&apos;s pod to store the conversation with that user.</li>
+<li>The user waits for the user to do the same.</li>
+<li>When the folders on the corresponding pods are created the conversation is ready</li>
+</ol>
+<p>Once the conversation has been opened succesfully, both users can send messages to each other by typing on the textfield at the bottom of the chat and pressing &apos;Enter&apos; or pressing the button &apos;Send&apos;. </p>
+<p>The sent messages will contain the name of the sender, the date of the message and the content.</p>
+<p>When the user clicks on a conversation that already have messages, he will read the received messages.</p>
+<p><strong>Settings</strong></p>
+<p>In the Settings view we will be able to add and remove friends. 
+If we want to add a friend we have to select the provider of his account and write his username. </p>
+<p>If we want to remove a friend, we have to write his card url.</p>
+<p>Adding a friend:</p>
+<ol>
+<li>Write your friend&apos;s username in the text field.</li>
+<li>Open the combobox and select the provider of your friend&apos;s account.</li>
+<li>If the option selected is &apos;Other&apos;, a new text field will appear and you have to write the provider&apos;s name.</li>
+<li>Click on &apos;Add friend&apos; button.</li>
+</ol>
+<p>Removing a friend:</p>
+<ol>
+<li>Write your friend&apos;s card url.</li>
+<li>Click on the &apos;Remove&apos; button.</li>
+</ol>
+<p><img src="images/settingsV1.png" alt="Settings View"></p>
+<p><strong>Help</strong></p>
+<p>This view won&apos;t have any functionality but it will suport some usefull information for the user.</p>
+<p><img src="images/helpV1.png" alt="Help View"></p>
+<p><strong>Profile</strong></p>
+<p>The profile view will be oritented to update the user&apos;s information. We will be able to update the following fields:</p>
 <ul>
-<li><p>numbered list of steps (in natural language)</p>
-</li>
-<li><p>activity diagrams or flow charts</p>
-</li>
-<li><p>sequence diagrams</p>
-</li>
-<li><p>BPMN or EPCs (event process chains)</p>
-</li>
-<li><p>state machines</p>
-</li>
-<li><p>&#x2026;</p>
-</li>
+<li>Name </li>
+<li>Phone</li>
+<li>Role</li>
+<li>Email</li>
+<li>Organization</li>
+<li>Address</li>
 </ul>
-<h2 id="runtime-scenario-1">&lt;Runtime Scenario 1&gt;</h2>
-<ul>
-<li><p><em>&lt;insert runtime diagram or textual description of the
-scenario&gt;</em></p>
-</li>
-<li><p><em>&lt;insert description of the notable aspects of the interactions
-between the building block instances depicted in this diagram.&gt;</em></p>
-</li>
-</ul>
-<h2 id="runtime-scenario-2-">&lt;Runtime Scenario 2&gt; </h2>
-<p>...</p>
-<h2 id="runtime-scenario-n-">&lt;Runtime Scenario n&gt; </h2>
-<p>...</p>
+<p>Once the user has already filled the information he has to press the &apos;Save&apos; button to update the information.</p>
+<p><img src="images/profileV1.png" alt="Profile View"></p>
 
                                 
                                 </section>
@@ -427,7 +426,7 @@ between the building block instances depicted in this diagram.&gt;</em></p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Runtime View","level":"1.7","depth":1,"next":{"title":"Deployment View","level":"1.8","depth":1,"path":"07. Deployment View.md","ref":"07. Deployment View.md","articles":[]},"previous":{"title":"Building Block View","level":"1.6","depth":1,"path":"05. Building Block View.md","ref":"05. Building Block View.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"06. Runtime View.md","mtime":"2019-02-26T10:09:53.549Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-04-01T09:59:59.378Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Runtime View","level":"1.7","depth":1,"next":{"title":"Deployment View","level":"1.8","depth":1,"path":"07. Deployment View.md","ref":"07. Deployment View.md","articles":[]},"previous":{"title":"Building Block View","level":"1.6","depth":1,"path":"05. Building Block View.md","ref":"05. Building Block View.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"06. Runtime View.md","mtime":"2019-04-01T18:37:03.680Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-04-02T09:17:16.921Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

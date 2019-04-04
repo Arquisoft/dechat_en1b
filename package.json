@@ -15,8 +15,8 @@
     "extract-i18n": "ng xi18n solid-app --i18n-format xlf --output-path locale --i18n-locale en && ng run solid-app:xliffmerge",
     "start-en": "ng serve --configuration=en",
     "cucumber": "cucumber-js",
-    "buildGhHages": "npm install -g angular-cli-ghpages && ng build --prod --base-href \"https://arquisoft.github.io/dechat_en1b/\"",
-    "launchGHPages": "ngh --dir dist/solid-app"
+    "ghpages-build": "npm install -g angular-cli-ghpages && ng build --prod --base-href \"https://arquisoft.github.io/dechat_en1b/\"",
+    "ghpages-launch": "ngh --dir dist/solid-app"
   },
   "browser": {
     "crypto": false,

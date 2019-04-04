@@ -159,7 +159,7 @@ export class ChatService {
    * @param user1 User who sends.
    * @param user2 User who receives.
    */
-  private async getChatUrl(user1: User, user2: User): Promise<String> {
+  public async getChatUrl(user1: User, user2: User): Promise<String> {
     await this.rdf.getSession();
     const root = user1.webId.replace('/profile/card#me', '/private/dechat/chat_');
     const name = user2.webId.split('/')[2].split('.')[0];
@@ -185,7 +185,7 @@ export class ChatService {
    * Method to add a message to the ones present in the system.
    * @param message Message to be added.
    */
-  private addMessage(message: ChatMessage) {
+  public addMessage(message: ChatMessage) {
     this.chatMessages.push(message);
     this.chatMessages.sort(this.sortByDateDesc);
   }
@@ -198,7 +198,7 @@ export class ChatService {
     if (msg !== '' && this.otherUser) {
       const newMsg = new ChatMessage(this.thisUser.value.username, msg);
       this.addMessage(newMsg);
-      this.postMessage(newMsg).then(res => this.loadMessages());
+      this.postMessage(newMsg).then(() => this.loadMessages());
     }
   }
 
@@ -220,7 +220,7 @@ export class ChatService {
     `;
     const path = await this.getChatUrl(this.thisUser.value, this.otherUser) + 'message.ttl';
     fileClient.createFile(path).then((fileCreated: any) => {
-      fileClient.updateFile(fileCreated, message).then(success => {
+      fileClient.updateFile(fileCreated, message).then(() => {
         console.log('Message has been sent successfully');
       }, (err: any) => console.log(err));
     });
@@ -232,10 +232,14 @@ export class ChatService {
    */
   async changeChat(user: User) {
     this.isActive.next(true);
-    this.otherUser = user;
-    this.checkFolderStructure().then(response => {
-      this.loadMessages();
-    });
+    if (user === null) {
+      console.log('Trying to change to chat with a null user!');
+    } else {
+      this.otherUser = user;
+      this.checkFolderStructure().then(() => {
+        this.loadMessages();
+      });
+    }
   }
 
   // Solid methods
@@ -255,7 +259,7 @@ export class ChatService {
    * @param webId Of the user that we are removing.
    */
   removeFriend(webId: string) {
-    const name = webId.split('/')[2].split('.')[0];
+    // const name = webId.split('/')[2].split('.')[0];
     if (this.thisUser.value.webId !== webId) {
       this.rdf.removeFriend(webId);
       this.getChatUrl(this.thisUser.value, new User(webId, '', '')).then(response => {
@@ -270,7 +274,7 @@ export class ChatService {
    * @param path Of the folder to be deleted.
    */
   private async removeFolderStructure(path: string) {
-    fileClient.deleteFolder(path).then((success: any) => {
+    fileClient.deleteFolder(path).then(() => {
       console.log(`Removed folder ${path}.`);
     }, (err: any) => console.log(err));
   }
@@ -284,11 +288,11 @@ export class ChatService {
     await this.rdf.getSession();
     try {
       this.getChatUrl(this.thisUser.value, this.otherUser).then(charUrl => {
-        fileClient.readFolder(charUrl).then((success: any) => {
+        fileClient.readFolder(charUrl).then(() => {
           console.log('Folder structure correct');
-        }, (err: any) => {
+        }, () => {
           console.log('Attempting to create: ' + charUrl);
-          this.createFolderStructure(charUrl).then(res => {
+          this.createFolderStructure(charUrl).then(() => {
             console.log('Creating ACL file...');
             this.grantAccessToFolder(charUrl, this.otherUser);
           });
@@ -306,10 +310,10 @@ export class ChatService {
    */
   private async createFolderStructure(path: String) {
     const root = this.thisUser.value.webId.replace('/profile/card#me', '/');
-    await fileClient.createFolder(root + 'private/').then((success: any) => {
-      fileClient.createFolder(root + 'private/dechat/').then((success: any) => {
-        fileClient.createFolder(path).then((success: any) => {
-          console.log("Folder structure created");
+    await fileClient.createFolder(root + 'private/').then(() => {
+      fileClient.createFolder(root + 'private/dechat/').then(() => {
+        fileClient.createFolder(path).then(() => {
+          console.log('Folder structure created');
         }, (err: string) => console.log('Could not create folder structure: ' + err));
       }, (err: string) => console.log('Could not create folder structure: ' + err));
     }, (err: string) => console.log('Could not create folder structure: ' + err));
@@ -342,7 +346,7 @@ export class ChatService {
             n0:defaultForNew ch:;
             n0:mode n0:Read.`;
     path += '.acl';
-    fileClient.updateFile(path, acl).then((success: any) => {
+    fileClient.updateFile(path, acl).then(() => {
       console.log('Folder permisions added');
     }, (err: string) => console.log('Could not set folder permisions' + err));
   }

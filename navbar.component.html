@@ -1,0 +1,34 @@
+<div class="topnav">
+    <div class="topnav">
+      <a class="menu-item" [routerLink]="['/chat']">
+        <img class="logo" src="../assets/images/Solid.png">
+      </a>
+      <span class="logoText">Solid DeChat</span>
+
+      <select class="menu-item profile-menu">
+        <optionvalue=”javascript:void(0)”>
+        <option class="menu-item" [routerLink]="['/card']"><span i18n="@@solidProfile">Solid Profile</span></option>
+        <option class="menu-item" [routerLink]="['/settings']"><span i18n="@@settings">Settings</span></option>
+        <option class="menu-item" (click)="logout()"><span i18n="@@signOut">Sign out</span></option>      
+      </select>
+      
+      <!--<a class="menu-item" [routerLink]="['/settings']">
+        <div>
+          <i class="fas fa-sliders-h"></i>
+        </div>
+        <span i18n="@@settings">Settings</span>
+      </a>
+      <a class="menu-item" [routerLink]="['/card']">
+        <div>
+          <i class="fas fa-user"></i>
+        </div>
+        <span i18n="@@solidProfile">Solid Profile</span>
+      </a>
+      <a class="menu-item profile-menu" (click)="logout()">
+        <div>
+            <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <span i18n="@@signOut">Sign out</span>
+      </a>-->
+    </div>
+</div>

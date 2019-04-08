@@ -4,14 +4,12 @@
         <img class="logo" src="../assets/images/Solid.png">
       </a>
       <span class="logoText">Solid DeChat</span>
-
-      <select class="menu-item profile-menu">
-        <optionvalue=”javascript:void(0)”>
-        <option class="menu-item" [routerLink]="['/card']"><span i18n="@@solidProfile">Solid Profile</span></option>
-        <option class="menu-item" [routerLink]="['/settings']"><span i18n="@@settings">Settings</span></option>
-        <option class="menu-item" (click)="logout()"><span i18n="@@signOut">Sign out</span></option>      
-      </select>
-      
+        <select class="menu-item profile-menu img">   
+          <optionvalue=”javascript:void(0)”>
+          <option class="menu-item" [routerLink]="['/card']">Solid Profile</option>
+          <option class="menu-item" [routerLink]="['/settings']">Settings</option>
+          <option class="menu-item" (click)="logout()">Sign out</option>      
+        </select>
       <!--<a class="menu-item" [routerLink]="['/settings']">
         <div>
           <i class="fas fa-sliders-h"></i>

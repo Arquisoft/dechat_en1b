@@ -43,9 +43,11 @@
   
   .topnav .menu-item {
     display: inline-block;
-    font-size: 10px;
+    background-color: #7C4DFF;
+    color: #fff;
+    font-size: 15px;
     line-height: 13px;
-    width: 100px;
+    width: 150px;
     height: 100%;
     text-align: center;
   }

@@ -1,20 +1,24 @@
 <div class="topnav">
   <div class="topnav">
-    <a class="menu-item" [routerLink]="['/chat']">
-      <img class="logo" src="../assets/images/Solid.png">
-    </a>
+    <img class="logo" src="../assets/images/Solid.png">
     <span class="logoText">Solid DeChat</span>
-    <select class="menu-item profile-menu img">
-      <optionvalue=”javascript:void(0)”>
-      <option class="menu-item" [routerLink]="['/card']">Solid Profile</option>
-      <option class="menu-item" [routerLink]="['/settings']">Settings</option>
-      <option class="menu-item" (click)="logout()">Sign out</option>
-    </select>
-    <!--<a class="menu-item" [routerLink]="['/settings']">
+    <a class="menu-item" [routerLink]="['/chat']">
+      <div>
+        <i class="far fa-comment"></i>
+      </div>
+      <span i18n="@@chat">Chat</span>
+    </a>
+    <a class="menu-item" [routerLink]="['/settings']">
       <div>
         <i class="fas fa-sliders-h"></i>
       </div>
       <span i18n="@@settings">Settings</span>
+    </a>
+    <a class="menu-item" [routerLink]="['/help']">
+      <div>
+        <i class="fas fa-question"></i>
+      </div>
+      <span i18n="@@help">Help</span>
     </a>
     <a class="menu-item" [routerLink]="['/card']">
       <div>
@@ -24,9 +28,9 @@
     </a>
     <a class="menu-item profile-menu" (click)="logout()">
       <div>
-          <i class="fas fa-sign-out-alt"></i>
+        <i class="fas fa-sign-out-alt"></i>
       </div>
       <span i18n="@@signOut">Sign out</span>
-    </a>-->
+    </a>
   </div>
 </div>

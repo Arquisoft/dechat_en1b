@@ -1,36 +1,36 @@
 <div class="topnav">
-    <div class="topnav">
-      <img class="logo" src="../assets/images/Solid.png">
-      <span class="logoText">Solid DeChat</span>
-      <a class="menu-item" [routerLink]="['/chat']">
-        <div>
-          <i class="far fa-comment"></i>
-        </div>
-        <span i18n="@@chat">Chat</span>
-      </a>
-      <a class="menu-item" [routerLink]="['/settings']">
-        <div>
-          <i class="fas fa-sliders-h"></i>
-        </div>
-        <span i18n="@@settings">Settings</span>
-      </a>
-      <a class="menu-item" [routerLink]="['/help']">
-        <div>
-            <i class="fas fa-question"></i>
-        </div>
-        <span i18n="@@help">Help</span>
-      </a>
-      <a class="menu-item" [routerLink]="['/card']">
-        <div>
-          <i class="fas fa-user"></i>
-        </div>
-        <span i18n="@@solidProfile">Solid Profile</span>
-      </a>
-      <a class="menu-item profile-menu" (click)="logout()">
-        <div>
-            <i class="fas fa-sign-out-alt"></i>
-        </div>
-        <span i18n="@@signOut">Sign out</span>
-      </a>
-    </div>
+  <div class="topnav">
+    <img class="logo" src="../assets/images/Solid.png">
+    <span class="logoText">Solid DeChat</span>
+    <a class="menu-item" [routerLink]="['/chat']">
+      <div>
+        <i class="far fa-comment"></i>
+      </div>
+      <span i18n="@@chat">Chat</span>
+    </a>
+    <a class="menu-item" [routerLink]="['/settings']">
+      <div>
+        <i class="fas fa-sliders-h"></i>
+      </div>
+      <span i18n="@@settings">Settings</span>
+    </a>
+    <a class="menu-item" [routerLink]="['/help']">
+      <div>
+        <i class="fas fa-question"></i>
+      </div>
+      <span i18n="@@help">Help</span>
+    </a>
+    <a class="menu-item" [routerLink]="['/card']">
+      <div>
+        <i class="fas fa-user"></i>
+      </div>
+      <span i18n="@@solidProfile">Solid Profile</span>
+    </a>
+    <a class="menu-item profile-menu" (click)="logout()">
+      <div>
+        <i class="fas fa-sign-out-alt"></i>
+      </div>
+      <span i18n="@@signOut">Sign out</span>
+    </a>
+  </div>
 </div>

@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Architecture Decisions · GitBook</title>
+        <title>Deployment View · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="10. Quality Requirements.html" />
+    <link rel="next" href="08. Crosscutting Concepts.html" />
     
     
-    <link rel="prev" href="08. Crosscutting Concepts.html" />
+    <link rel="prev" href="06. Runtime View.html" />
     
 
     </head>
@@ -180,7 +180,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.8" data-path="07. Deployment View.html">
+        <li class="chapter active" data-level="1.8" data-path="07. Deployment View.html">
             
                 <a href="07. Deployment View.html">
             
@@ -206,7 +206,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.10" data-path="09. Architecture Decisions.html">
+        <li class="chapter " data-level="1.10" data-path="09. Architecture Decisions.html">
             
                 <a href="09. Architecture Decisions.html">
             
@@ -314,7 +314,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Architecture Decisions</a>
+        <a href="." >Deployment View</a>
     </h1>
 </div>
 
@@ -329,38 +329,19 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="design-decisions">Design Decisions</h1>
-<p><em>Table X. Architectural decisions</em></p>
-<table>
-<thead>
-<tr>
-<th>Architectural decisions</th>
-<th>Motivation</th>
-<th>Implications</th>
-<th>Judgement</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Usage of the  rdflib.js</td>
-<td>This library allows us to manage the Solid services,  so it is quite usefull in our proyect.</td>
-<td>Adapting the the services of the app to  work with this library.</td>
-<td>This library is quite complex to understand but it can provide the necessary tools to manage all the  implementation requirements regarding the development of functions interacting with the SOLID PODs. With all of this, we are able to access the model through a service without breaking the architecture.</td>
-<td>DM</td>
-</tr>
-<tr>
-<td>Application  of the MVC pattern</td>
-<td>By applying this pattern, it makes our application much clearer and  easier to scale and modify, as well as separating its different modules.</td>
-<td>Requires to separate  the Model, View and Control functionality.</td>
-<td>In the paper this architectural pattern looks so good used with AngularJS, but it forces us to maintain a very good organization. For example, we cannot mix services with presentation aspects so we have to be careful to keep the code maintainable and scalable at its maximum.</td>
-<td>DM</td>
-</tr>
-</tbody>
-</table>
-<p><em>DM :</em> Decision made.
-<em>AD :</em> Awaiting decision.
-<em>AI :</em> Awaiting information.</p>
+                                <h1 id="deployment-view-">Deployment View </h1>
+<p>Since this is a decentralized chat the deployment view is very simple, since it only
+focus in interaction between the users and the SOLID providers. Each one of those
+elements can not be detailed since they depend on the particular hardware architecture
+of the user/provider.</p>
+<h2 id="infrastructure-level-1">Infrastructure Level 1</h2>
+<p><img src="images/DeploymentViewDiagram.png" alt="Infrastucture diagram"></p>
+<h1 id="motivation">Motivation</h1>
+<p>Comunication the users.</p>
+<h1 id="quality-andor-performance-features">Quality and/or Performance Features</h1>
+<p>Depends on both devices, out of our control.</p>
+<h1 id="mapping-of-building-blocks-to-infrastructure">Mapping of Building Blocks to Infrastructure</h1>
+<p>There is no posible mapping.</p>
 
                                 
                                 </section>
@@ -388,12 +369,12 @@
 
             
                 
-                <a href="08. Crosscutting Concepts.html" class="navigation navigation-prev " aria-label="Previous page: Crosscutting Concepts">
+                <a href="06. Runtime View.html" class="navigation navigation-prev " aria-label="Previous page: Runtime View">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="10. Quality Requirements.html" class="navigation navigation-next " aria-label="Next page: Quality Requirements">
+                <a href="08. Crosscutting Concepts.html" class="navigation navigation-next " aria-label="Next page: Crosscutting Concepts">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -404,7 +385,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Architecture Decisions","level":"1.10","depth":1,"next":{"title":"Quality Requirements","level":"1.11","depth":1,"path":"10. Quality Requirements.md","ref":"10. Quality Requirements.md","articles":[]},"previous":{"title":"Crosscutting Concepts","level":"1.9","depth":1,"path":"08. Crosscutting Concepts.md","ref":"08. Crosscutting Concepts.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"09. Architecture Decisions.md","mtime":"2019-04-01T14:05:32.537Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-04-02T09:17:16.921Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Deployment View","level":"1.8","depth":1,"next":{"title":"Crosscutting Concepts","level":"1.9","depth":1,"path":"08. Crosscutting Concepts.md","ref":"08. Crosscutting Concepts.md","articles":[]},"previous":{"title":"Runtime View","level":"1.7","depth":1,"path":"06. Runtime View.md","ref":"06. Runtime View.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"07. Deployment View.md","mtime":"2019-04-09T09:35:47.013Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-04-10T09:38:05.873Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

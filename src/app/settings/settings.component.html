@@ -1,54 +1,65 @@
 <div class="settingsFormWrapper">
   <div class="setting">
-      <h2 i18n="@@addFriendTitle">Add a friend</h2>
-      <p i18n="@@addFriendNote">
-        Note: although this adds this user to your friends list, this does not mean that we you can chat with him/her. <br>
-        The other user should add you to their list and then click on your profile in order to set everything up.
-      </p>
-      <div class="group">
-          <input class="textInput"
-          [(ngModel)]="webIdAddFriend" (keydown)="handleSubmit($event)"
-          placeholder="Enter your friend's username"/>
-          <div>
-            <ng-select class="login-select"
-                       bindLabel="name"
-                       bindValue="loginUrl"
-                       placeholder="Select ID Provider"
-                       dropdownPosition="bottom"
-                       [items]="identityProviders"
-                       [(ngModel)]="selectedProviderUrl"
-                       style="width: 360px; height: 45px; margin-left: auto; margin-right: auto;">
-        
-              <!-- DROPDOWN TEMPLATE -->
-              <ng-template ng-option-tmp let-item="item">
-                <div style="height:40px; padding-top:10px; position: relative;">
-                  <img [src]="item.image" style="float: left; height: 32px; width: 32px; margin-top:-5px;" />
-                  <span style="float: left; margin-left: 10px;">{{ item.name }}</span>
-                  <div style="clear: both;"></div>
-                  <div class="item-divider"></div>
-                </div>
-              </ng-template>
-        
-            </ng-select>
-            <input type="text"
-                   class="wide-text"
-                   *ngIf="selectedProviderUrl===null"
-                   placeholder="Enter a provider"
-                   style="margin-top:10px; padding: 12px 10px; width: 340px; height: 16px; display: block; margin-left: auto; margin-right: auto;"
-                   [(ngModel)]="customProviderUrl" />
-          </div>
-          <button i18n="@@addFriend" class="button" (click)=addFriend()>Add friend</button>
-      </div>
+    <h2 i18n="@@addFriendTitle">Add a friend</h2>
+    <p i18n="@@addFriendNote">
+      Note: although this adds this user to your friends list, this does not mean that we you can chat with him/her.
+      <br>
+      The other user should add you to their list and then click on your profile in order to set everything up.
+    </p>
+    <div class="group">
+      <input class="textInput" [(ngModel)]="webIdAddFriend" (keydown)="handleSubmit($event)"
+        placeholder="Enter your friend's username" />
+      <div>
+        <ng-select class="login-select" bindLabel="name" bindValue="loginUrl" placeholder="Select ID Provider"
+          dropdownPosition="bottom" [items]="identityProviders" [(ngModel)]="selectedAddProviderUrl"
+          style="width: 360px; height: 45px; margin-left: auto; margin-right: auto;">
 
-      <h2 i18n="@@removeFriendTitle">Remove a friend</h2>
-      <p i18n="@@removeFriendNote">
-        Note: this will delete a friend from your POD and (IMPORTANT!) all the messages that you have sent.
-      </p>
-      <div class="group">
-          <input class="textInput"
-          [(ngModel)]="webIdRemoveFriend" (keydown)="handleSubmit($event)"
-          placeholder="Enter your friend's WebID"/>
-          <button i18n="@@removeFriend" class="button" (click)=removeFriend()>Remove friend</button>
+          <!-- DROPDOWN TEMPLATE -->
+          <ng-template ng-option-tmp let-item="item">
+            <div style="height:40px; padding-top:10px; position: relative;">
+              <img [src]="item.image" style="float: left; height: 32px; width: 32px; margin-top:-5px;" />
+              <span style="float: left; margin-left: 10px;">{{ item.name }}</span>
+              <div style="clear: both;"></div>
+              <div class="item-divider"></div>
+            </div>
+          </ng-template>
+
+        </ng-select>
+        <input type="text" class="wide-text" *ngIf="selectedAddProviderUrl===null" placeholder="Enter a provider"
+          style="margin-top:10px; padding: 12px 10px; width: 340px; height: 16px; display: block; margin-left: auto; margin-right: auto;"
+          [(ngModel)]="customAddProviderUrl" />
       </div>
+      <button i18n="@@addFriend" class="button" (click)=addFriend()>Add friend</button>
+    </div>
+
+    <h2 i18n="@@removeFriendTitle">Remove a friend</h2>
+    <p i18n="@@removeFriendNote">
+      Note: this will delete a friend from your POD and (IMPORTANT!) all the messages that you have sent.
+    </p>
+    <div class="group">
+      <input class="textInput" [(ngModel)]="webIdRemoveFriend" (keydown)="handleSubmit($event)"
+        placeholder="Enter your friend's WebID" />
+      <div>
+        <ng-select class="login-select" bindLabel="name" bindValue="loginUrl" placeholder="Select ID Provider"
+          dropdownPosition="bottom" [items]="identityProviders" [(ngModel)]="selectedRemoveProviderUrl"
+          style="width: 360px; height: 45px; margin-left: auto; margin-right: auto;">
+
+          <!-- DROPDOWN TEMPLATE -->
+          <ng-template ng-option-tmp let-item="item">
+            <div style="height:40px; padding-top:10px; position: relative;">
+              <img [src]="item.image" style="float: left; height: 32px; width: 32px; margin-top:-5px;" />
+              <span style="float: left; margin-left: 10px;">{{ item.name }}</span>
+              <div style="clear: both;"></div>
+              <div class="item-divider"></div>
+            </div>
+          </ng-template>
+
+        </ng-select>
+        <input type="text" class="wide-text" *ngIf="selectedRemoveProviderUrl===null" placeholder="Enter a provider"
+          style="margin-top:10px; padding: 12px 10px; width: 340px; height: 16px; display: block; margin-left: auto; margin-right: auto;"
+          [(ngModel)]="customRemoveProviderUrl" />
+      </div>
+      <button i18n="@@removeFriend" class="button" (click)=removeFriend()>Remove friend</button>
+    </div>
   </div>
 </div>

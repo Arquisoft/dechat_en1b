@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ToastrService } from 'ngx-toastr';
-import { RouterModule, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/solid.auth.service';
 import { SolidProvider } from '../models/solid-provider.model';
 @Component({  
@@ -11,12 +11,15 @@ import { SolidProvider } from '../models/solid-provider.model';
 })
 export class SettingsComponent implements OnInit {
 
-  webIdAddFriend: string;
-  webIdRemoveFriend: string;
   identityProviders: SolidProvider[];
-  selectedProviderUrl: string;
-  urlAddedFriend: string;
-  customProviderUrl: string;
+
+  webIdAddFriend: string;
+  selectedAddProviderUrl: string;
+  customAddProviderUrl: string;
+
+  webIdRemoveFriend: string;
+  selectedRemoveProviderUrl: string;
+  customRemoveProviderUrl: string;
 
   constructor(public chat: ChatService, private toastr: ToastrService, private auth: AuthService, private sdv: Router) { }
 
@@ -32,16 +35,9 @@ export class SettingsComponent implements OnInit {
     } else if (this.webIdAddFriend.trim() === '') {
       this.toastr.error('Please add a webId', 'Wrong input');
     } else {
-      if(this.selectedProviderUrl=== 'https://solid.community'){
-        this.urlAddedFriend = 'https://' + this.webIdAddFriend + '.solid.community/profile/card#me';
-      }
-      else if(this.selectedProviderUrl=== 'https://inrupt.net/auth'){
-        this.urlAddedFriend = 'https://' + this.webIdAddFriend + '.inrupt.net/profile/card#me';
-      }else{
-        this.urlAddedFriend = 'https://' + this.webIdAddFriend + '.' + this.customProviderUrl + '/profile/card#me';
-      }
-      console.log('Intentando añadir: ' + this.urlAddedFriend);
-      this.chat.addFriend(this.urlAddedFriend.trim());
+      var urlAddedFriend = this.createWebId(this.selectedAddProviderUrl, this.webIdAddFriend, this.customAddProviderUrl);
+      this.chat.addFriend(urlAddedFriend.trim());
+      this.webIdAddFriend = '';
     }
   }
 
@@ -51,7 +47,8 @@ export class SettingsComponent implements OnInit {
     } else if (this.webIdRemoveFriend.trim() === '') {
       this.toastr.error('Please add a webId', 'Wrong input');
     } else {
-      this.chat.removeFriend(this.webIdRemoveFriend.trim());
+      var urlRemovedFriend = this.createWebId(this.selectedRemoveProviderUrl, this.webIdRemoveFriend, this.customRemoveProviderUrl);
+      this.chat.removeFriend(urlRemovedFriend.trim());
       this.webIdRemoveFriend = '';
     }
   }
@@ -59,6 +56,19 @@ export class SettingsComponent implements OnInit {
   handleSubmit(event: { keyCode: number; }) {
     if (event.keyCode === 13) {
       this.addFriend();
+    }
+  }
+
+  // Auxiliar
+
+  createWebId(provider, id, customProvider) {
+    if(provider === 'https://solid.community'){
+      return 'https://' + id + '.solid.community/profile/card#me';
+    }
+    else if(provider === 'https://inrupt.net/auth'){
+      return 'https://' + id + '.inrupt.net/profile/card#me';
+    } else {
+      return 'https://' + id + '.' + customProvider + '/profile/card#me';
     }
   }
 

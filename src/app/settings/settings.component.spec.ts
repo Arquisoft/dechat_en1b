@@ -4,6 +4,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SettingsComponent } from './settings.component';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../services/chat.service';
+import { UserSettingsListComponent } from '../user-settings-list/user-settings-list.component';
+import { UserSettingsItemComponent } from '../user-settings-item/user-settings-item.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -18,7 +20,7 @@ describe('SettingsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsComponent ],
+      declarations: [ SettingsComponent, UserSettingsItemComponent, UserSettingsListComponent ],
       imports: [BrowserAnimationsModule, FormsModule , ToastrModule.forRoot(), NgSelectModule, RouterTestingModule ],
       providers: [ ChatService , ToastrService ]
     })

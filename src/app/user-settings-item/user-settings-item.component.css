@@ -1,0 +1,67 @@
+.userItem{
+    height: auto;
+    width: 130%;
+    padding: 10px;
+    align-items:flex-start;
+    background-color: #201835;
+    color: #A098A5;
+    align-items: center;
+    display: flex;
+    transition: ease-in 0.2s;
+}
+
+.userItem:hover{
+    background-color: #453968;
+    color: #ddd;
+    transition: ease-in 0.1s;
+}
+
+.profilePic {
+    border-radius: 100%;
+    border-width: 1em;
+    width: 2em;
+    height: 2em;
+    margin-right: 1em;
+}
+
+.online{
+    border-color: #0FA;
+}
+
+.busy{
+    border-color: #FB0;
+}
+
+.offline{
+    border-color: #888;
+}
+
+.status{
+    border: 1px solid black;
+    display: inline-block;
+    min-width: 10px;
+    min-height: 10px;
+    border-radius: 50%;
+    margin: 10px 12px 0px 10px;
+}
+
+.userName{
+    display: inline-block;
+}
+
+button {
+    position: relative;
+    left: 15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    margin: 0px;
+    padding: 0.3em;
+    padding: 0.3em 0.4em;
+    font-size: 0.7em;
+    font-family: 'Droid Sans', sans-serif;
+    background-color: #2A2845;
+    color: white;
+    transition: 0.2s ease-out;
+    min-width: 50px;
+}

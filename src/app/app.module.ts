@@ -22,6 +22,8 @@ import { MessageComponent } from './message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UserItemComponent } from './user-item/user-item.component';
 import { UserListComponent } from './user-list/user-list.component';
+import { UserSettingsItemComponent } from './user-settings-item/user-settings-item.component';
+import { UserSettingsListComponent } from './user-settings-list/user-settings-list.component';
 import { SettingsComponent } from './settings/settings.component';
 import { HelpComponent } from './help-component/help-component.component';
 import { ChatService } from './services/chat.service';
@@ -80,7 +82,9 @@ const routes: Routes = [
     MessageComponent,
     NavbarComponent,
     UserItemComponent,
-    UserListComponent,  
+    UserListComponent, 
+    UserSettingsItemComponent,
+    UserSettingsListComponent,  
     HelpComponent,
     SettingsComponent
   ],

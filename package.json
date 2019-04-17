@@ -15,7 +15,7 @@
     "extract-i18n": "ng xi18n solid-app --i18n-format xlf --output-path locale --i18n-locale en && ng run solid-app:xliffmerge",
     "start-en": "ng serve --configuration=en",
     "cucumber": "cucumber-js",
-    "ghpages-build": "ng build --prod --base-href \"https://arquisoft.github.io/dechat_en1b/\" --output-path \"docs/\" && npm run docs:build",
+    "ghpages-build": "ng build --prod --output-path \"docs/\" && npm run docs:build",
     "ghpages-launch": "ngh --dir dist/solid-app"
   },
   "browser": {

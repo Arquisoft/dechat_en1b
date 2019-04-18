@@ -5,4 +5,4 @@
 
 # Summary
 
-[Summarry](SUMMARY.md)
+[Summary](SUMMARY.md)

@@ -35,6 +35,9 @@ export class ChatService {
     });
     this.isActive = new BehaviorSubject<boolean>(false);
     this.thisUser = new BehaviorSubject<User>(null);
+    setInterval(async () => {
+      await this.loadMessages();
+  }, 15000);
   }
 
   // Observables
@@ -106,7 +109,8 @@ export class ChatService {
       return;
     }
     (await this.rdf.getFriends()).forEach(async element => {
-      await this.rdf.fetcher.load(element.value);
+      await this.rdf.fetcher.load(element.value, {force: true, clearPreviousData: true
+      });
       const photo: string = this.rdf.getValueFromVcard('hasPhoto', element.value) || '../assets/images/profile.png';
       this.friends.push(new User(element.value, this.rdf.getValueFromVcard('fn', element.value), photo));
       this.friends.sort(this.sortUserByName);
@@ -133,6 +137,7 @@ export class ChatService {
    * @param user2 Second pair of the communication.
    */
   private async loadMessagesFromTo(user1: User, user2: User) {
+    console.log('Loading messages from ' + user1.webId + ' to ' + user2.webId);
     const messages = (await this.rdf.getElementsFromContainer(await this.getChatUrl(user1, user2)));
     if (!messages) {
       this.toastr.error('Please make sure the other user has clicked on your chat', 'Could not load messages');
@@ -142,7 +147,7 @@ export class ChatService {
     }
     messages.forEach(async element => {
       const url = element.value + '#message';
-      await this.rdf.fetcher.load(url);
+      await this.rdf.fetcher.load(url, {force: true, clearPreviousData: true});
       const sender = this.rdf.getValueFromSchema('sender', url);
       const text = this.rdf.getValueFromSchema('text', url);
       const date = Date.parse(this.rdf.getValueFromSchema('dateSent', url));
@@ -324,7 +329,7 @@ export class ChatService {
    * @param path To the folder whose permissions we are going to modify.
    * @param user To grant permissions.
    */
-  private grantAccessToFolder(path: string | String, user: User) {
+  private async grantAccessToFolder(path: string | String, user: User) {
     const webId = user.webId.replace('#me', '#');
     const acl =
        `@prefix : <#>.
@@ -346,7 +351,9 @@ export class ChatService {
             n0:defaultForNew ch:;
             n0:mode n0:Read.`;
     path += '.acl';
-    fileClient.updateFile(path, acl).then(() => {
+    console.log(path);
+    console.log(acl);
+    await fileClient.updateFile(path, acl).then(() => {
       console.log('Folder permisions added');
     }, (err: string) => console.log('Could not set folder permisions' + err));
   }

@@ -353,7 +353,7 @@ export class ChatService {
     path += '.acl';
     console.log(path);
     console.log(acl);
-    fileClient.updateFile(path, acl).then(() => {
+    await fileClient.updateFile(path, acl).then(() => {
       console.log('Folder permisions added');
     }, (err: string) => console.log('Could not set folder permisions' + err));
   }

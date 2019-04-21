@@ -416,7 +416,7 @@ export class RdfService {
    */
   private async getDataAsArray(webId: string | String, field: string, namespace: any): Promise<Array<NamedNode>> {
     try {
-        await this.fetcher.load(this.store.sym(webId).doc());
+        await this.fetcher.load(this.store.sym(webId).doc(), {force: true, clearPreviousData: true});
         return this.store.each(this.store.sym(webId), namespace(field)); // .forEach(friend => console.log(friend.value));
         // Just to test that it works
     } catch (error) {

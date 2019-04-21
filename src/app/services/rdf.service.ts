@@ -400,7 +400,7 @@ export class RdfService {
    */
   private async getFieldAsString(webId: string, field: string, namespace: any): Promise<string> {
     try {
-      await this.fetcher.load(this.store.sym(webId).doc());
+      await this.fetcher.load(this.store.sym(webId).doc(), {force: true, clearPreviousData: true});
       return this.store.any(this.store.sym(webId), namespace(field));
     } catch (error) {
       console.log(`Error fetching data: ${error}`);

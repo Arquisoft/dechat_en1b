@@ -30,8 +30,7 @@ export class MessageComponent implements OnInit {
       if (!user) {
         return;
       }
-      // console.log(user.username + " " + this.userName);
-      this.isOwnMessage = user.username === this.userName;
+      this.isOwnMessage = user.username.toString().localeCompare(this.userName.toString()) === 0;
     });
   }
 

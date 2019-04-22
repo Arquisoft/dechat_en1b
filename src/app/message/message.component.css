@@ -81,3 +81,24 @@
 .isOwnMessageContent{
     background-color: #E3F2FD;
 }
+
+.deleteBtn {
+    height: 1.4em;
+    width: 1.4em;
+    text-align: center;
+    background-color: red;
+    padding: 0.2em;
+    border-radius: 100%;
+    color: cornflowerblue;
+    line-height: 1.2em;
+}
+
+.deleteBtn:hover {
+    transition: 0.2s;
+    background-color: rgb(182, 42, 42);
+}
+
+.deleteBtn:active {
+    transition: 0.2s;
+    background-color: rgb(112, 12, 12);
+}

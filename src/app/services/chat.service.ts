@@ -37,7 +37,7 @@ export class ChatService {
     this.isActive = new BehaviorSubject<boolean>(false);
     this.thisUser = new BehaviorSubject<User>(null);
     setInterval(async () => {
-      await this.loadMessages();
+      //await this.loadMessages();
     }, 15000);
   }
 
@@ -282,6 +282,10 @@ export class ChatService {
         this.removeFolderStructure(response.toString());
       });
     }
+  }
+
+  removeMsg(msg : ChatMessage) {
+    console.log("Deleting " + msg);
   }
 
   /**

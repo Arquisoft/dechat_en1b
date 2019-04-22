@@ -37,7 +37,7 @@ export class ChatService {
     this.isActive = new BehaviorSubject<boolean>(false);
     this.thisUser = new BehaviorSubject<User>(null);
     setInterval(async () => {
-      await this.loadMessages();
+      //await this.loadMessages();
     }, 15000);
   }
 
@@ -165,7 +165,9 @@ export class ChatService {
     const text = this.rdf.getValueFromSchema('text', url);
     const date = Date.parse(this.rdf.getValueFromSchema('dateSent', url));
     const name = await this.rdf.getFriendData(sender, 'fn');
-    return new ChatMessage(name, text, date);
+    let msg : ChatMessage = new ChatMessage(name, text, date);
+    msg.webId = message.value;
+    return msg;
   }
 
   // Message methods
@@ -282,6 +284,15 @@ export class ChatService {
         this.removeFolderStructure(response.toString());
       });
     }
+  }
+
+  removeMsg(msg : ChatMessage) {
+    console.log("Deleting " + msg.webId);
+    const url = msg.webId;
+    fileClient.deleteFile(url).then(success => {
+      console.log("Deleted");
+      this.loadMessages();
+    }, err => console.log(err) );
   }
 
   /**

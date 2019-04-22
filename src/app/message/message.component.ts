@@ -35,12 +35,11 @@ export class MessageComponent implements OnInit {
   }
 
   removeMessage() {
-    if (!this.messageContent) {
+    if (this.isOwnMessage === false) {
       this.toastr.error('Cannot remove this message');
-    } else if (this.isOwnMessage === true) {
-      this.toastr.error('Are you sure?');
-      // TODO pop-up 'are you sure'
-      this.messageContent = '';
+    } else {
+      this.chatService.removeMsg(this.chatMessage);
     }
   }
+
 }

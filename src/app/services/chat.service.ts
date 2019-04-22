@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { ChatMessage } from '../models/chat-message.model';
@@ -7,14 +7,15 @@ import { User } from '../models/user.model';
 import { ToastrService } from 'ngx-toastr';
 
 import * as fileClient from 'solid-file-client';
-import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable()
 export class ChatService {
 
   isActive: BehaviorSubject<boolean>; // If the chat is Active (The client is chating with a contact)
 
-  chatMessages: ChatMessage[] = new Array<ChatMessage>();
+  chatMessages: BehaviorSubject<ChatMessage[]>;
+
+  refreshScroll: EventEmitter<null> = new EventEmitter(true);
 
   thisUser: BehaviorSubject<User>;  // Current user that is using the chat
   currentUserWebId: string; // Current user's webID username
@@ -36,6 +37,7 @@ export class ChatService {
     });
     this.isActive = new BehaviorSubject<boolean>(false);
     this.thisUser = new BehaviorSubject<User>(null);
+    this.chatMessages = new BehaviorSubject<ChatMessage[]>(new Array<ChatMessage>());
     setInterval(async () => {
       await this.loadMessages();
     }, 5000);
@@ -75,7 +77,7 @@ export class ChatService {
    * Returns an observable of all the messages in a specific conversation.
    */
   getMessages(): Observable<ChatMessage[]> {
-    return of(this.chatMessages);
+    return this.chatMessages.asObservable();
   }
 
   // Loading methods
@@ -129,14 +131,15 @@ export class ChatService {
     }
     await this.rdf.getSession();
     let msgBuffer: ChatMessage[] = new Array<ChatMessage>();
+    let oldLength = this.chatMessages.value.length;
     await this.loadMessagesFromTo(this.otherUser, this.thisUser.value, msgBuffer);
     await this.loadMessagesFromTo(this.thisUser.value, this.otherUser, msgBuffer);
     //Add all messages
-    this.chatMessages.length = 0;
-    msgBuffer.forEach((msg) => {
-      this.chatMessages.push(msg);
-    });
-    this.chatMessages.sort(this.sortByDateDesc);
+    msgBuffer.sort(this.sortByDateDesc);
+    this.chatMessages.next(msgBuffer);
+    if (oldLength !== this.chatMessages.value.length) {
+      this.refreshScroll.emit();
+    }
   }
 
   /**
@@ -150,7 +153,7 @@ export class ChatService {
     if (!messages) {
       this.toastr.error('Please make sure the other user has clicked on your chat', 'Could not load messages');
       this.isActive.next(false);
-      this.chatMessages.length = 0;
+      this.chatMessages.next(new Array<ChatMessage>());
       return;
     }
     await Promise.all(messages.map(async (message) => {
@@ -204,8 +207,8 @@ export class ChatService {
    * @param message Message to be added.
    */
   public addMessage(message: ChatMessage) {
-    this.chatMessages.push(message);
-    this.chatMessages.sort(this.sortByDateDesc);
+    this.chatMessages.value.push(message);
+    this.chatMessages.value.sort(this.sortByDateDesc);
   }
 
   /**
@@ -215,6 +218,7 @@ export class ChatService {
   async sendMessage(msg: string) {
     if (msg !== '' && this.otherUser) {
       const newMsg = new ChatMessage(this.thisUser.value.username, msg);
+      this.refreshScroll.emit();
       this.addMessage(newMsg);
       this.postMessage(newMsg).then(() => this.loadMessages());
     }

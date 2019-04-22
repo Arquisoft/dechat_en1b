@@ -115,7 +115,7 @@ export class ChatService {
       await this.rdf.fetcher.load(element.value, {
         force: true, clearPreviousData: true
       });
-      const photo: string = this.rdf.getValueFromVcard('hasPhoto', element.value) || '../assets/images/profile.png';
+      const photo: string = this.rdf.getValueFromVcard('hasPhoto', element.value) || './assets/images/profile.png';
       this.friends.push(new User(element.value, this.rdf.getValueFromVcard('fn', element.value), photo));
       this.friends.sort(this.sortUserByName);
     });

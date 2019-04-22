@@ -1,12 +1,13 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
-import {ChatMessage} from '../models/chat-message.model';
-import {RdfService} from './rdf.service';
-import {User} from '../models/user.model';
-import {ToastrService} from 'ngx-toastr';
+import { ChatMessage } from '../models/chat-message.model';
+import { RdfService } from './rdf.service';
+import { User } from '../models/user.model';
+import { ToastrService } from 'ngx-toastr';
 
 import * as fileClient from 'solid-file-client';
+import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable()
 export class ChatService {
@@ -37,7 +38,7 @@ export class ChatService {
     this.thisUser = new BehaviorSubject<User>(null);
     setInterval(async () => {
       await this.loadMessages();
-  }, 15000);
+    }, 15000);
   }
 
   // Observables
@@ -109,7 +110,8 @@ export class ChatService {
       return;
     }
     (await this.rdf.getFriends()).forEach(async element => {
-      await this.rdf.fetcher.load(element.value, {force: true, clearPreviousData: true
+      await this.rdf.fetcher.load(element.value, {
+        force: true, clearPreviousData: true
       });
       const photo: string = this.rdf.getValueFromVcard('hasPhoto', element.value) || '../assets/images/profile.png';
       this.friends.push(new User(element.value, this.rdf.getValueFromVcard('fn', element.value), photo));
@@ -126,9 +128,15 @@ export class ChatService {
       return;
     }
     await this.rdf.getSession();
+    let msgBuffer: ChatMessage[] = new Array<ChatMessage>();
+    await this.loadMessagesFromTo(this.otherUser, this.thisUser.value, msgBuffer);
+    await this.loadMessagesFromTo(this.thisUser.value, this.otherUser, msgBuffer);
+    //Add all messages
     this.chatMessages.length = 0;
-    await this.loadMessagesFromTo(this.otherUser, this.thisUser.value);
-    await this.loadMessagesFromTo(this.thisUser.value, this.otherUser);
+    msgBuffer.forEach((msg) => {
+      this.chatMessages.push(msg);
+    });
+    this.chatMessages.sort(this.sortByDateDesc);
   }
 
   /**
@@ -136,8 +144,8 @@ export class ChatService {
    * @param user1 First pair of the communication.
    * @param user2 Second pair of the communication.
    */
-  private async loadMessagesFromTo(user1: User, user2: User) {
-    console.log('Loading messages from ' + user1.webId + ' to ' + user2.webId);
+  private async loadMessagesFromTo(user1: User, user2: User, msgBuffer: ChatMessage[]) {
+    //console.log('Loading messages from ' + user1.webId + ' to ' + user2.webId);
     const messages = (await this.rdf.getElementsFromContainer(await this.getChatUrl(user1, user2)));
     if (!messages) {
       this.toastr.error('Please make sure the other user has clicked on your chat', 'Could not load messages');
@@ -145,16 +153,19 @@ export class ChatService {
       this.chatMessages.length = 0;
       return;
     }
-    messages.forEach(async element => {
-      const url = element.value + '#message';
-      await this.rdf.fetcher.load(url, {force: true, clearPreviousData: true});
-      const sender = this.rdf.getValueFromSchema('sender', url);
-      const text = this.rdf.getValueFromSchema('text', url);
-      const date = Date.parse(this.rdf.getValueFromSchema('dateSent', url));
-      const name = await this.rdf.getFriendData(sender, 'fn');
-      // console.log('Messages loaded: ' + messages);
-      this.addMessage(new ChatMessage(name, text, date));
-    });
+    await Promise.all(messages.map(async (message) => {
+      msgBuffer.push(await this.getMsgFromRdf(message));
+    }));
+  }
+
+  private async getMsgFromRdf(message) {
+    const url = message.value + '#message';
+    await this.rdf.fetcher.load(url, { force: true, clearPreviousData: true });
+    const sender = this.rdf.getValueFromSchema('sender', url);
+    const text = this.rdf.getValueFromSchema('text', url);
+    const date = Date.parse(this.rdf.getValueFromSchema('dateSent', url));
+    const name = await this.rdf.getFriendData(sender, 'fn');
+    return new ChatMessage(name, text, date);
   }
 
   // Message methods
@@ -208,7 +219,7 @@ export class ChatService {
   }
 
   /**
-   * Method that declares the structure of the message in XML and sends it to SOLID.
+   * Method that declares the structure of the message in rdf and sends it to SOLID.
    * @param msg Instance of the message to be sent.
    */
   private async postMessage(msg: ChatMessage) {
@@ -332,7 +343,7 @@ export class ChatService {
   private async grantAccessToFolder(path: string | String, user: User) {
     const webId = user.webId.replace('#me', '#');
     const acl =
-       `@prefix : <#>.
+      `@prefix : <#>.
         @prefix n0: <http://www.w3.org/ns/auth/acl#>.
         @prefix ch: <./>.
         @prefix c: </profile/card#>.

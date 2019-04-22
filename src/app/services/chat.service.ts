@@ -37,8 +37,8 @@ export class ChatService {
     this.isActive = new BehaviorSubject<boolean>(false);
     this.thisUser = new BehaviorSubject<User>(null);
     setInterval(async () => {
-      //await this.loadMessages();
-    }, 15000);
+      await this.loadMessages();
+    }, 5000);
   }
 
   // Observables

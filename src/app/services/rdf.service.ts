@@ -496,7 +496,8 @@ export class RdfService {
     });
   }
 
-  createContainerListener(doc, refreshFunction) {
+  createContainerListener(url, refreshFunction) {
+    const doc = $rdf.sym(url).doc();
     this.updateManager.addDownstreamChangeListener(doc, refreshFunction);
   }
 

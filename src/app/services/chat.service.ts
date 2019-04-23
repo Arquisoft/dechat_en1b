@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import { Injectable, EventEmitter } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
-import {ChatMessage} from '../models/chat-message.model';
-import {RdfService} from './rdf.service';
-import {User} from '../models/user.model';
-import {ToastrService} from 'ngx-toastr';
+import { ChatMessage } from '../models/chat-message.model';
+import { RdfService } from './rdf.service';
+import { User } from '../models/user.model';
+import { ToastrService } from 'ngx-toastr';
 
 import * as fileClient from 'solid-file-client';
 
@@ -13,7 +13,9 @@ export class ChatService {
 
   isActive: BehaviorSubject<boolean>; // If the chat is Active (The client is chating with a contact)
 
-  chatMessages: ChatMessage[] = new Array<ChatMessage>();
+  chatMessages: BehaviorSubject<ChatMessage[]>;
+
+  refreshScroll: EventEmitter<null> = new EventEmitter(true);
 
   thisUser: BehaviorSubject<User>;  // Current user that is using the chat
   currentUserWebId: string; // Current user's webID username
@@ -35,9 +37,10 @@ export class ChatService {
     });
     this.isActive = new BehaviorSubject<boolean>(false);
     this.thisUser = new BehaviorSubject<User>(null);
+    this.chatMessages = new BehaviorSubject<ChatMessage[]>(new Array<ChatMessage>());
     setInterval(async () => {
       await this.loadMessages();
-  }, 15000);
+    }, 5000);
   }
 
   // Observables
@@ -74,7 +77,7 @@ export class ChatService {
    * Returns an observable of all the messages in a specific conversation.
    */
   getMessages(): Observable<ChatMessage[]> {
-    return of(this.chatMessages);
+    return this.chatMessages.asObservable();
   }
 
   // Loading methods
@@ -109,9 +112,10 @@ export class ChatService {
       return;
     }
     (await this.rdf.getFriends()).forEach(async element => {
-      await this.rdf.fetcher.load(element.value, {force: true, clearPreviousData: true
+      await this.rdf.fetcher.load(element.value, {
+        force: true, clearPreviousData: true
       });
-      const photo: string = this.rdf.getValueFromVcard('hasPhoto', element.value) || '../assets/images/profile.png';
+      const photo: string = this.rdf.getValueFromVcard('hasPhoto', element.value) || './assets/images/profile.png';
       this.friends.push(new User(element.value, this.rdf.getValueFromVcard('fn', element.value), photo));
       this.friends.sort(this.sortUserByName);
     });
@@ -121,14 +125,28 @@ export class ChatService {
    * Load all messages from SOLID between the current user and the other user whose talking.
    */
   private async loadMessages() {
-    console.log('Loading messages...');
-    if (!this.isActive) {
+    if (!this.isActive.value) {
       return;
     }
+    console.log('Loading messages...');
     await this.rdf.getSession();
-    this.chatMessages.length = 0;
-    await this.loadMessagesFromTo(this.otherUser, this.thisUser.value);
-    await this.loadMessagesFromTo(this.thisUser.value, this.otherUser);
+    let msgBuffer: ChatMessage[] = new Array<ChatMessage>();
+    let oldLength = this.chatMessages.value.length;
+    try {
+      await this.loadMessagesFromTo(this.otherUser, this.thisUser.value, msgBuffer);
+      await this.loadMessagesFromTo(this.thisUser.value, this.otherUser, msgBuffer);
+    } catch (exception) {
+      this.toastr.error('Please make sure the other user has clicked on your chat', 'Could not load messages');
+      this.isActive.next(false);
+      this.chatMessages.next(new Array<ChatMessage>());
+      return;
+    }
+    //Add all messages
+    msgBuffer.sort(this.sortByDateDesc);
+    this.chatMessages.next(msgBuffer);
+    if (oldLength !== this.chatMessages.value.length) {
+      this.refreshScroll.emit();
+    }
   }
 
   /**
@@ -136,25 +154,27 @@ export class ChatService {
    * @param user1 First pair of the communication.
    * @param user2 Second pair of the communication.
    */
-  private async loadMessagesFromTo(user1: User, user2: User) {
-    console.log('Loading messages from ' + user1.webId + ' to ' + user2.webId);
+  private async loadMessagesFromTo(user1: User, user2: User, msgBuffer: ChatMessage[]) {
+    //console.log('Loading messages from ' + user1.webId + ' to ' + user2.webId);
     const messages = (await this.rdf.getElementsFromContainer(await this.getChatUrl(user1, user2)));
     if (!messages) {
-      this.toastr.error('Please make sure the other user has clicked on your chat', 'Could not load messages');
-      this.isActive.next(false);
-      this.chatMessages.length = 0;
-      return;
+      throw new Error("Could not load messages from " + user1.webId + " to " + user2.webId);
     }
-    messages.forEach(async element => {
-      const url = element.value + '#message';
-      await this.rdf.fetcher.load(url, {force: true, clearPreviousData: true});
-      const sender = this.rdf.getValueFromSchema('sender', url);
-      const text = this.rdf.getValueFromSchema('text', url);
-      const date = Date.parse(this.rdf.getValueFromSchema('dateSent', url));
-      const name = await this.rdf.getFriendData(sender, 'fn');
-      // console.log('Messages loaded: ' + messages);
-      this.addMessage(new ChatMessage(name, text, date));
-    });
+    await Promise.all(messages.map(async (message) => {
+      msgBuffer.push(await this.getMsgFromRdf(message));
+    }));
+  }
+
+  private async getMsgFromRdf(message) {
+    const url = message.value + '#message';
+    await this.rdf.fetcher.load(url, { force: true, clearPreviousData: true });
+    const sender = this.rdf.getValueFromSchema('sender', url);
+    const text = this.rdf.getValueFromSchema('text', url);
+    const date = Date.parse(this.rdf.getValueFromSchema('dateSent', url));
+    const name = await this.rdf.getFriendData(sender, 'fn');
+    let msg : ChatMessage = new ChatMessage(name, text, date);
+    msg.webId = message.value;
+    return msg;
   }
 
   // Message methods
@@ -191,8 +211,8 @@ export class ChatService {
    * @param message Message to be added.
    */
   public addMessage(message: ChatMessage) {
-    this.chatMessages.push(message);
-    this.chatMessages.sort(this.sortByDateDesc);
+    this.chatMessages.value.push(message);
+    this.chatMessages.value.sort(this.sortByDateDesc);
   }
 
   /**
@@ -202,13 +222,14 @@ export class ChatService {
   async sendMessage(msg: string) {
     if (msg !== '' && this.otherUser) {
       const newMsg = new ChatMessage(this.thisUser.value.username, msg);
+      this.refreshScroll.emit();
       this.addMessage(newMsg);
       this.postMessage(newMsg).then(() => this.loadMessages());
     }
   }
 
   /**
-   * Method that declares the structure of the message in XML and sends it to SOLID.
+   * Method that declares the structure of the message in rdf and sends it to SOLID.
    * @param msg Instance of the message to be sent.
    */
   private async postMessage(msg: ChatMessage) {
@@ -242,9 +263,18 @@ export class ChatService {
     } else {
       this.otherUser = user;
       this.checkFolderStructure().then(() => {
+        this.setChatListener();
         this.loadMessages();
       });
     }
+  }
+
+  async setChatListener () {
+    const docUrl = await this.getChatUrl(this.otherUser, this.thisUser.value);
+    console.log("Created listener for: " + docUrl);
+    this.rdf.createContainerListener(docUrl, function() {
+      this.loadMessages();
+    });
   }
 
   // Solid methods
@@ -271,6 +301,15 @@ export class ChatService {
         this.removeFolderStructure(response.toString());
       });
     }
+  }
+
+  removeMsg(msg : ChatMessage) {
+    console.log("Deleting " + msg.webId);
+    const url = msg.webId;
+    fileClient.deleteFile(url).then(success => {
+      console.log("Deleted");
+      this.loadMessages();
+    }, err => console.log(err) );
   }
 
   /**
@@ -332,7 +371,7 @@ export class ChatService {
   private async grantAccessToFolder(path: string | String, user: User) {
     const webId = user.webId.replace('#me', '#');
     const acl =
-       `@prefix : <#>.
+      `@prefix : <#>.
         @prefix n0: <http://www.w3.org/ns/auth/acl#>.
         @prefix ch: <./>.
         @prefix c: </profile/card#>.

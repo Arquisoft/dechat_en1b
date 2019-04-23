@@ -16,6 +16,7 @@ export class MessageComponent implements OnInit {
   timeStamp: Date = new Date();
 
   isOwnMessage: boolean;
+  isDeleted: boolean = false;
 
   constructor(private chatService: ChatService, private toastr: ToastrService) {}
 
@@ -35,12 +36,14 @@ export class MessageComponent implements OnInit {
   }
 
   removeMessage() {
-    if (!this.messageContent) {
+    if (this.isDeleted) {
+      console.log("Already deleted");
+    } else if (this.isOwnMessage === false) {
       this.toastr.error('Cannot remove this message');
-    } else if (this.isOwnMessage === true) {
-      this.toastr.error('Are you sure?');
-      // TODO pop-up 'are you sure'
-      this.messageContent = '';
+    } else {
+      this.chatService.removeMsg(this.chatMessage);
+      this.isDeleted = true;
     }
   }
+
 }

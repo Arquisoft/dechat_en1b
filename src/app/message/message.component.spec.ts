@@ -5,6 +5,7 @@ import { ChatService } from '../services/chat.service';
 import { ToastrModule } from 'ngx-toastr';
 import {By} from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChatMessage } from '../models/chat-message.model';
 
 describe('MessageComponent', () => {
   let component: MessageComponent;
@@ -22,6 +23,8 @@ describe('MessageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MessageComponent);
     component = fixture.componentInstance;
+    component.chatMessage = new ChatMessage("Test 1", "Test msg", new Date());
+    component.chatMessage.webId = "";
     fixture.detectChanges();
   });
 
@@ -29,17 +32,15 @@ describe('MessageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should remove message (case a)', () => {
-    component.messageContent = '';
+  it('should not remove a message that is not yours', () => {
+    component.isOwnMessage = false;
     component.removeMessage();
     expect(By.css('#toastr-container'));
   });
 
-  it('should remove message (case b)', () => {
-    component.messageContent = 'a';
+  it('should remove message', () => {
     component.isOwnMessage = true;
     component.removeMessage();
-    expect(By.css('#toastr-container'));
-    expect(component.messageContent === '');
+    expect(!By.css('#toastr-container'));
   });
 });

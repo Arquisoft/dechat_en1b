@@ -64,7 +64,7 @@ describe('ChatService', () => {
     service.addMessage(msg2);
     service.addMessage(msg3);
     service.addMessage(msg4);
-    expect(service.chatMessages.length === 4);
+    expect(service.chatMessages.value.length === 4);
     expect(service.chatMessages[0] === msg3);
   });
 

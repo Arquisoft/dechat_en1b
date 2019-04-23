@@ -1,4 +1,4 @@
-<div class="msg"
+<div class="msg" *ngIf="!isDeleted"
     [ngClass]="{'ownMsg':isOwnMessage, 'otherMsg':!isOwnMessage}">
     <div class="messageData"
         [ngClass]="{'isOwnMessageData':isOwnMessage}">

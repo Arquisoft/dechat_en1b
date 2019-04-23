@@ -125,15 +125,22 @@ export class ChatService {
    * Load all messages from SOLID between the current user and the other user whose talking.
    */
   private async loadMessages() {
-    console.log('Loading messages...');
-    if (!this.isActive) {
+    if (!this.isActive.value) {
       return;
     }
+    console.log('Loading messages...');
     await this.rdf.getSession();
     let msgBuffer: ChatMessage[] = new Array<ChatMessage>();
     let oldLength = this.chatMessages.value.length;
-    await this.loadMessagesFromTo(this.otherUser, this.thisUser.value, msgBuffer);
-    await this.loadMessagesFromTo(this.thisUser.value, this.otherUser, msgBuffer);
+    try {
+      await this.loadMessagesFromTo(this.otherUser, this.thisUser.value, msgBuffer);
+      await this.loadMessagesFromTo(this.thisUser.value, this.otherUser, msgBuffer);
+    } catch (exception) {
+      this.toastr.error('Please make sure the other user has clicked on your chat', 'Could not load messages');
+      this.isActive.next(false);
+      this.chatMessages.next(new Array<ChatMessage>());
+      return;
+    }
     //Add all messages
     msgBuffer.sort(this.sortByDateDesc);
     this.chatMessages.next(msgBuffer);
@@ -151,10 +158,7 @@ export class ChatService {
     //console.log('Loading messages from ' + user1.webId + ' to ' + user2.webId);
     const messages = (await this.rdf.getElementsFromContainer(await this.getChatUrl(user1, user2)));
     if (!messages) {
-      this.toastr.error('Please make sure the other user has clicked on your chat', 'Could not load messages');
-      this.isActive.next(false);
-      this.chatMessages.next(new Array<ChatMessage>());
-      return;
+      throw new Error("Could not load messages from " + user1.webId + " to " + user2.webId);
     }
     await Promise.all(messages.map(async (message) => {
       msgBuffer.push(await this.getMsgFromRdf(message));
@@ -259,9 +263,18 @@ export class ChatService {
     } else {
       this.otherUser = user;
       this.checkFolderStructure().then(() => {
+        this.setChatListener();
         this.loadMessages();
       });
     }
+  }
+
+  async setChatListener () {
+    const docUrl = await this.getChatUrl(this.otherUser, this.thisUser.value);
+    console.log("Created listener for: " + docUrl);
+    this.rdf.createContainerListener(docUrl, function() {
+      this.loadMessages();
+    });
   }
 
   // Solid methods

@@ -20,9 +20,13 @@ This project is developed by:
 
 The wiki of the project can be found [here](https://github.com/Arquisoft/dechat_en1b/wiki).
 
+## App
+
+The app is deployed [here](https://arquisoft.github.io/dechat_en1b/chat).
+
 ## Documentation
 
-The web version of the documentation is available [here](https://arquisoft.github.io/dechat_en1b/).
+The web version of the documentation is available [here](https://arquisoft.github.io/dechat_en1b/docs).
 
 ## Project deployement
 

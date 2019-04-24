@@ -37,16 +37,9 @@
         Note: this will delete a friend from your POD and (IMPORTANT!) all the messages that you have sent.
       </p>
       <div class="group" id="listOfUsers">
-          <!--
-          <input class="textInput"
-          [(ngModel)]="webIdRemoveFriend" (keydown)="handleSubmit($event)"
-          placeholder="Enter your friend's WebID"/>
-          <button i18n="@@removeFriend" class="button" (click)=removeFriend()>Remove friend</button>
-          -->
           <div class="userListWrapper">
             <app-user-settings-list></app-user-settings-list>
           </div>
       </div>
-      <button i18n="@@removeFriend" class="button" (click)=removeFriend()>Remove friend</button>
     </div>
   </div>

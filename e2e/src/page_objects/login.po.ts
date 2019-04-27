@@ -7,7 +7,7 @@ export class LoginPage {
   }
 
   clickRegisterButton() {
-    return element(by.id('btn-register')).click();
+    return element(by.buttonText('Register')).click();
   }
 
   openCombobox() {
@@ -61,6 +61,8 @@ export class LoginPage {
   getParagraphText() {
     return element(by.css('h1')).getText();
   }
+  getRegisterProviderText() {
+    return element(by.css('h2')).getText();
+  }
 
-  
 }

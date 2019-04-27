@@ -17,6 +17,7 @@ Given(/^I am on the login page$/, async () => {
 });
 
 When(/^I introduce my data/, async () => {
+  expect(await page.getParagraphText()).to.equal('DE-CHAT');
   //funciona!
   await page.openCombobox();
   //funciona!

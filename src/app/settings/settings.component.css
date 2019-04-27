@@ -29,6 +29,10 @@ h2 {
     color: rgb(23, 29, 29);
 }
 
+#listOfUsers{
+    height: 16em;
+}
+
 .group {
     display: flex;
     margin: 0.6em;
@@ -57,4 +61,17 @@ h2 {
     color: white;
     transition: 0.2s ease-out;
     min-width: 50px;
+}
+
+.userListWrapper {
+    background-color: #2A2845;
+    color: #fff;
+    display: flex;
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.2em;
+    flex: 1;
+    order: 1;
+    border-right: 1px solid #222;
+    overflow-x: hidden;
+    overflow-y: auto;
 }

@@ -6,7 +6,7 @@ import { ChatService } from '../services/chat.service';
   templateUrl: './chatroom.component.html',
   styleUrls: ['./chatroom.component.css']
 })
-export class ChatroomComponent implements OnInit, AfterViewChecked {
+export class ChatroomComponent implements OnInit {
   @ViewChild('scroller') private feedContainer: ElementRef;
 
   active : boolean = false;
@@ -18,14 +18,13 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
+    this.chat.refreshScroll.subscribe(() => {
+      this.scrollToBottom();
+    });
   }
 
   scrollToBottom(): void {
-    this.feedContainer.nativeElement.scrollTop
-    = this.feedContainer.nativeElement.scrollHeight;
+    this.feedContainer.nativeElement.scrollTop = this.feedContainer.nativeElement.scrollHeight;
   }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
 }

@@ -9,5 +9,5 @@ export class User {
     webId?: string;
     username?: string;
     status?: string = "online";
-    profilePicture?: string = "../assets/images/profile.png";
+    profilePicture?: string = "./assets/images/profile.png";
 }

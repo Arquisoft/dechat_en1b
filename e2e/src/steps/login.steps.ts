@@ -13,8 +13,11 @@ Given(/^I am on the login page$/, async () => {
   await page.navigateTo();
 });
 
-When(/^I do nothing \(home page\)$/, () => {});
+When(/^I enter my credentials$/, () => {
+  page.selectProvider("solid");
+  page.loginWithCredentials("Test1", "");
+});
 
-Then(/^I should see the title \(home page\)$/, async () => {
-  expect(await page.getParagraphText()).to.equal('DE-CHAT');
+Then(/^I should see the chat page$/, async () => {
+  
 });

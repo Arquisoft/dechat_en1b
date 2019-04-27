@@ -12,11 +12,11 @@ Before(() => {
 
 });
 
-Given(/^I am on the login page$/, async () => {
+Given(/^I am on the login webPage$/, async () => {
   await page.navigateTo();
 });
 
-When(/^I introduce my data/, async () => {
+When(/^I introduce my auth. data/, async () => {
   expect(await page.getParagraphText()).to.equal('DE-CHAT');
   //funciona!
   await page.openCombobox();
@@ -36,7 +36,7 @@ When(/^I introduce my data/, async () => {
   await page.clickBtnLogin();
 });
 
-Then(/^I should be able to see the profile/, async () => {
+Then(/^I should be able to see my profile/, async () => {
   
   let result=""
   if(browser.isElementPresent(page.getSaveButton())){

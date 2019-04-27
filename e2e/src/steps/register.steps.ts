@@ -1,7 +1,7 @@
 import { Before, Given, Then, When } from 'cucumber';
 import { expect } from 'chai';
 
-import { LoginPage } from '../page_objects/login.po';
+import { LoginPage } from '../page_objects/login_nacho.po';
 import { element } from '@angular/core/src/render3/instructions';
 import { browser } from 'protractor';
 

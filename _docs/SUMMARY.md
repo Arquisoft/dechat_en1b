@@ -15,4 +15,5 @@
 * [Glossary](12. Glossary.md)
 * [Experimentation](13. Experimentation.md)
 * [Project Structure](14. Project Structure.md)
+* [Changing the Project](15. Changing the Project.md)
 * [About arc42](About arc42.md)

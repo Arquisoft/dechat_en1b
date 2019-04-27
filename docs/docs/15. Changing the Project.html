@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Project Structure · GitBook</title>
+        <title>Changing the Project · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="15. Changing the Project.html" />
+    <link rel="next" href="About arc42.html" />
     
     
-    <link rel="prev" href="13. Experimentation.html" />
+    <link rel="prev" href="14. Project Structure.html" />
     
 
     </head>
@@ -271,7 +271,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.15" data-path="14. Project Structure.html">
+        <li class="chapter " data-level="1.15" data-path="14. Project Structure.html">
             
                 <a href="14. Project Structure.html">
             
@@ -284,7 +284,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.16" data-path="15. Changing the Project.html">
+        <li class="chapter active" data-level="1.16" data-path="15. Changing the Project.html">
             
                 <a href="15. Changing the Project.html">
             
@@ -340,7 +340,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Project Structure</a>
+        <a href="." >Changing the Project</a>
     </h1>
 </div>
 
@@ -355,88 +355,21 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="project-structure">Project Structure</h1>
-<p>The goal of this document is to list all the different folders and files in the project with its functionality.</p>
-<h2 id="docs">_docs</h2>
-<p>It contains all the markdown code used to generate the documentation following the arc42 template. It also contains an &quot;images/&quot; folder to store all the images used. The &quot;SUMMARY&quot; file is used by gitbook as TOC.</p>
-<h2 id="e2e">e2e</h2>
-<p>It contains all the e2e tests (using Cucumber). It has 3 main folders inside &quot;src/&quot;:</p>
-<ul>
-<li>features/: Cucumber test cases</li>
-<li>page_objects/: utilities used for testing (navigation, click...)</li>
-<li>steps/: actual source code that combines page objects with the test cases following the structure defined in the features/&quot;file&quot; associated</li>
-</ul>
-<p>In addition it also has two files for configuration:</p>
-<ul>
-<li>protractor.conf.js: the configuration for the Protactor test runner</li>
-<li>tsconfig.e2e.json: has as parent tsconfig.json, and it&apos;s the configuration of the Typescript compiler</li>
-</ul>
-<h2 id="nodemodules">node_modules</h2>
-<p>(Included in .gitignore)</p>
-<p>All the local dependencies.</p>
-<h2 id="src">src</h2>
-<p>All the source code of the app. With this folders:</p>
-<ul>
-<li>app/: <ul>
-<li>Contains all the components, each of them with this folder structure contained in a folder with component&apos;s name (for a given component of name &quot;sample&quot;):<ul>
-<li>sample.component.css: specific CSS stylesheet applied only to this component</li>
-<li>sample.component.html: specific HTML code to be inserted</li>
-<li>sample.component.spec.ts: unit testing code for the component</li>
-<li>sample.component.ts: main component code</li>
-</ul>
-</li>
-<li>app.component.* files: same behaviour as previously defined for the individual components but in this case it&apos;s the for the root component</li>
-<li>app.module.ts: used to define the root module and all the imports regarding components or services</li>
-<li>models/: entities used in the project written in Typescript:<ul>
-<li>chat-message.model.ts: chat message model</li>
-<li>solid-profile.model.ts: user&apos;s profile model</li>
-<li>solid-provider.model.ts: SOLID provider model</li>
-<li>solid-session.model.ts: user&apos;s session model</li>
-<li>user.model.ts: user model</li>
-</ul>
-</li>
-<li>services/:<ul>
-<li>auth.guard.service.ts: service that controls the access to the different routes in the app</li>
-<li>chat.service.ts: service that communicates the app with SOLID using the rdf.service.ts</li>
-<li>chat.service.spec.ts: test for the service</li>
-<li>rdf.service.ts: interacts with SOLID posting and getting data</li>
-<li>solid.auth.service.ts: used to login and logout and to show the login popup</li>
-</ul>
-</li>
-<li>popup.html: HTML SOLID login popup </li>
-</ul>
-</li>
-<li>assets/: all the static resources of the app such as libraries, types or images</li>
-<li>environments: build configurations for different environments (production, development...)</li>
-<li>locale/: all the internationalization files in XLIFF format.</li>
-<li>browserslist: determines CSS compatibilities with different browsers</li>
-<li>favicon.ico: the main icon of the app</li>
-<li>index.html: base html where the root of the app is placed (app-root)</li>
-<li>karma.conf.ts: configuration file for the Karma test runner, in this case for unit testing</li>
-<li>main.ts: loads everything and controls the startup of the application</li>
-<li>polyfills.ts: determines specific scripts for browser compatibilities</li>
-<li>styles.css: general CSS stylesheet of the application</li>
-<li>test.ts: loads everything and controls all the functionalities regarding the tests, such as loading the TestBed (test context for execution)</li>
-<li>tsconfig.app.json: has as parent tsconfig.json, and it&apos;s the configuration of the Typescript compiler for the app</li>
-<li>tsconfig.spec.json: has as parent tsconfig.json, and it&apos;s the configuration of the Typescript compiler for the tests</li>
-<li>tslint.json: has as parent tsconfig.json, and it&apos;s the configuration of the Typescript linter of the app</li>
-<li>xliffmerge.json: configuration file used for managing the .xlf files regarding internationalization (to merge the new ones and the old ones when calling the command to detect new strings to be internationalized)</li>
-</ul>
-<h2 id="others-in-the-root">Others (in the root)</h2>
-<ul>
-<li>.editorconfig: general configuration for the IDE (encoding, tabulation...)</li>
-<li>.gitignore: to exclude files when uploading to Git</li>
-<li>.travis.yml: configuration file for the continuous integration environment (versions, scripts to be executed...)</li>
-<li>angular.json: Angular CLI configuration and options for the tools defined by the CLI such as serve, build and test</li>
-<li>book.json: gitbook configuration file, in this case for the theme</li>
-<li>LICENSE: license of the project, in this case MIT</li>
-<li>package.json: all the metadata of the project, including, also, the definition of the scripts and dependencies (normal + development)</li>
-<li>package-lock.json: full dependency tree of the project</li>
-<li>popup.js: code for generating the SOLID login popup</li>
-<li>README: the readme with all the info of the project</li>
-<li>tsconfig.json: Typescript compiler configuration for the whole workspace</li>
-<li>tslint.json: Typescript linter configuration for the whole workspace</li>
-</ul>
+                                <h1 id="changing-the-project">Changing the Project</h1>
+<p>The goal of this document is to teach unexperienced developers how to modify the project in orther to extend the functionality.</p>
+<h2 id="adding-a-new-component">Adding a new component</h2>
+<p>Let&apos;s suppose that the new developer wants to add a new component to the chat, for example a list of users on the settings part of the application.</p>
+<p>We first have to think about the implementation of the component. We will create a component for the list of users and another one to represent each of the items of the list.</p>
+<p>We create a folder for each component.</p>
+<p><img src="images/Components_folders.png" alt="List of users and list item folders"></p>
+<p>Now we have to implement the html files to represent both list and items. We will also add a css file to modify the appearance of them and a ts file to implement the behavior.</p>
+<p><img src="images/Components_files.png" alt="List of users and list item files"></p>
+<p>The next step is adding the items to the list component on the user-setting-list.component.html. </p>
+<p><img src="images/items_list.png" alt="Items on the list file"></p>
+<p>Now the behavior of the component needs to be added to the ts file in order to show the users in the list.</p>
+<p><img src="images/list_behavior.png" alt="List behavior"></p>
+<p>The list component is ready to be used. The last step is using it on the previously defined settings part, so we add it, like we have already done with the list items, to the settings.component.html file.</p>
+<p><img src="images/list_on_settings.png" alt="List on settings part"></p>
 
                                 
                                 </section>
@@ -464,12 +397,12 @@
 
             
                 
-                <a href="13. Experimentation.html" class="navigation navigation-prev " aria-label="Previous page: Experimentation">
+                <a href="14. Project Structure.html" class="navigation navigation-prev " aria-label="Previous page: Project Structure">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="15. Changing the Project.html" class="navigation navigation-next " aria-label="Next page: Changing the Project">
+                <a href="About arc42.html" class="navigation navigation-next " aria-label="Next page: About arc42">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -480,7 +413,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Project Structure","level":"1.15","depth":1,"next":{"title":"Changing the Project","level":"1.16","depth":1,"path":"15. Changing the Project.md","ref":"15. Changing the Project.md","articles":[]},"previous":{"title":"Experimentation","level":"1.14","depth":1,"path":"13. Experimentation.md","ref":"13. Experimentation.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"14. Project Structure.md","mtime":"2019-04-21T20:28:08.312Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-04-27T11:57:39.738Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Changing the Project","level":"1.16","depth":1,"next":{"title":"About arc42","level":"1.17","depth":1,"path":"About arc42.md","ref":"About arc42.md","articles":[]},"previous":{"title":"Project Structure","level":"1.15","depth":1,"path":"14. Project Structure.md","ref":"14. Project Structure.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"15. Changing the Project.md","mtime":"2019-04-27T11:55:34.821Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-04-27T11:57:39.738Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

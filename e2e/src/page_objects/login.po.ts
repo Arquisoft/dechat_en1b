@@ -6,48 +6,61 @@ export class LoginPage {
     return browser.get('/login');
   }
 
-  getParagraphText() {
-    return element(by.name('profileName')).getText();
+  clickRegisterButton() {
+    return element(by.id('btn-register')).click();
+  }
+
+  openCombobox() {
+    return element(by.className('ng-input')).click();
+  }
+
+  selectSolidCommunity() {
+    return element(by.id('Solid Community')).click();
   }
 
   getLoginSelector() {
-  //  return element(by.css('logic-selector'));
-  return element(by.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Select ID Provider'])[1]/following::input[1]"));
+    return element(by.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Select ID Provider'])[1]/following::input[1]"));
   }
 
-  getSolidCommProvider(){
-    return element(by.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Inrupt'])[1]/following::div[4]"));
+  getSolidCommProvider() {
+    return element(by.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Inrupt'])[1]/following::span[1]"));
+  }
+  clickGoButton() {
+    return element(by.buttonText('Go')).click();
   }
 
-  getUsernameField(){
-   // this.sleep(2000);
+  getUsernameField() {
     return element(by.id('username'));
   }
-  getPasswordField(){
+
+  getPasswordField() {
     return element(by.id('password'));
   }
 
-  getGoButton() {
-    //this.sleep(3000);
-    return element(by.id('btn-go'));
-  }
 
-  getBtnLogin(){
-    return element(by.id('login'));
+  clickBtnLogin() {
+    return element(by.id('login')).click();
   }
 
 
-  getRegisterButton() {
-    return element(by.id('btn-register'));
+  getLoginParagraph() {
+    return element(by.css('h4')).getText();
   }
 
-
-    private sleep(milliseconds: number): void {
-      const start = new Date().getTime();
-      for (let i = 0; i < 1e7; i++) {
-          if ((new Date().getTime() - start) > milliseconds) {
-              break;
-          }
-      }
+  getSaveButton() {
+    return element(by.buttonText('Save'));
   }
+
+  getPhoneProfileElem() {
+    return element(by.name('phone'));
+  }
+
+  getAppText() {
+    return element(by.css('app-root h1')).getText();
+  }
+  getParagraphText() {
+    return element(by.css('h1')).getText();
+  }
+
+  
 }

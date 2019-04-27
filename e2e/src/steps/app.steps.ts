@@ -13,8 +13,8 @@ Given(/^I am on the home page$/, async () => {
   await page.navigateTo();
 });
 
-When(/^I do nothing \(login page\)$/, () => {});
+When(/^I do nothing \(home page\)$/, () => {});
 
-Then(/^I should see the title \(login page\)$/, async () => {
+Then(/^I should see the title \(home page\)$/, async () => {
   expect(await page.getParagraphText()).to.equal('DE-CHAT');
 });

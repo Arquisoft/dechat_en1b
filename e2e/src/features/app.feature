@@ -1,7 +1,7 @@
-Feature: Go to the home page
+Feature: Go to the home
   Display the title
 
-  Scenario: Home page
+  Scenario: Home Page
     Given I am on the home page
-    When I do nothing (home page)
-    Then I should see the title (home page)
+    When I do nothing
+    Then I should see the title

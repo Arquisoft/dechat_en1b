@@ -1,7 +1,7 @@
-Feature: Go to the login page and login with your solid account
-  Display the title
+Feature: Login in Solid Community
+    GO to the login page and login to SC
 
-  Scenario: Login page
-    Given I am on the login page
-    When I enter my credentials
-    Then I should see the chat page
+    Scenario: I enter the app and login
+        Given: I open the app and I am not logged in
+        When: I enter credentials
+        Then: I can use the chat

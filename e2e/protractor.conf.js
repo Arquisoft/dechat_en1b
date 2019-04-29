@@ -3,13 +3,11 @@
 
 exports.config = {
   allScriptsTimeout: 11000,
-  specs: [
-    "./src/features/**/*.feature"
-  ],
+  specs: ["./src/features/**/*.feature"],
   capabilities: {
     "browserName": "chrome",
     "chromeOptions": {
-       "args": ["--headless", "--no-sandbox"]
+      "args": ["--headless", "--no-sandbox"]
     }
   },
   directConnect: true,
@@ -23,5 +21,5 @@ exports.config = {
   },
   cucumberOpts: {
     require: ["./src/steps/**/*.steps.ts"],
-  }
+  },
 };

@@ -11,7 +11,7 @@ export class ChatPage {
 
     async solidLogin() {
         await browser.driver.get('localhost:4200');
-        await element(by.css('.login-select')).click();
+        await element(by.css('.login-select')).click().then(() => browser.sleep(2000));
         await element(by.xpath('(//div[@class="provider"])[2]')).click();
         await element(by.css('#btn-go')).click().then(() => browser.sleep(2000));
         await browser.driver.findElement(by.id('username')).sendKeys(this.userName);
@@ -21,11 +21,11 @@ export class ChatPage {
     }
 
     async goToPage() {
-        
     }
 
     async selectChat() {
-        return await browser.driver.findElement(by.tagName('app-user-item')).click();
+        browser.get('/chat').then(() => browser.sleep(2000));
+        return await browser.driver.findElement(by.css('.userItem')).click();
     }
 
     async writeMessage(msg: string) {
@@ -33,7 +33,7 @@ export class ChatPage {
     }
 
     async clickSend() {
-        return await browser.driver.findElement(by.id('send')).click().then(() => browser.sleep(1000));
+        return await browser.driver.findElement(by.css('.chatButton')).click().then(() => browser.sleep(1000));
     }
 
     async getMessageText() {
